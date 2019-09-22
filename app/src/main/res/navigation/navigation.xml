@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/threads_fragment">
+    <fragment
+        android:id="@+id/publish_fragment"
+        android:name="nz.scuttlebutt.android_go.PublishFragment"
+        android:label="fragment_publish"
+        tools:layout="@layout/fragment_publish" />
+    <fragment
+        android:id="@+id/threads_fragment"
+        android:name="nz.scuttlebutt.android_go.ThreadsFragment"
+        android:label="fragment_threads"
+        tools:layout="@layout/fragment_threads" />
+    <fragment
+        android:id="@+id/threadFragment"
+        android:name="nz.scuttlebutt.android_go.ThreadFragment"
+        android:label="fragment_thread"
+        tools:layout="@layout/fragment_thread" />
+</navigation>

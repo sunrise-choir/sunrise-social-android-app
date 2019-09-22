@@ -2,10 +2,12 @@ package nz.scuttlebutt.android_go
 
 import android.Manifest
 
-import android.os.HandlerThread
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
+import nz.scuttlebutt.android_go.databinding.ActivityMainBinding
+
 
 import android.widget.Button
 import android.widget.EditText
@@ -18,22 +20,10 @@ import com.sunrisechoir.graphql.PostsQuery
 import com.sunrisechoir.graphql.ThreadsQuery
 
 
-import gobotexample.Gobotexample
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
-
-
-
-class MyHandlerThread(name: String, private val repoPath: String) : HandlerThread(name) {
-    override fun onLooperPrepared() {
-        println("starting sbot")
-        Gobotexample.start(repoPath)
-        println("sbot started")
-        super.onLooperPrepared()
-    }
-}
 
 
 
@@ -43,8 +33,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         setContentView(R.layout.activity_main)
         var context = applicationContext
+        
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED
@@ -75,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             serverActor.send(StartServer)
         }
 
-        val postButton = findViewById<Button>(R.id.post_button)
+//        val postButton = findViewById<Button>(R.id.post_button)
 
 
 
@@ -112,48 +104,48 @@ class MainActivity : AppCompatActivity() {
 
         //Gobotexample.start(repoPath)
 
-
-        val dbPath = this.getDatabasePath("db.sqlite").absolutePath
-        val offsetlogPath = repoPath + "/log"
-
-        val pubKey = "@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519"
-        val privateKey = "123abc==.ed25519"
-
-
-        val apolloPatchql = PatchqlApollo()
-        apolloPatchql.new(
-            offsetLogPath = offsetlogPath,
-            databasePath = dbPath,
-            publicKey = pubKey,
-            privateKey = privateKey
-        )
-
-        val query = ProcessMutation.builder().chunkSize(1000000).build()
-        val threadsQuery = ThreadsQuery.builder().build()
-
-        apolloPatchql.query(query) { res -> println(res.getOrNull()?.data()) }
-        apolloPatchql.query(threadsQuery) { res -> println(res.getOrNull()?.data()) }
-
-        postButton.setOnClickListener {
-            val postEditText: EditText = findViewById(R.id.edit_post_text)
-            val publishedSeqText: TextView = findViewById(R.id.published_seq_text)
-            GlobalScope.launch {
-                val response = CompletableDeferred<Long>()
-                serverActor.send(PublishMessage(postEditText.text.toString(), response))
-                val postSeqString = response.await().toString()
-                publishedSeqText.post {
-                    publishedSeqText.text = postSeqString
-                    publishedSeqText.visibility = TextView.VISIBLE
-                    apolloPatchql.query(query) { res -> println(res.getOrNull()?.data())
-
-                        val postsQuery = PostsQuery.builder().last(1).build()
-                        apolloPatchql.query(postsQuery) { res -> println(res.getOrNull()?.data())}
-                    }
-
-
-                }
-            }
-        }
+//
+//        val dbPath = this.getDatabasePath("db.sqlite").absolutePath
+//        val offsetlogPath = repoPath + "/log"
+//
+//        val pubKey = "@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519"
+//        val privateKey = "123abc==.ed25519"
+//
+//
+//        val apolloPatchql = PatchqlApollo()
+//        apolloPatchql.new(
+//            offsetLogPath = offsetlogPath,
+//            databasePath = dbPath,
+//            publicKey = pubKey,
+//            privateKey = privateKey
+//        )
+//
+//        val query = ProcessMutation.builder().chunkSize(1000000).build()
+//        val threadsQuery = ThreadsQuery.builder().build()
+//
+//        apolloPatchql.query(query) { res -> println(res.getOrNull()?.data()) }
+//        apolloPatchql.query(threadsQuery) { res -> println(res.getOrNull()?.data()) }
+//
+//        postButton.setOnClickListener {
+//            val postEditText: EditText = findViewById(R.id.edit_post_text)
+//            val publishedSeqText: TextView = findViewById(R.id.published_seq_text)
+//            GlobalScope.launch {
+//                val response = CompletableDeferred<Long>()
+//                serverActor.send(PublishMessage(postEditText.text.toString(), response))
+//
+//                val postSeqString = response.await().toString()
+//                publishedSeqText.post {
+//                    postEditText.text.clear()
+//                    publishedSeqText.text = postSeqString
+//                    publishedSeqText.visibility = TextView.VISIBLE
+//                    apolloPatchql.query(query) { res -> println(res.getOrNull()?.data())
+//
+//                        val postsQuery = PostsQuery.builder().last(1).build()
+//                        apolloPatchql.query(postsQuery) { res -> println(res.getOrNull()?.data())}
+//                    }
+//                }
+//            }
+//        }
     }
 
     override fun onStop() {

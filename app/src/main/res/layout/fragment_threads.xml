@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="nz.scuttlebutt.android_go.ThreadsFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/threads"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:itemCount="6"
+        tools:listitem="@layout/fragment_thread_summary" />
+</layout>

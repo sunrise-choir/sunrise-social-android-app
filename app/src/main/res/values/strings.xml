@@ -2,4 +2,11 @@
     <string name="app_name">AndroidGo</string>
     <string name="post_button">Post</string>
     <string name="edit_post_hint">Add your post text here...</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="publish_menu">Publish</string>
+    <string name="post_text">Spent some time this afternoon trying to make progress getting @cryptix\'s go sbot + #patchql going on #android \nI hit a small milestone just now:  with the server running on android publish a few contact messages and a few posts using the go ssb client on my computer got patchql to parse the go server offset file and I can see those messages in the sql db.\n (!!!)  \nThis is very cool and it also feels like there\'s a hell of a lot to do to get this usable.  \nI\'m dealing with a few bugs / crashes / etc, and I need to do a bunch of stuff manually to make this work.  \ncc @Luandro @mixmix @Maui @dinoƧ𝔸Ⓤᖇ</string>
+    <string name="avataar_description">Author Name</string>
+    <string name="likes_count_description">Likes Count</string>
 </resources>
