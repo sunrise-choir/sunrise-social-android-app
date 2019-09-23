@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.sunrisechoir.patchql.PatchqlApollo
-import com.sunrisechoir.graphql.ThreadsQuery
-import com.sunrisechoir.graphql.ThreadsQuery.Data
-import com.sunrisechoir.graphql.ThreadsQuery.Node
+import com.sunrisechoir.graphql.ThreadsSummaryQuery
+import com.sunrisechoir.graphql.ThreadsSummaryQuery.Data
+import com.sunrisechoir.graphql.ThreadsSummaryQuery.Node
 import io.noties.markwon.Markwon
 
 import nz.scuttlebutt.android_go.databinding.FragmentThreadsBinding
@@ -71,8 +71,6 @@ class ThreadsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-
-
         val binding: FragmentThreadsBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_threads, container, false)
 
@@ -82,8 +80,6 @@ class ThreadsFragment : Fragment() {
 
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = viewAdapter
-
-
 
         scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(
@@ -110,7 +106,7 @@ class ThreadsFragment : Fragment() {
         recyclerView: RecyclerView,
         totalItemsCount: Int
     ) {
-        val threadsQuery = ThreadsQuery.builder().before(cursor).last(20).build()
+        val threadsQuery = ThreadsSummaryQuery.builder().before(cursor).last(20).build()
         apolloPatchql.query(threadsQuery) {
             val data: Data = it.getOrNull()?.data() as Data
             val newCursor = data.threads().pageInfo().endCursor()
