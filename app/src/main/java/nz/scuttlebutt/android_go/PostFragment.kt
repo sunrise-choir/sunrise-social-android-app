@@ -10,15 +10,14 @@ import android.view.ViewGroup
 /**
  * A simple [Fragment] subclass.
  */
-class ThreadSummaryFragment : Fragment() {
+class PostFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_thread_summary, container, false)
+        return inflater.inflate(R.layout.view_post, container, false)
     }
 
 

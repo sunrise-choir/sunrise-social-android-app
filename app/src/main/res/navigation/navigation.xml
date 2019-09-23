@@ -5,18 +5,29 @@
     android:id="@+id/navigation"
     app:startDestination="@id/threads_fragment">
     <fragment
+        android:id="@+id/threads_fragment"
+        android:name="nz.scuttlebutt.android_go.ThreadsFragment"
+        android:label="fragment_threads"
+        tools:layout="@layout/fragment_threads">
+        <action
+            android:id="@+id/action_threads_fragment_to_publish_fragment"
+            app:destination="@id/publish_fragment" />
+        <action
+            android:id="@+id/action_threads_fragment_to_thread_fragment"
+            app:destination="@id/thread_fragment" />
+    </fragment>
+    <fragment
         android:id="@+id/publish_fragment"
         android:name="nz.scuttlebutt.android_go.PublishFragment"
         android:label="fragment_publish"
         tools:layout="@layout/fragment_publish" />
     <fragment
-        android:id="@+id/threads_fragment"
-        android:name="nz.scuttlebutt.android_go.ThreadsFragment"
-        android:label="fragment_threads"
-        tools:layout="@layout/fragment_threads" />
-    <fragment
-        android:id="@+id/threadFragment"
+        android:id="@+id/thread_fragment"
         android:name="nz.scuttlebutt.android_go.ThreadFragment"
         android:label="fragment_thread"
-        tools:layout="@layout/fragment_thread" />
+        tools:layout="@layout/fragment_thread" >
+        <argument
+            android:name="thread_root_id"
+            app:argType="string" />
+    </fragment>
 </navigation>

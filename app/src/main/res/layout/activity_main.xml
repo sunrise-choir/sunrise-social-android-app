@@ -11,8 +11,10 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="nz.scuttlebutt.android_go.ThreadsFragment"
-            android:id="@+id/threadFragment"/>
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:navGraph="@navigation/navigation"
+            app:defaultNavHost="true"
+            android:id="@+id/nav_host_fragment"/>
     </LinearLayout>
 
 </layout>

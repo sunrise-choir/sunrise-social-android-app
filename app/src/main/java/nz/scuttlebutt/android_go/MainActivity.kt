@@ -5,19 +5,14 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import androidx.databinding.DataBindingUtil
 import nz.scuttlebutt.android_go.databinding.ActivityMainBinding
 
 
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
 
-import com.sunrisechoir.patchql.PatchqlApollo
-import com.sunrisechoir.graphql.ProcessMutation
-import com.sunrisechoir.graphql.PostsQuery
-import com.sunrisechoir.graphql.ThreadsQuery
 
 
 import kotlinx.coroutines.GlobalScope
@@ -29,20 +24,20 @@ import kotlinx.coroutines.channels.SendChannel
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit private var serverActor: SendChannel<SsbServerMsg>;
+    lateinit private var serverActor: SendChannel<SsbServerMsg>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         setContentView(R.layout.activity_main)
-        var context = applicationContext
-        
+        val context = applicationContext
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED
         ) {
 
-            var permissions: Array<String> = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            val permissions: Array<String> = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             requestPermissions(permissions, 0)
             // Permission is not granted
             //throw Error("no permissions for external storage")
@@ -52,25 +47,22 @@ class MainActivity : AppCompatActivity() {
             != PackageManager.PERMISSION_GRANTED
         ) {
 
-            var permissions: Array<String> = arrayOf(Manifest.permission.INTERNET)
+            val permissions: Array<String> = arrayOf(Manifest.permission.INTERNET)
             requestPermissions(permissions, 0)
             // Permission is not granted
             //throw Error("no permissions for external storage")
         }
 
-        var externalDir = "/sdcard"
-        var repoPath = externalDir + "/golog"
+        val externalDir =  Environment.getExternalStorageDirectory().path
+        val repoPath = externalDir + "/golog"
         context.getExternalFilesDir(repoPath)
 
         GlobalScope.launch{
-            serverActor = this.ssbServerActor(repoPath)
-            serverActor.send(StartServer)
+            withContext(Dispatchers.IO){
+                serverActor = this.ssbServerActor(repoPath)
+                serverActor.send(StartServer)
+            }
         }
-
-//        val postButton = findViewById<Button>(R.id.post_button)
-
-
-
 
 
 //        val myHandlerThread: MyHandlerThread = MyHandlerThread("myHandlerThread", repoPath)
