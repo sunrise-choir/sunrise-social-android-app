@@ -1,44 +1,29 @@
 package nz.scuttlebutt.android_go.viewModels
 
-
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sunrisechoir.graphql.ThreadsSummaryQuery.Node
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.sunrisechoir.patchql.Patchql
 import com.sunrisechoir.patchql.PatchqlApollo
+import nz.scuttlebutt.android_go.models.Thread
+import nz.scuttlebutt.android_go.models.ThreadsDataSourceFactory
 
 
-class ThreadsViewModel: ViewModel() {
-
-    lateinit var patchqlApollo: PatchqlApollo
+class ThreadsViewModel(patchqlParams: Patchql.Params) : ViewModel() {
+    val threadsLiveData: LiveData<PagedList<Thread>>
+    private var patchql: PatchqlApollo = PatchqlApollo()
 
     init{
+        patchql.new(patchqlParams)
 
+        val threadsDataSourceFactory = ThreadsDataSourceFactory(patchql)
+        val pagedListConfig = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(10)
+            .setPageSize(20).build()
 
-
-
-
-//        patchqlApollo = PatchqlApollo()
-//        patchqlApollo.new(
-//            offsetLogPath = offsetlogPath,
-//            databasePath = dbPath!!,
-//            publicKey = pubKey,
-//            privateKey = privateKey
-//        )
-    }
-
-    private val nodes: MutableLiveData<List<Node>> by lazy {
-        MutableLiveData<List<Node>>().also {
-            loadNodes()
-        }
-    }
-
-    fun getNodes(): LiveData<List<Node>> {
-        return nodes
-    }
-
-    private fun loadNodes() {
-        // Do an asynchronous operation to fetch users.
+        threadsLiveData = LivePagedListBuilder(threadsDataSourceFactory, pagedListConfig).build()
     }
 
 }

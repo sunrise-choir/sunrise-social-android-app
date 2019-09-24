@@ -18,6 +18,7 @@ import nz.scuttlebutt.android_go.EndlessRecyclerViewScrollListener
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.adapters.ThreadAdapter
 import nz.scuttlebutt.android_go.databinding.FragmentThreadBinding
+import nz.scuttlebutt.android_go.models.Post
 
 
 /**
@@ -25,7 +26,7 @@ import nz.scuttlebutt.android_go.databinding.FragmentThreadBinding
  */
 class ThreadFragment : Fragment() {
 
-    data class Post(val text: String, val likesCount: Int, val authorName: String?, val authorImageLink: String? )
+
     private lateinit var threadRootId: String
 
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
@@ -49,8 +50,9 @@ class ThreadFragment : Fragment() {
         markWon = Markwon.create(context!!)
 
         val externalDir = Environment.getExternalStorageDirectory().path
-        val repoPath = externalDir + "/golog"
-        val dbPath = context?.getDatabasePath("db.sqlite")?.absolutePath
+        val repoPath = externalDir + getString(R.string.ssb_go_folder_name)
+        val dbPath =
+            context?.getDatabasePath(getString(R.string.patchql_sqlite_db_name))?.absolutePath
         val offsetlogPath = repoPath + "/log"
 
         val pubKey = "@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519"
@@ -107,6 +109,7 @@ class ThreadFragment : Fragment() {
                 val root = data.thread()?.root()!!
                 val replies = data.thread()?.replies()!!
                 val rootPost = Post(
+                    root.id(),
                     root.text(),
                     root.likesCount(),
                     root.author().name(),
@@ -116,6 +119,7 @@ class ThreadFragment : Fragment() {
                 var nodes: Array<Post> = Array(1){rootPost}
                 nodes = nodes.plus(replies.map {
                     Post(
+                        it.id(),
                         it.text(),
                         it.likesCount(),
                         it.author().name(),
@@ -123,8 +127,6 @@ class ThreadFragment : Fragment() {
                     )
                 })
 
-
-                    //data.threads().edges().map { e -> e.node() }.toTypedArray()
                 viewAdapter.myDataset = viewAdapter.myDataset.plus(nodes)
                 recyclerView.adapter?.notifyItemRangeInserted(
                     totalItemsCount,

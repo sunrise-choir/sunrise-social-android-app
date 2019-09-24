@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.R
-import nz.scuttlebutt.android_go.fragments.ThreadFragment
+import nz.scuttlebutt.android_go.models.Post
 
 class ThreadAdapter(
-    var myDataset: Array<ThreadFragment.Post>,
+    var myDataset: Array<Post>,
     private var markWon: Markwon,
     val fragment: Fragment
 ) :
@@ -54,7 +54,7 @@ class ThreadAdapter(
         val likesCountTextView: TextView = view.findViewById(R.id.likes_count_text)
         likesCountTextView.text = data.likesCount.toString()
 
-        val repliesCountTextView: TextView = view.findViewById(R.id.replies_count_text)
+        //val repliesCountTextView: TextView = view.findViewById(R.id.replies_count_text)
         //TODO
         //repliesCountTextView.text = data.size.toString()
 

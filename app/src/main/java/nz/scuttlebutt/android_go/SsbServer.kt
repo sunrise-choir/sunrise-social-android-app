@@ -1,12 +1,12 @@
 package nz.scuttlebutt.android_go
 
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.*
-
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-
 import gobotexample.Gobotexample
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.actor
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 
 
 @Serializable
@@ -29,12 +29,17 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
 
     val json = Json(JsonConfiguration.Stable)
     val postSerializer = Post.serializer()
+    var isServerRunning = false
 
     for (msg in channel) { // iterate over incoming messages
         when (msg) {
             is StartServer -> {
                 println("starting sbot")
-                Gobotexample.start(repoPath)
+                if (!isServerRunning) {
+                    Gobotexample.start(repoPath)
+                    isServerRunning = true
+                }
+
                 println("sbot started")
             }
             is PublishMessage -> {
