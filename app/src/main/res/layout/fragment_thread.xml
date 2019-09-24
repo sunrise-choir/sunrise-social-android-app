@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="nz.scuttlebutt.android_go.ThreadFragment">
+    tools:context="nz.scuttlebutt.android_go.fragments.ThreadFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/thread"

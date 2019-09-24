@@ -6,7 +6,7 @@
     app:startDestination="@id/threads_fragment">
     <fragment
         android:id="@+id/threads_fragment"
-        android:name="nz.scuttlebutt.android_go.ThreadsFragment"
+        android:name="nz.scuttlebutt.android_go.fragments.ThreadsFragment"
         android:label="fragment_threads"
         tools:layout="@layout/fragment_threads">
         <action
@@ -18,12 +18,12 @@
     </fragment>
     <fragment
         android:id="@+id/publish_fragment"
-        android:name="nz.scuttlebutt.android_go.PublishFragment"
+        android:name="nz.scuttlebutt.android_go.fragments.PublishFragment"
         android:label="fragment_publish"
         tools:layout="@layout/fragment_publish" />
     <fragment
         android:id="@+id/thread_fragment"
-        android:name="nz.scuttlebutt.android_go.ThreadFragment"
+        android:name="nz.scuttlebutt.android_go.fragments.ThreadFragment"
         android:label="fragment_thread"
         tools:layout="@layout/fragment_thread" >
         <argument

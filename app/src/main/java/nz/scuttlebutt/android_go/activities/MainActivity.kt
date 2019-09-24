@@ -1,30 +1,26 @@
-package nz.scuttlebutt.android_go
+package nz.scuttlebutt.android_go.activities
+
 
 import android.Manifest
-
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
-import androidx.databinding.DataBindingUtil
-import nz.scuttlebutt.android_go.databinding.ActivityMainBinding
-
-
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
-
-
-
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
-
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import nz.scuttlebutt.android_go.R
+import nz.scuttlebutt.android_go.SsbServerMsg
+import nz.scuttlebutt.android_go.StartServer
+import nz.scuttlebutt.android_go.ssbServerActor
 
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit private var serverActor: SendChannel<SsbServerMsg>
+    private lateinit var serverActor: SendChannel<SsbServerMsg>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
