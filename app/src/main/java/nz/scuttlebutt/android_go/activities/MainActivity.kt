@@ -4,29 +4,22 @@ package nz.scuttlebutt.android_go.activities
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.SendChannel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import androidx.lifecycle.ViewModelProviders
 import nz.scuttlebutt.android_go.R
-import nz.scuttlebutt.android_go.SsbServerMsg
-import nz.scuttlebutt.android_go.StartServer
-import nz.scuttlebutt.android_go.ssbServerActor
+import nz.scuttlebutt.android_go.viewModels.MainActivityViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var serverActor: SendChannel<SsbServerMsg>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         setContentView(R.layout.activity_main)
-        val context = applicationContext
+
 
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -49,16 +42,10 @@ class MainActivity : AppCompatActivity() {
             //throw Error("no permissions for external storage")
         }
 
-        val externalDir =  Environment.getExternalStorageDirectory().path
-        val repoPath = externalDir + "/golog"
-        context.getExternalFilesDir(repoPath)
+        val threadViewModel: MainActivityViewModel =
+            ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
-        GlobalScope.launch{
-            withContext(Dispatchers.IO){
-                serverActor = this.ssbServerActor(repoPath)
-                serverActor.send(StartServer)
-            }
-        }
+
 
 
 //        val myHandlerThread: MyHandlerThread = MyHandlerThread("myHandlerThread", repoPath)

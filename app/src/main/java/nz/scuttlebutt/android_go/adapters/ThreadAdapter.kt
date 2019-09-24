@@ -54,8 +54,8 @@ class ThreadAdapter(
         val likesCountTextView: TextView = view.findViewById(R.id.likes_count_text)
         likesCountTextView.text = data.likesCount.toString()
 
-        //val repliesCountTextView: TextView = view.findViewById(R.id.replies_count_text)
         //TODO
+        //val repliesCountTextView: TextView = view.findViewById(R.id.replies_count_text)
         //repliesCountTextView.text = data.size.toString()
 
     }
