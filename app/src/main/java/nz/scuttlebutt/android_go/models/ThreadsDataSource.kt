@@ -80,12 +80,13 @@ class ThreadsDataSource(private val patchqlApollo: PatchqlApollo) :
             val rootPost = Post(
                 root.id(),
                 root.text(),
-                root.likesCount(),
+                root.likesCount().toString(),
+                root.likedByMe(),
                 root.author().name(),
                 root.author().imageLink()
             )
 
-            Thread(rootPost, repliesLength, cursor.orEmpty())
+            Thread(rootPost, repliesLength.toString(), cursor.orEmpty())
         }
     }
 }

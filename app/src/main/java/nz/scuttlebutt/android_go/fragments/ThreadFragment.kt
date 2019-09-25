@@ -108,7 +108,8 @@ class ThreadFragment : Fragment() {
                 val rootPost = Post(
                     root.id(),
                     root.text(),
-                    root.likesCount(),
+                    root.likesCount().toString(),
+                    root.likedByMe(),
                     root.author().name(),
                     root.author().imageLink()
                 )
@@ -118,7 +119,8 @@ class ThreadFragment : Fragment() {
                     Post(
                         it.id(),
                         it.text(),
-                        it.likesCount(),
+                        it.likesCount().toString(),
+                        false,
                         it.author().name(),
                         it.author().imageLink()
                     )

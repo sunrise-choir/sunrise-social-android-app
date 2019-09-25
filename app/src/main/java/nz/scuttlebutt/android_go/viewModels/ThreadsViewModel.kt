@@ -19,11 +19,9 @@ class ThreadsViewModel(
 ) : ViewModel() {
     val threadsLiveData: LiveData<PagedList<Thread>>
     private var patchql: PatchqlApollo = PatchqlApollo(patchqlParams)
-
+    private val threadsDataSourceFactory = ThreadsDataSourceFactory(patchql)
 
     init{
-
-        val threadsDataSourceFactory = ThreadsDataSourceFactory(patchql)
         val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setInitialLoadSizeHint(10)
@@ -31,5 +29,7 @@ class ThreadsViewModel(
 
         threadsLiveData = LivePagedListBuilder(threadsDataSourceFactory, pagedListConfig).build()
     }
+
+    fun invalidateDataSource() = threadsDataSourceFactory.mutableLiveData.value?.invalidate()
 
 }

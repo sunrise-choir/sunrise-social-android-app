@@ -2,8 +2,6 @@ package nz.scuttlebutt.android_go.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
@@ -39,24 +37,33 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
 
             val root = binding.root
 
-            markwon.setMarkdown(root.findViewById(R.id.root_post_text), thread.root.text)
-            root.findViewById<TextView>(R.id.author_name_text).text = thread.root.authorName
-            root.findViewById<TextView>(R.id.likes_count_text).text =
-                thread.root.likesCount.toString()
-            root.findViewById<TextView>(R.id.replies_count_text).text =
-                thread.repliesLength.toString()
+            binding.fragmentPost.thread = thread
 
-            root.findViewById<ImageView>(R.id.likes_icon_image).setOnClickListener {
+
+            markwon.setMarkdown(binding.fragmentPost.rootPostText, thread.root.text)
+
+            val likesIconImage = binding.fragmentPost.likesIconImage
+            val image =
+                if (thread.root.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
+            likesIconImage.setImageResource(image)
+
+
+            likesIconImage.setOnClickListener {
 
                 GlobalScope.launch {
                     withContext(Dispatchers.IO) {
                         val response = CompletableDeferred<Long>()
-                        ssbServer.await().send(PublishLikeMessage(thread.root.id, true, response))
+                        ssbServer.await().send(
+                            PublishLikeMessage(
+                                thread.root.id,
+                                !thread.root.likedByMe,
+                                response
+                            )
+                        )
                         println("got reponse from publishing message: ${response.await()}")
                     }
                 }
             }
-
 
             root.setOnClickListener {
                 if (navController.currentDestination?.id == R.id.threads_fragment) {

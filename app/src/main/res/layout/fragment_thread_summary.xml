@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="nz.scuttlebutt.android_go.fragments.ThreadSummaryFragment">
 
-    <data>
-        <variable name="node" type="com.sunrisechoir.graphql.ThreadsQuery.Node"/>
-    </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <include layout="@layout/view_post" />
+
+        <include
+            android:id="@+id/fragment_post"
+            layout="@layout/fragment_post" />
     </LinearLayout>
 
 </layout>
