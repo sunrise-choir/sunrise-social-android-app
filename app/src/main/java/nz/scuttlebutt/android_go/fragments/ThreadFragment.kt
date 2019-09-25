@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sunrisechoir.graphql.ThreadQuery
 import com.sunrisechoir.graphql.ThreadQuery.Data
+import com.sunrisechoir.patchql.Params
 import com.sunrisechoir.patchql.PatchqlApollo
 import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.EndlessRecyclerViewScrollListener
@@ -52,18 +53,14 @@ class ThreadFragment : Fragment() {
         val externalDir = Environment.getExternalStorageDirectory().path
         val repoPath = externalDir + getString(R.string.ssb_go_folder_name)
         val dbPath =
-            context?.getDatabasePath(getString(R.string.patchql_sqlite_db_name))?.absolutePath
+            context?.getDatabasePath(getString(R.string.patchql_sqlite_db_name))?.absolutePath!!
         val offsetlogPath = repoPath + "/log"
 
         val pubKey = "@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519"
         val privateKey = "123abc==.ed25519"
-        patchqlApollo = PatchqlApollo()
-        patchqlApollo.new(
-            offsetLogPath = offsetlogPath,
-            databasePath = dbPath!!,
-            publicKey = pubKey,
-            privateKey = privateKey
-        )
+
+        val patchqlParams = Params(offsetlogPath, dbPath, pubKey, privateKey)
+        patchqlApollo = PatchqlApollo(patchqlParams)
 
         val recyclerView: RecyclerView = binding.root.findViewById(R.id.thread)
         val layoutManager = LinearLayoutManager(context)

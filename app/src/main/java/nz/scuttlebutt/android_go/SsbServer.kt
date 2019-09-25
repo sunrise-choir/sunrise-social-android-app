@@ -17,8 +17,8 @@ data class Post(val text: String){
 // Message types for counterActor
 sealed class SsbServerMsg
 
-//object IncCounter : CounterMsg() // one-way message to increment counter
 object StartServer: SsbServerMsg()
+object StopServer : SsbServerMsg()
 class PublishMessage(val msgText: String, val response: CompletableDeferred<Long>) :
     SsbServerMsg() // a request with reply
 
@@ -34,13 +34,23 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
     for (msg in channel) { // iterate over incoming messages
         when (msg) {
             is StartServer -> {
-                println("starting sbot")
                 if (!isServerRunning) {
+                    println("starting sbot")
                     Gobotexample.start(repoPath)
                     isServerRunning = true
+                    println("sbot started")
                 }
 
-                println("sbot started")
+            }
+            is StopServer -> {
+                if (isServerRunning) {
+                    println("stopping sbot")
+                    Gobotexample.stop()
+                    isServerRunning = false
+                    println("stopped sbot")
+                    channel.close()
+
+                }
             }
             is PublishMessage -> {
                 println("got publish message")

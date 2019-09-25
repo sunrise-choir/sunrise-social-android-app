@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.StartServer
+import nz.scuttlebutt.android_go.StopServer
 import nz.scuttlebutt.android_go.ssbServerActor
 
 class MainActivityViewModel : ViewModel() {
@@ -23,6 +24,15 @@ class MainActivityViewModel : ViewModel() {
             withContext(Dispatchers.IO) {
                 serverActor = this.ssbServerActor(repoPath)
                 serverActor.send(StartServer)
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                serverActor.send(StopServer)
             }
         }
     }

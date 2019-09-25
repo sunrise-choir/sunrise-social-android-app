@@ -4,18 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.sunrisechoir.patchql.Patchql
+import com.sunrisechoir.patchql.Params
 import com.sunrisechoir.patchql.PatchqlApollo
 import nz.scuttlebutt.android_go.models.Thread
 import nz.scuttlebutt.android_go.models.ThreadsDataSourceFactory
 
 
-class ThreadsViewModel(patchqlParams: Patchql.Params) : ViewModel() {
+class ThreadsViewModel(patchqlParams: Params) : ViewModel() {
     val threadsLiveData: LiveData<PagedList<Thread>>
-    private var patchql: PatchqlApollo = PatchqlApollo()
+    private var patchql: PatchqlApollo = PatchqlApollo(patchqlParams)
 
     init{
-        patchql.new(patchqlParams)
 
         val threadsDataSourceFactory = ThreadsDataSourceFactory(patchql)
         val pagedListConfig = PagedList.Config.Builder()

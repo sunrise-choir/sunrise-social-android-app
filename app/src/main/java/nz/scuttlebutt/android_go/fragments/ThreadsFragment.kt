@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sunrisechoir.patchql.Patchql
+import com.sunrisechoir.patchql.Params
 import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.adapters.ThreadsAdapter
@@ -58,7 +58,7 @@ class ThreadsFragment : Fragment() {
         val pubKey = "@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519"
         val privateKey = "123abc==.ed25519"
         val factory =
-            ThreadsViewModelFactory(Patchql.Params(offsetlogPath, dbPath, pubKey, privateKey))
+            ThreadsViewModelFactory(Params(offsetlogPath, dbPath, pubKey, privateKey))
         val threadViewModel: ThreadsViewModel =
             ViewModelProviders.of(this, factory).get(ThreadsViewModel::class.java)
 
