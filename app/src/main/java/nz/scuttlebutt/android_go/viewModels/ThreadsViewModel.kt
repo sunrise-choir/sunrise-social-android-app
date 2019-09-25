@@ -6,13 +6,20 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.sunrisechoir.patchql.Params
 import com.sunrisechoir.patchql.PatchqlApollo
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.channels.SendChannel
+import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.models.Thread
 import nz.scuttlebutt.android_go.models.ThreadsDataSourceFactory
 
 
-class ThreadsViewModel(patchqlParams: Params) : ViewModel() {
+class ThreadsViewModel(
+    patchqlParams: Params,
+    val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>
+) : ViewModel() {
     val threadsLiveData: LiveData<PagedList<Thread>>
     private var patchql: PatchqlApollo = PatchqlApollo(patchqlParams)
+
 
     init{
 

@@ -2,11 +2,8 @@ package nz.scuttlebutt.android_go.viewModels
 
 import android.os.Environment
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.StartServer
 import nz.scuttlebutt.android_go.StopServer
@@ -14,7 +11,8 @@ import nz.scuttlebutt.android_go.ssbServerActor
 
 class MainActivityViewModel : ViewModel() {
 
-    private lateinit var serverActor: SendChannel<SsbServerMsg>
+    var serverActor: CompletableDeferred<SendChannel<SsbServerMsg>> = CompletableDeferred()
+
 
     init {
         val externalDir = Environment.getExternalStorageDirectory().path
@@ -22,17 +20,19 @@ class MainActivityViewModel : ViewModel() {
 
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
-                serverActor = this.ssbServerActor(repoPath)
-                serverActor.send(StartServer)
+                val actor = this.ssbServerActor(repoPath)
+                serverActor.complete(actor)
+                serverActor.await().send(StartServer)
             }
         }
+
     }
 
     override fun onCleared() {
         super.onCleared()
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
-                serverActor.send(StopServer)
+                serverActor.await().send(StopServer)
             }
         }
     }

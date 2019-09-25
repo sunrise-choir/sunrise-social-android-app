@@ -15,6 +15,7 @@ import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.adapters.ThreadsAdapter
 import nz.scuttlebutt.android_go.databinding.FragmentThreadsBinding
+import nz.scuttlebutt.android_go.viewModels.MainActivityViewModel
 import nz.scuttlebutt.android_go.viewModels.ThreadsViewModel
 import nz.scuttlebutt.android_go.viewModels.ThreadsViewModelFactory
 
@@ -28,11 +29,6 @@ class ThreadsFragment : Fragment() {
     private lateinit var viewAdapter: ThreadsAdapter
     private lateinit var markWon: Markwon
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ThreadsViewModel::class.java)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         markWon = Markwon.create(context!!)
@@ -42,6 +38,7 @@ class ThreadsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
 
         val binding: FragmentThreadsBinding =
             DataBindingUtil.inflate(
@@ -57,15 +54,24 @@ class ThreadsFragment : Fragment() {
 
         val pubKey = "@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519"
         val privateKey = "123abc==.ed25519"
+
+        val activityModel = activity?.run {
+            ViewModelProviders.of(this)[MainActivityViewModel::class.java]
+        }
         val factory =
-            ThreadsViewModelFactory(Params(offsetlogPath, dbPath, pubKey, privateKey))
+            ThreadsViewModelFactory(
+                Params(offsetlogPath, dbPath, pubKey, privateKey),
+                activityModel!!.serverActor
+            )
+        viewModel = ViewModelProviders.of(this, factory).get(ThreadsViewModel::class.java)
+
         val threadViewModel: ThreadsViewModel =
             ViewModelProviders.of(this, factory).get(ThreadsViewModel::class.java)
 
         val layoutManager = LinearLayoutManager(context)
         binding.threads.layoutManager = layoutManager
 
-        viewAdapter = ThreadsAdapter()
+        viewAdapter = ThreadsAdapter(viewModel.ssbServer)
 
         threadViewModel.threadsLiveData.observe(this, Observer { list ->
             viewAdapter.submitList(list)

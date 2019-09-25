@@ -41,7 +41,7 @@ class ThreadsDataSource(private val patchqlApollo: PatchqlApollo) :
             .build()
 
         patchqlApollo.query(threadsQuery) {
-            it.map(::list)
+            it.map(::responseIntoThreads)
                 .onSuccess(callback::onResult)
                 .onFailure {
                     throw Error("patchql query failed. ${it}")
@@ -61,7 +61,7 @@ class ThreadsDataSource(private val patchqlApollo: PatchqlApollo) :
             .build()
 
         patchqlApollo.query(threadsQuery) {
-            it.map(::list)
+            it.map(::responseIntoThreads)
                 .onSuccess(callback::onResult)
                 .onFailure {
                     throw Error("patchql query failed. ${it}")
@@ -69,7 +69,7 @@ class ThreadsDataSource(private val patchqlApollo: PatchqlApollo) :
         }
     }
 
-    private fun list(it: Response<*>): List<Thread> {
+    private fun responseIntoThreads(it: Response<*>): List<Thread> {
         val data = it.data() as ThreadsSummaryQuery.Data
 
         return data.threads().edges().map { edge ->
