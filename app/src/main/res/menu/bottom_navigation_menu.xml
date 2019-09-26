@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/threads_fragment"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/home_icon_description" />
+    <item
+        android:id="@+id/search_fragment"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="@string/search_icon_description" />
+    <item
+        android:id="@+id/notifications_fragment"
+        android:icon="@drawable/ic_notifications_none_black_24dp"
+        android:title="@string/notifications_icon_description" />
+    <item
+        android:id="@+id/messages_fragment"
+        android:icon="@drawable/ic_mail_outline_black_24dp"
+        android:title="@string/messages_icon_description" />
+</menu>

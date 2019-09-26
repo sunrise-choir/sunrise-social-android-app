@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -21,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:defaultNavHost="true"
-                app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -35,105 +34,30 @@
                 android:layout_marginBottom="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
-                app:layout_constraintEnd_toEndOf="@+id/nav_host_fragment"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/ic_add_black_24dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/bottom_nav"
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                style="@style/Widget.MaterialComponents.BottomNavigationView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nav_host_fragment">
+                app:menu="@menu/bottom_navigation_menu" />
 
-                <ImageView
-                    android:id="@+id/homeIconImageView"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:contentDescription="@string/home_icon_description"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@+id/searchIconImageView"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_home_black_24dp" />
-
-                <TextView
-                    android:id="@+id/home_new_threads_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/homeIconImageView"
-                    app:layout_constraintStart_toEndOf="@+id/homeIconImageView"
-                    tools:text="123" />
-
-                <ImageView
-                    android:id="@+id/searchIconImageView"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:contentDescription="@string/search_icon_description"
-                    app:layout_constraintBottom_toBottomOf="@+id/homeIconImageView"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@+id/notificationsIconImageView"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/homeIconImageView"
-                    app:layout_constraintTop_toTopOf="@+id/homeIconImageView"
-                    app:srcCompat="@drawable/ic_search_black_24dp" />
-
-                <ImageView
-                    android:id="@+id/notificationsIconImageView"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:contentDescription="@string/notifications_icon_description"
-                    app:layout_constraintBottom_toBottomOf="@+id/homeIconImageView"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@+id/messagesIconImageView"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/searchIconImageView"
-                    app:layout_constraintTop_toTopOf="@+id/homeIconImageView"
-                    app:srcCompat="@drawable/ic_notifications_none_black_24dp" />
-
-                <TextView
-                    android:id="@+id/notifications_new_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/home_new_threads_text_view"
-                    app:layout_constraintStart_toEndOf="@+id/notificationsIconImageView"
-                    tools:text="13" />
-
-                <ImageView
-                    android:id="@+id/messagesIconImageView"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:contentDescription="@string/messages_icon_description"
-                    app:layout_constraintBottom_toBottomOf="@+id/homeIconImageView"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/notificationsIconImageView"
-                    app:layout_constraintTop_toTopOf="@+id/homeIconImageView"
-                    app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
-
-                <TextView
-                    android:id="@+id/messages_new_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/home_new_threads_text_view"
-                    app:layout_constraintStart_toEndOf="@+id/messagesIconImageView"
-                    tools:text="1" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            app:menu="@menu/overflow_menu" />
+            app:headerLayout="@layout/navigation_header"
+            app:menu="@menu/drawer_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

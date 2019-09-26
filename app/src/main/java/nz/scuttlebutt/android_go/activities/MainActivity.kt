@@ -6,48 +6,39 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import nz.scuttlebutt.android_go.R
+import nz.scuttlebutt.android_go.databinding.ActivityMainBinding
 import nz.scuttlebutt.android_go.viewModels.MainActivityViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var drawerLayout: DrawerLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
-        //val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-        setContentView(R.layout.activity_main)
+        val binding =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        drawerLayout = binding.drawerLayout
+        val navController = findNavController(R.id.nav_host_fragment)
+        NavigationUI.setupWithNavController(binding.navView, navController)
+        NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
 
+        val notificationsBadge =
+            binding.bottomNavigation.getOrCreateBadge(R.id.notifications_fragment)
+        notificationsBadge.number = 12
 
+        checkPermissions()
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            val permissions: Array<String> = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            requestPermissions(permissions, 0)
-            // Permission is not granted
-            //throw Error("no permissions for external storage")
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            val permissions: Array<String> = arrayOf(Manifest.permission.INTERNET)
-            requestPermissions(permissions, 0)
-            // Permission is not granted
-            //throw Error("no permissions for external storage")
-        }
-
-        val threadViewModel: MainActivityViewModel =
-            ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-
-
+        ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
 
 //        val myHandlerThread: MyHandlerThread = MyHandlerThread("myHandlerThread", repoPath)
@@ -125,21 +116,32 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
-    override fun onStop() {
-        println("onStop")
-        super.onStop()
-        // 2Gobotexample.stop()
+    private fun checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            val permissions: Array<String> = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            requestPermissions(permissions, 0)
+            // Permission is not granted
+            //throw Error("no permissions for external storage")
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            val permissions: Array<String> = arrayOf(Manifest.permission.INTERNET)
+            requestPermissions(permissions, 0)
+            // Permission is not granted
+            //throw Error("no permissions for external storage")
+        }
     }
 
-    override fun onPause() {
-        println("onPause")
-        super.onPause()
-        //Gobotexample.stop()
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.nav_host_fragment)
+        return NavigationUI.navigateUp(navController, drawerLayout)
     }
 
-    override fun onDestroy() {
-        println("onDestroy")
-        super.onDestroy()
-        //Gobotexample.stop()
-    }
+
 }

@@ -17,13 +17,13 @@
             app:destination="@id/thread_fragment" />
         <action
             android:id="@+id/action_threads_fragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/search_fragment" />
         <action
             android:id="@+id/action_threads_fragment_to_privateMessagesFragment"
-            app:destination="@id/privateMessagesFragment" />
+            app:destination="@id/messages_fragment" />
         <action
             android:id="@+id/action_threads_fragment_to_notificationsFragment"
-            app:destination="@id/notificationsFragment" />
+            app:destination="@id/notifications_fragment" />
     </fragment>
     <fragment
         android:id="@+id/publish_fragment"
@@ -40,17 +40,17 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/searchFragment"
+        android:id="@+id/search_fragment"
         android:name="nz.scuttlebutt.android_go.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
-        android:id="@+id/privateMessagesFragment"
+        android:id="@+id/messages_fragment"
         android:name="nz.scuttlebutt.android_go.PrivateMessagesFragment"
         android:label="fragment_private_messages"
         tools:layout="@layout/fragment_private_messages" />
     <fragment
-        android:id="@+id/notificationsFragment"
+        android:id="@+id/notifications_fragment"
         android:name="nz.scuttlebutt.android_go.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
