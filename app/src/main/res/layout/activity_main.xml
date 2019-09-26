@@ -3,64 +3,88 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
-            app:navGraph="@navigation/navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:defaultNavHost="true"
-            android:id="@+id/nav_host_fragment"/>
-    </LinearLayout>
+            app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/navigation" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_nav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nav_host_fragment">
+
+            <ImageView
+                android:id="@+id/homeIconImageView"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:contentDescription="@string/home_icon_description"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/searchIconImageView"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_home_black_24dp" />
+
+            <ImageView
+                android:id="@+id/searchIconImageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/search_icon_description"
+                app:layout_constraintBottom_toBottomOf="@+id/homeIconImageView"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/notificationsIconImageView"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/homeIconImageView"
+                app:layout_constraintTop_toTopOf="@+id/homeIconImageView"
+                app:srcCompat="@drawable/ic_search_black_24dp" />
+
+            <ImageView
+                android:id="@+id/notificationsIconImageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/notifications_icon_description"
+                app:layout_constraintBottom_toBottomOf="@+id/homeIconImageView"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/messagesIconImageView"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/searchIconImageView"
+                app:layout_constraintTop_toTopOf="@+id/homeIconImageView"
+                app:srcCompat="@drawable/ic_notifications_none_black_24dp" />
+
+            <ImageView
+                android:id="@+id/messagesIconImageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/messages_icon_description"
+                app:layout_constraintBottom_toBottomOf="@+id/homeIconImageView"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/notificationsIconImageView"
+                app:layout_constraintTop_toTopOf="@+id/homeIconImageView"
+                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".MainActivity">-->
-
-
-<!--    <EditText-->
-<!--        android:id="@+id/edit_post_text"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="@string/edit_post_hint"-->
-<!--        android:inputType="textLongMessage|textMultiLine"-->
-<!--        android:singleLine="false"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/cardView"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.023" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/post_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginBottom="16dp"-->
-<!--        android:text="@string/post_button"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.95"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/published_seq_text"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent" />-->
-
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

@@ -11,4 +11,8 @@
     <string name="likes_count_description">Likes Count</string>
     <string name="ssb_go_folder_name">/golog</string>
     <string name="patchql_sqlite_db_name">db.sqlite</string>
+    <string name="messages_icon_description">Messages</string>
+    <string name="notifications_icon_description">Notifications</string>
+    <string name="search_icon_description">Search</string>
+    <string name="home_icon_description">Home</string>
 </resources>

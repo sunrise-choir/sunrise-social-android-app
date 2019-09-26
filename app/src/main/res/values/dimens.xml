@@ -2,4 +2,7 @@
 <resources>
     <dimen name="avataar_width">48dp</dimen>
     <dimen name="avataar_height">48dp</dimen>
+    <dimen name="button_padding">14dp</dimen>
+    <dimen name="toolbar_image_height">36dp</dimen>
+    <dimen name="bottom_nav_button_padding">8dp</dimen>
 </resources>
