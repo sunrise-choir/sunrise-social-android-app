@@ -41,7 +41,6 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
 
             binding.fragmentPost.thread = thread
 
-
             markwon.setMarkdown(binding.fragmentPost.rootPostText, thread.root.text)
 
             val likesIconImage = binding.fragmentPost.likesIconImage
@@ -93,16 +92,19 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
                 }
             }
 
-            root.setOnClickListener {
-                if (navController.currentDestination?.id == R.id.threads_fragment) {
-                    navController.navigate(
-                        ThreadsFragmentDirections.actionThreadsFragmentToThreadFragment(
-                            thread.root.id
-                        )
-                    )
-                }
-            }
 
+            //It's odd that we need to set a click listener on the text as well as the root, but so be it. It works.
+            binding.fragmentPost.root.setOnClickListener { navigateToThread(thread) }
+            binding.fragmentPost.rootPostText.setOnClickListener { navigateToThread(thread) }
+
+        }
+
+        private fun navigateToThread(thread: Thread) {
+            navController.navigate(
+                ThreadsFragmentDirections.actionThreadsFragmentToThreadFragment(
+                    thread.root.id
+                )
+            )
         }
 
     }
