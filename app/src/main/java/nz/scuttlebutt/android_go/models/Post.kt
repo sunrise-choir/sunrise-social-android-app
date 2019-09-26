@@ -6,5 +6,6 @@ data class Post(
     val likesCount: String,
     val likedByMe: Boolean,
     val authorName: String?,
-    val authorImageLink: String?
+    val authorImageLink: String?,
+    val referencesLength: String
 )

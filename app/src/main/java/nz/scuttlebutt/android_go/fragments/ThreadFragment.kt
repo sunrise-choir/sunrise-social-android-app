@@ -111,7 +111,8 @@ class ThreadFragment : Fragment() {
                     root.likesCount().toString(),
                     root.likedByMe(),
                     root.author().name(),
-                    root.author().imageLink()
+                    root.author().imageLink(),
+                    root.references().size.toString()
                 )
 
                 var nodes: Array<Post> = Array(1){rootPost}
@@ -122,7 +123,8 @@ class ThreadFragment : Fragment() {
                         it.likesCount().toString(),
                         false,
                         it.author().name(),
-                        it.author().imageLink()
+                        it.author().imageLink(),
+                        it.references().size.toString()
                     )
                 })
 

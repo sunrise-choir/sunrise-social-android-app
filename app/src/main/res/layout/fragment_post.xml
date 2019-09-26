@@ -66,8 +66,11 @@
                 android:contentDescription="@string/likes_count_description"
                 android:src="@drawable/ic_favorite_border_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/replies_icon_image"
+                app:layout_constraintHorizontal_bias="0.47"
                 app:layout_constraintStart_toStartOf="@+id/root_post_text"
-                app:layout_constraintTop_toBottomOf="@+id/root_post_text" />
+                app:layout_constraintTop_toBottomOf="@+id/root_post_text"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/likes_count_text"
@@ -84,11 +87,14 @@
                 android:id="@+id/replies_icon_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="48dp"
                 android:src="@drawable/ic_comment_black_24dp"
                 app:layout_constraintBottom_toBottomOf="@+id/likes_icon_image"
-                app:layout_constraintStart_toEndOf="@+id/likes_count_text"
-                app:layout_constraintTop_toTopOf="@+id/likes_icon_image" />
+                app:layout_constraintEnd_toStartOf="@+id/backlink_image"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/likes_icon_image"
+                app:layout_constraintTop_toTopOf="@+id/likes_icon_image"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/replies_count_text"
@@ -100,6 +106,26 @@
                 app:layout_constraintStart_toEndOf="@+id/replies_icon_image"
                 tools:text="3" />
 
+            <ImageView
+                android:id="@+id/backlink_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:src="@drawable/ic_link_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/replies_icon_image"
+                app:layout_constraintStart_toEndOf="@+id/replies_icon_image"
+                app:layout_constraintTop_toTopOf="@+id/replies_icon_image" />
+
+            <TextView
+                android:id="@+id/backlinks_count_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@{thread.root.referencesLength}"
+                app:layout_constraintBaseline_toBaselineOf="@+id/likes_count_text"
+                app:layout_constraintStart_toEndOf="@+id/backlink_image"
+                tools:text="22" />
+
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
@@ -108,6 +134,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
