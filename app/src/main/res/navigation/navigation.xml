@@ -15,6 +15,15 @@
         <action
             android:id="@+id/action_threads_fragment_to_thread_fragment"
             app:destination="@id/thread_fragment" />
+        <action
+            android:id="@+id/action_threads_fragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_threads_fragment_to_privateMessagesFragment"
+            app:destination="@id/privateMessagesFragment" />
+        <action
+            android:id="@+id/action_threads_fragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
     </fragment>
     <fragment
         android:id="@+id/publish_fragment"
@@ -30,4 +39,19 @@
             android:name="thread_root_id"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="nz.scuttlebutt.android_go.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/privateMessagesFragment"
+        android:name="nz.scuttlebutt.android_go.PrivateMessagesFragment"
+        android:label="fragment_private_messages"
+        tools:layout="@layout/fragment_private_messages" />
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="nz.scuttlebutt.android_go.NotificationsFragment"
+        android:label="fragment_notifications"
+        tools:layout="@layout/fragment_notifications" />
 </navigation>
