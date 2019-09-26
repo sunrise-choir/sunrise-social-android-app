@@ -38,10 +38,11 @@ class PublishLikeMessage(
     val response: CompletableDeferred<Long>
 ) :
     SsbServerMsg() // a request with reply
-class PublishMessage(val msgText: String, val response: CompletableDeferred<Long>) :
+
+class PublishPostMessage(val msgText: String, val response: CompletableDeferred<Long>) :
     SsbServerMsg() // a request with reply
 
-
+class GetBlob(val ref: String, val response: CompletableDeferred<ByteArray>) : SsbServerMsg()
 // This function launches a new counter actor
 
 fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
@@ -73,6 +74,15 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
 
                 }
             }
+            is GetBlob -> {
+                Gobotexample.blobsWant(msg.ref)
+                try {
+                    val blob = Gobotexample.blobsGet(msg.ref)
+                    msg.response.complete(blob)
+                } catch (e: Exception) {
+                    msg.response.completeExceptionally(e)
+                }
+            }
             is PublishLikeMessage -> {
                 val recps = Gobotexample.newRecipientsCollection()
                 Log.i(tag, "Published like for ${msg.msgId}, doesLike ${msg.doesLike}")
@@ -84,7 +94,7 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                 )
                 msg.response.complete(seq)
             }
-            is PublishMessage -> {
+            is PublishPostMessage -> {
 
                 val recps = Gobotexample.newRecipientsCollection()
                 val postMsg = Post(msg.msgText)

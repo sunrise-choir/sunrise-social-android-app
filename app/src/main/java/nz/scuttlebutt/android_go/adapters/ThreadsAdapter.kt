@@ -1,5 +1,6 @@
 package nz.scuttlebutt.android_go.adapters
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.NavController
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
+import nz.scuttlebutt.android_go.GetBlob
 import nz.scuttlebutt.android_go.PublishLikeMessage
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.SsbServerMsg
@@ -47,6 +49,32 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
                 if (thread.root.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
             likesIconImage.setImageResource(image)
 
+            if (thread.root.authorImageLink != null) {
+                GlobalScope.launch {
+                    withContext(Dispatchers.IO) {
+                        val response = CompletableDeferred<ByteArray>()
+                        ssbServer.await().send(
+                            GetBlob(
+                                thread.root.authorImageLink,
+                                response
+                            )
+                        )
+                        try {
+                            val bytes = response.await()
+                            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                            binding.fragmentPost.authorImage.post {
+                                binding.fragmentPost.authorImage.setImageBitmap(bmp)
+                            }
+
+
+                        } catch (_: Exception) {
+
+                        }
+
+
+                    }
+                }
+            }
 
             likesIconImage.setOnClickListener {
 

@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 //            val publishedSeqText: TextView = findViewById(R.id.published_seq_text)
 //            GlobalScope.launch {
 //                val response = CompletableDeferred<Long>()
-//                serverActor.send(PublishMessage(postEditText.text.toString(), response))
+//                serverActor.send(PublishPostMessage(postEditText.text.toString(), response))
 //
 //                val postSeqString = response.await().toString()
 //                publishedSeqText.post {
