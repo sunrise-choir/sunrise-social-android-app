@@ -84,6 +84,7 @@ class ThreadsFragment : Fragment() {
         })
         binding.threads.adapter = viewAdapter
 
+
         return binding.root
     }
 }
