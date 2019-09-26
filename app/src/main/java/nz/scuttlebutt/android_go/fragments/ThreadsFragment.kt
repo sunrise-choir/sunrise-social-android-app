@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sunrisechoir.patchql.Params
 import io.noties.markwon.Markwon
@@ -45,6 +46,11 @@ class ThreadsFragment : Fragment() {
                 inflater,
                 R.layout.fragment_threads, container, false
             )
+
+        binding.floatingActionButton.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(ThreadsFragmentDirections.actionThreadsFragmentToPublishFragment())
+        }
 
         val externalDir = "/sdcard"
         val repoPath = externalDir + getString(R.string.ssb_go_folder_name)

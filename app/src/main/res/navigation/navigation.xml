@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_threads_fragment_to_thread_fragment"
             app:destination="@id/thread_fragment" />
+        <action
+            android:id="@+id/action_threads_fragment_to_publish_fragment"
+            app:destination="@id/publish_fragment" />
     </fragment>
     <fragment
         android:id="@+id/publish_fragment"
