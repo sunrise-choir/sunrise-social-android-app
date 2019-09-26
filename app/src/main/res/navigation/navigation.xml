@@ -10,20 +10,8 @@
         android:label="fragment_threads"
         tools:layout="@layout/fragment_threads">
         <action
-            android:id="@+id/action_threads_fragment_to_publish_fragment"
-            app:destination="@id/publish_fragment" />
-        <action
             android:id="@+id/action_threads_fragment_to_thread_fragment"
             app:destination="@id/thread_fragment" />
-        <action
-            android:id="@+id/action_threads_fragment_to_searchFragment"
-            app:destination="@id/search_fragment" />
-        <action
-            android:id="@+id/action_threads_fragment_to_privateMessagesFragment"
-            app:destination="@id/messages_fragment" />
-        <action
-            android:id="@+id/action_threads_fragment_to_notificationsFragment"
-            app:destination="@id/notifications_fragment" />
     </fragment>
     <fragment
         android:id="@+id/publish_fragment"
@@ -54,4 +42,9 @@
         android:name="nz.scuttlebutt.android_go.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/profile_fragment"
+        android:name="nz.scuttlebutt.android_go.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

@@ -15,4 +15,5 @@
     <string name="notifications_icon_description">Notifications</string>
     <string name="search_icon_description">Search</string>
     <string name="home_icon_description">Home</string>
+    <string name="profile_menu_item">Profile</string>
 </resources>
