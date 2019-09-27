@@ -5,7 +5,6 @@
     tools:context=".fragments.PostFragment">
 
     <data>
-
         <variable
             name="thread"
             type="nz.scuttlebutt.android_go.models.Thread" />
