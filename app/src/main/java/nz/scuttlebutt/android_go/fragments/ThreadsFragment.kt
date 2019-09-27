@@ -69,17 +69,15 @@ class ThreadsFragment : Fragment() {
                 Params(offsetlogPath, dbPath, pubKey, privateKey),
                 activityModel!!.serverActor
             )
-        viewModel = ViewModelProviders.of(this, factory).get(ThreadsViewModel::class.java)
 
-        val threadViewModel: ThreadsViewModel =
-            ViewModelProviders.of(this, factory).get(ThreadsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(ThreadsViewModel::class.java)
 
         val layoutManager = LinearLayoutManager(context)
         binding.threads.layoutManager = layoutManager
 
         viewAdapter = ThreadsAdapter(viewModel.ssbServer)
 
-        threadViewModel.threadsLiveData.observe(this, Observer { list ->
+        viewModel.threadsLiveData.observe(this, Observer { list ->
             viewAdapter.submitList(list)
         })
         binding.threads.adapter = viewAdapter

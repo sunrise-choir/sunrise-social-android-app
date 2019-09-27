@@ -32,22 +32,22 @@
     </fragment>
     <fragment
         android:id="@+id/search_fragment"
-        android:name="nz.scuttlebutt.android_go.SearchFragment"
+        android:name="nz.scuttlebutt.android_go.fragments.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/messages_fragment"
-        android:name="nz.scuttlebutt.android_go.PrivateMessagesFragment"
+        android:name="nz.scuttlebutt.android_go.fragments.PrivateMessagesFragment"
         android:label="fragment_private_messages"
         tools:layout="@layout/fragment_private_messages" />
     <fragment
         android:id="@+id/notifications_fragment"
-        android:name="nz.scuttlebutt.android_go.NotificationsFragment"
+        android:name="nz.scuttlebutt.android_go.fragments.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/profile_fragment"
-        android:name="nz.scuttlebutt.android_go.ProfileFragment"
+        android:name="nz.scuttlebutt.android_go.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

@@ -2,7 +2,7 @@ package nz.scuttlebutt.android_go.models
 
 import androidx.recyclerview.widget.DiffUtil
 
-data class Thread(val root: Post, val repliesLength: String, val cursor: String) {
+data class Thread(val root: Post, val cursor: String) {
     companion object {
         var DIFF_CALLBACK: DiffUtil.ItemCallback<Thread> =
             object : DiffUtil.ItemCallback<Thread>() {

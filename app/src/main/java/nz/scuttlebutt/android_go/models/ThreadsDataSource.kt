@@ -84,10 +84,12 @@ class ThreadsDataSource(private val patchqlApollo: PatchqlApollo) :
                 root.likedByMe(),
                 root.author().name(),
                 root.author().imageLink(),
-                root.references().size.toString()
+                root.references().size.toString(),
+                repliesLength.toString(),
+                null
             )
 
-            Thread(rootPost, repliesLength.toString(), cursor.orEmpty())
+            Thread(rootPost, cursor.orEmpty())
         }
     }
 }

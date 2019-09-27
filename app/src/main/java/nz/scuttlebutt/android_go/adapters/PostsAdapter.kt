@@ -16,11 +16,12 @@ import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
 import nz.scuttlebutt.android_go.fragments.ThreadsFragmentDirections
+import nz.scuttlebutt.android_go.models.Post
 import nz.scuttlebutt.android_go.models.Thread
 
 
-class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>) :
-    PagedListAdapter<Thread, RecyclerView.ViewHolder>(Thread.DIFF_CALLBACK) {
+class PostsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>) :
+    PagedListAdapter<Post, RecyclerView.ViewHolder>(Post.DIFF_CALLBACK) {
 
     private lateinit var markWon: Markwon
 
@@ -28,33 +29,33 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder.
     // Each data item is just a string in this case that is shown in a TextView.
-    class ThreadsViewHolder(
+    class PostsViewHolder(
         private val binding: FragmentThreadSummaryBinding,
         private val markwon: Markwon,
         private val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
         val navController: NavController
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindTo(thread: Thread) {
+        fun bindTo(post: Post) {
 
             val root = binding.root
 
-            binding.fragmentPost.post = thread.root
+            binding.fragmentPost.post = post
 
-            markwon.setMarkdown(binding.fragmentPost.rootPostText, thread.root.text)
+            markwon.setMarkdown(binding.fragmentPost.rootPostText, post.text)
 
             val likesIconImage = binding.fragmentPost.likesIconImage
             val image =
-                if (thread.root.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
+                if (post.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
             likesIconImage.setImageResource(image)
 
-            if (thread.root.authorImageLink != null) {
+            if (post.authorImageLink != null) {
                 GlobalScope.launch {
                     withContext(Dispatchers.IO) {
                         val response = CompletableDeferred<ByteArray>()
                         ssbServer.await().send(
                             GetBlob(
-                                thread.root.authorImageLink,
+                                post.authorImageLink,
                                 response
                             )
                         )
@@ -82,8 +83,8 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
                         val response = CompletableDeferred<Long>()
                         ssbServer.await().send(
                             PublishLikeMessage(
-                                thread.root.id,
-                                !thread.root.likedByMe,
+                                post.id,
+                                !post.likedByMe,
                                 response
                             )
                         )
@@ -93,18 +94,6 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
             }
 
 
-            //It's odd that we need to set a click listener on the text as well as the root, but so be it. It works.
-            binding.fragmentPost.root.setOnClickListener { navigateToThread(thread) }
-            binding.fragmentPost.rootPostText.setOnClickListener { navigateToThread(thread) }
-
-        }
-
-        private fun navigateToThread(thread: Thread) {
-            navController.navigate(
-                ThreadsFragmentDirections.actionThreadsFragmentToThreadFragment(
-                    thread.root.id
-                )
-            )
         }
 
     }
@@ -113,14 +102,14 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ThreadsViewHolder {
+    ): PostsViewHolder {
         markWon = Markwon.create(parent.context)
 
         val inflater = LayoutInflater.from(parent.context)
         val binding = FragmentThreadSummaryBinding.inflate(inflater)
         val navController = parent.findNavController()
 
-        return ThreadsViewHolder(
+        return PostsViewHolder(
             binding,
             markWon,
             ssbServer,
@@ -130,7 +119,7 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        (holder as ThreadsViewHolder).bindTo(getItem(position)!!)
+        (holder as PostsViewHolder).bindTo(getItem(position)!!)
     }
 
 }

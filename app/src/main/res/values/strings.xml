@@ -16,4 +16,6 @@
     <string name="search_icon_description">Search</string>
     <string name="home_icon_description">Home</string>
     <string name="profile_menu_item">Profile</string>
+    <string name="example_search_string">possum AND stew NOT loomi*</string>
+    <string name="search_button">Search</string>
 </resources>

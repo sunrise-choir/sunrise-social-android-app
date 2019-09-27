@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="thread"
-            type="nz.scuttlebutt.android_go.models.Thread" />
+            name="post"
+            type="nz.scuttlebutt.android_go.models.Post" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{thread.root.authorName}"
+                android:text="@{post.authorName}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toEndOf="@+id/author_image"
                 app:layout_constraintTop_toTopOf="@+id/author_image"
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{thread.root.likesCount}"
+                android:text="@{post.likesCount}"
                 app:layout_constraintBottom_toBottomOf="@+id/likes_icon_image"
                 app:layout_constraintStart_toEndOf="@+id/likes_icon_image"
                 app:layout_constraintTop_toTopOf="@+id/likes_icon_image"
@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{thread.repliesLength}"
+                android:text="@{post.repliesCount}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/likes_count_text"
                 app:layout_constraintStart_toEndOf="@+id/replies_icon_image"
                 tools:text="3" />
@@ -120,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{thread.root.referencesLength}"
+                android:text="@{post.referencesLength}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/likes_count_text"
                 app:layout_constraintStart_toEndOf="@+id/backlink_image"
                 tools:text="22" />
