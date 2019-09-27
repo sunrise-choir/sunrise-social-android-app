@@ -11,14 +11,13 @@ import kotlinx.coroutines.channels.SendChannel
 import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.models.Post
 import nz.scuttlebutt.android_go.models.PostsDataSourceFactory
-import nz.scuttlebutt.android_go.models.ThreadsDataSourceFactory
 
 
 class PostsViewModel(
     patchqlParams: Params,
     val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>
 ) : ViewModel() {
-    lateinit var postsLiveData: LiveData<PagedList<Post>>
+    var postsLiveData: LiveData<PagedList<Post>>? = null
     private var patchql: PatchqlApollo = PatchqlApollo(patchqlParams)
     private lateinit var postsDataSourceFactory: PostsDataSourceFactory
 

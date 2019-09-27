@@ -2,11 +2,11 @@ package nz.scuttlebutt.android_go.fragments
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +15,9 @@ import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.adapters.PostsAdapter
 import nz.scuttlebutt.android_go.databinding.FragmentSearchBinding
-import nz.scuttlebutt.android_go.viewModels.*
+import nz.scuttlebutt.android_go.viewModels.MainActivityViewModel
+import nz.scuttlebutt.android_go.viewModels.PostsViewModel
+import nz.scuttlebutt.android_go.viewModels.PostsViewModelFactory
 
 /**
  * A simple [Fragment] subclass.
@@ -64,15 +66,19 @@ class SearchFragment : Fragment() {
 
         binding.posts.adapter = viewAdapter
 
-        binding.searchButton.setOnClickListener {
-            println("search was clicked")
-            val queryString = binding.searchEditText.text.toString()
-            viewModel.search(queryString)
-            viewModel.postsLiveData.observe(this, Observer { list ->
+        if (viewModel.postsLiveData != null) {
+            viewModel.postsLiveData?.observe(this, Observer { list ->
                 viewAdapter.submitList(list)
             })
         }
-        println("set search on click listener")
+
+        binding.searchButton.setOnClickListener {
+            val queryString = binding.searchEditText.text.toString()
+            viewModel.search(queryString)
+            viewModel.postsLiveData?.observe(this, Observer { list ->
+                viewAdapter.submitList(list)
+            })
+        }
 
         return binding.root
     }
