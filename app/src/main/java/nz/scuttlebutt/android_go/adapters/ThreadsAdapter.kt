@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
+import androidx.paging.AsyncPagedListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.*
@@ -16,10 +17,16 @@ import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
 import nz.scuttlebutt.android_go.fragments.ThreadsFragmentDirections
+import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
+import nz.scuttlebutt.android_go.models.ProcessNextChunk
 import nz.scuttlebutt.android_go.models.Thread
 
 
-class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>) :
+class ThreadsAdapter(
+    val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
+    val process: CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>,
+    val invalidate: () -> Unit
+) :
     PagedListAdapter<Thread, RecyclerView.ViewHolder>(Thread.DIFF_CALLBACK) {
 
     private lateinit var markWon: Markwon
@@ -32,7 +39,9 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
         private val binding: FragmentThreadSummaryBinding,
         private val markwon: Markwon,
         private val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
-        val navController: NavController
+        val process: CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>,
+        val navController: NavController,
+        val invalidate: () -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindTo(thread: Thread) {
@@ -48,32 +57,33 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
                 if (thread.root.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
             likesIconImage.setImageResource(image)
 
-            if (thread.root.authorImageLink != null) {
-                GlobalScope.launch {
-                    withContext(Dispatchers.IO) {
-                        val response = CompletableDeferred<ByteArray>()
-                        ssbServer.await().send(
-                            GetBlob(
-                                thread.root.authorImageLink,
-                                response
-                            )
-                        )
-                        try {
-                            val bytes = response.await()
-                            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                            binding.fragmentPost.authorImage.post {
-                                binding.fragmentPost.authorImage.setImageBitmap(bmp)
-                            }
+//            if (thread.root.authorImageLink != null) {
+//                GlobalScope.launch {
+//                    withContext(Dispatchers.IO) {
+//                        val response = CompletableDeferred<ByteArray>()
+//                        ssbServer.await().send(
+//                            GetBlob(
+//                                thread.root.authorImageLink,
+//                                response
+//                            )
+//                        )
+//                        try {
+//                            val bytes = response.await()
+//                            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+//                            binding.fragmentPost.authorImage.post {
+//                                binding.fragmentPost.authorImage.setImageBitmap(bmp)
+//                            }
+//
+//
+//                        } catch (_: Exception) {
+//
+//                        }
+//
+//
+//                    }
+//                }
+//            }
 
-
-                        } catch (_: Exception) {
-
-                        }
-
-
-                    }
-                }
-            }
 
             likesIconImage.setOnClickListener {
 
@@ -87,7 +97,17 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
                                 response
                             )
                         )
-                        println("got reponse from publishing message: ${response.await()}")
+                        response.await()
+                        val response2 = CompletableDeferred<Unit>()
+
+                        process.await().send(ProcessNextChunk(response2))
+                        response2.await()
+
+                        likesIconImage.post{
+                            invalidate()
+                        }
+
+
                     }
                 }
             }
@@ -124,12 +144,13 @@ class ThreadsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg
             binding,
             markWon,
             ssbServer,
-            navController
+            process,
+            navController,
+            invalidate
         )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         (holder as ThreadsViewHolder).bindTo(getItem(position)!!)
     }
 

@@ -10,12 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagedList
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sunrisechoir.patchql.Params
 import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.adapters.ThreadsAdapter
 import nz.scuttlebutt.android_go.databinding.FragmentThreadsBinding
+import nz.scuttlebutt.android_go.models.Thread
 import nz.scuttlebutt.android_go.viewModels.MainActivityViewModel
 import nz.scuttlebutt.android_go.viewModels.ThreadsViewModel
 import nz.scuttlebutt.android_go.viewModels.ThreadsViewModelFactory
@@ -75,7 +78,8 @@ class ThreadsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         binding.threads.layoutManager = layoutManager
 
-        viewAdapter = ThreadsAdapter(viewModel.ssbServer)
+        viewAdapter = ThreadsAdapter(viewModel.ssbServer, activityModel.patchqlBackgroundActor, {viewModel.invalidateDataSource()})
+
 
         viewModel.threadsLiveData.observe(this, Observer { list ->
             viewAdapter.submitList(list)

@@ -7,7 +7,11 @@ data class Thread(val root: Post, val cursor: String) {
         var DIFF_CALLBACK: DiffUtil.ItemCallback<Thread> =
             object : DiffUtil.ItemCallback<Thread>() {
                 override fun areItemsTheSame(oldItem: Thread, newItem: Thread): Boolean {
-                    return oldItem.cursor === newItem.cursor
+                    val isTheSame =  oldItem.cursor == newItem.cursor
+                    if(isTheSame){
+                        println("is the same")
+                    }
+                    return isTheSame
                 }
 
                 override fun areContentsTheSame(oldItem: Thread, newItem: Thread): Boolean {
