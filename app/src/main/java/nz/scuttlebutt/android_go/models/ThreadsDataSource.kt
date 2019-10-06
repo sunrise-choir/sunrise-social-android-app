@@ -1,44 +1,43 @@
 package nz.scuttlebutt.android_go.models
 
 import androidx.paging.ItemKeyedDataSource
-import androidx.paging.PageKeyedDataSource
 import com.apollographql.apollo.api.Response
 import com.sunrisechoir.graphql.ThreadsSummaryQuery
 import com.sunrisechoir.patchql.PatchqlApollo
 
 class ThreadsDataSource(private val patchqlApollo: PatchqlApollo) :
-    PageKeyedDataSource<String, Thread>() {
+    ItemKeyedDataSource<String, Thread>() {
 
     override fun loadInitial(
         params: LoadInitialParams<String>,
-        callback: LoadInitialCallback<String, Thread>
+        callback: LoadInitialCallback<Thread>
     ) {
 
+        val thread = loadThreadsBefore(params.requestedInitialKey, params.requestedLoadSize)
 
-        val pair = loadThreadsBefore(null, params.requestedLoadSize)
-        callback.onResult(pair.second, null, pair.second.last().cursor)
+        callback.onResult(thread)
     }
 
 
-    override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, Thread>) {
-        val pair = loadThreadsAfter(params.key, params.requestedLoadSize)
-        callback.onResult(pair.second, pair.second.first().cursor)
+    override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<Thread>) {
+        val thread = loadThreadsAfter(params.key, params.requestedLoadSize)
+        callback.onResult(thread)
 
     }
 
-    override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, Thread>) {
-        val pair = loadThreadsBefore(params.key, params.requestedLoadSize)
-        callback.onResult(pair.second, pair.second.last().cursor)
+    override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<Thread>) {
+        val thread = loadThreadsBefore(params.key, params.requestedLoadSize)
+        callback.onResult(thread)
     }
 
-//    override fun getKey(item: Thread): String {
-//        return item.cursor
-//    }
+    override fun getKey(item: Thread): String {
+        return item.cursor
+    }
 
     private fun loadThreadsBefore(
         cursor: String?,
         num: Int
-    ): Pair<String?,List<Thread>> {
+    ): List<Thread> {
         val threadsQuery = ThreadsSummaryQuery
             .builder()
             .before(cursor)
@@ -46,14 +45,14 @@ class ThreadsDataSource(private val patchqlApollo: PatchqlApollo) :
             .build()
 
         val result = patchqlApollo.query(threadsQuery)
-        return Pair(cursor, responseIntoThreads(result))
+        return responseIntoThreads(result)
 
     }
 
     private fun loadThreadsAfter(
         cursor: String?,
         num: Int
-    ): Pair<String?, List<Thread>> {
+    ): List<Thread> {
         val threadsQuery = ThreadsSummaryQuery
             .builder()
             .after(cursor)
@@ -61,7 +60,7 @@ class ThreadsDataSource(private val patchqlApollo: PatchqlApollo) :
             .build()
 
         val result = patchqlApollo.query(threadsQuery)
-        return Pair(cursor,responseIntoThreads(result))
+        return responseIntoThreads(result)
     }
 
     private fun responseIntoThreads(it: Response<*>): List<Thread> {
@@ -87,4 +86,5 @@ class ThreadsDataSource(private val patchqlApollo: PatchqlApollo) :
             Thread(rootPost, cursor.orEmpty())
         }
     }
+
 }

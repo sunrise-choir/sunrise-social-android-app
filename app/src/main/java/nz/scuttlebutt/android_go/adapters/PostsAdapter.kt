@@ -3,6 +3,7 @@ package nz.scuttlebutt.android_go.adapters
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
@@ -11,17 +12,17 @@ import io.noties.markwon.Markwon
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
 import nz.scuttlebutt.android_go.GetBlob
-import nz.scuttlebutt.android_go.PublishLikeMessage
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
-import nz.scuttlebutt.android_go.fragments.ThreadsFragmentDirections
 import nz.scuttlebutt.android_go.models.Post
-import nz.scuttlebutt.android_go.models.Thread
 
 
-class PostsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>) :
-    PagedListAdapter<Post, RecyclerView.ViewHolder>(Post.DIFF_CALLBACK) {
+class PostsAdapter(
+    val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
+    val updatePost: (post: Post) -> Unit
+) :
+    PagedListAdapter<LiveData<Post>, RecyclerView.ViewHolder>(Post.LIVE_DIFF_CALLBACK) {
 
     private lateinit var markWon: Markwon
 
@@ -33,12 +34,14 @@ class PostsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>
         private val binding: FragmentThreadSummaryBinding,
         private val markwon: Markwon,
         private val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
-        val navController: NavController
+        val navController: NavController,
+        val updatePost: (post: Post) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindTo(post: Post) {
+        fun bindTo(livePost: LiveData<Post>) {
 
             val root = binding.root
+            val post = livePost.value!!
 
             binding.fragmentPost.post = post
 
@@ -77,19 +80,10 @@ class PostsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>
             }
 
             likesIconImage.setOnClickListener {
-
+                val newPost = post.copy(likesCount = "200")
+                updatePost(newPost)
                 GlobalScope.launch {
-                    withContext(Dispatchers.IO) {
-                        val response = CompletableDeferred<Long>()
-                        ssbServer.await().send(
-                            PublishLikeMessage(
-                                post.id,
-                                !post.likedByMe,
-                                response
-                            )
-                        )
-                        println("got reponse from publishing message: ${response.await()}")
-                    }
+
                 }
             }
 
@@ -113,7 +107,8 @@ class PostsAdapter(val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>
             binding,
             markWon,
             ssbServer,
-            navController
+            navController,
+            updatePost
         )
     }
 

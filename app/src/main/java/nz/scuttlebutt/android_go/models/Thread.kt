@@ -19,5 +19,6 @@ data class Thread(val root: Post, val cursor: String) {
                 }
             }
     }
+
 }
 

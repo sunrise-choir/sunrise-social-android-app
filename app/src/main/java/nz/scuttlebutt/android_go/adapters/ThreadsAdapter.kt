@@ -1,17 +1,14 @@
 package nz.scuttlebutt.android_go.adapters
 
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
-import androidx.paging.AsyncPagedListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
-import nz.scuttlebutt.android_go.GetBlob
 import nz.scuttlebutt.android_go.PublishLikeMessage
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.SsbServerMsg

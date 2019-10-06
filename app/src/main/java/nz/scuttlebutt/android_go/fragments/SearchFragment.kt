@@ -61,7 +61,7 @@ class SearchFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         binding.posts.layoutManager = layoutManager
 
-        viewAdapter = PostsAdapter(viewModel.ssbServer)
+        viewAdapter = PostsAdapter(viewModel.ssbServer, viewModel::updatePost)
 
 
         binding.posts.adapter = viewAdapter

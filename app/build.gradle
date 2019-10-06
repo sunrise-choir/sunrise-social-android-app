@@ -55,9 +55,17 @@ android {
         }
     }
 
+
+}
+
+ext{
+    dagger_version = "2.24"
+
 }
 
 dependencies {
+
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':android-patchql')
     implementation(name: 'gosbot', ext: 'aar')
@@ -81,6 +89,15 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.13.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // dagger
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.google.dagger:dagger:$dagger_version"
+
+    // dagger android
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
 
     //Testing deps
     testImplementation 'junit:junit:4.12'

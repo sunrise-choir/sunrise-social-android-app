@@ -86,7 +86,7 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
             is PublishLikeMessage -> {
                 val recps = Gobotexample.newRecipientsCollection()
                 Log.i(tag, "Published like for ${msg.msgId}, doesLike ${msg.doesLike}")
-                val likeMessage = Like(msg.msgId, if (msg.doesLike) 1 else -1)
+                val likeMessage = Like(msg.msgId, if (msg.doesLike) 1 else 0)
                 val likeJson = json.stringify(likeSerializer, likeMessage)
                 val seq: Long = Gobotexample.publish(
                     likeJson,
