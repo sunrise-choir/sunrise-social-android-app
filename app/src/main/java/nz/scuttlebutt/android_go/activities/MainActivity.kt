@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+
         drawerLayout = binding.drawerLayout
         val navController = findNavController(R.id.nav_host_fragment)
         NavigationUI.setupWithNavController(binding.navView, navController)

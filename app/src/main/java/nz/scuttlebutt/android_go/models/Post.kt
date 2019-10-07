@@ -3,6 +3,24 @@ package nz.scuttlebutt.android_go.models
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 
+typealias LivePost = LiveData<Post>
+
+val LIVE_DIFF_CALLBACK = object : DiffUtil.ItemCallback<LivePost>() {
+    override fun areItemsTheSame(
+        oldItem: LivePost,
+        newItem: LivePost
+    ): Boolean {
+        return oldItem.value?.id === newItem.value?.id
+    }
+
+    override fun areContentsTheSame(
+        oldItem: LivePost,
+        newItem: LivePost
+    ): Boolean {
+        return oldItem.equals(newItem)
+    }
+}
+
 data class Post(
     val id: String,
     val text: String,
@@ -27,21 +45,5 @@ data class Post(
                 }
             }
 
-        var LIVE_DIFF_CALLBACK: DiffUtil.ItemCallback<LiveData<Post>> =
-            object : DiffUtil.ItemCallback<LiveData<Post>>() {
-                override fun areItemsTheSame(
-                    oldItem: LiveData<Post>,
-                    newItem: LiveData<Post>
-                ): Boolean {
-                    return oldItem.value?.id === newItem.value?.id
-                }
-
-                override fun areContentsTheSame(
-                    oldItem: LiveData<Post>,
-                    newItem: LiveData<Post>
-                ): Boolean {
-                    return oldItem.equals(newItem)
-                }
-            }
     }
 }

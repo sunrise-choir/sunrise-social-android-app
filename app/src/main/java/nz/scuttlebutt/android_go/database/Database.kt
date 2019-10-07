@@ -48,7 +48,6 @@ class Database(patchqlApollo: PatchqlApollo) {
         }
 
         override fun save(post: Post) {
-
             println("saving post ${post.id}")
             posts[post.cursor]!!.postValue(post)
         }

@@ -39,6 +39,7 @@ class SearchFragment : Fragment() {
             false
         )
 
+
         val externalDir = "/sdcard"
         val repoPath = externalDir + getString(R.string.ssb_go_folder_name)
         val dbPath =
@@ -61,7 +62,7 @@ class SearchFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         binding.posts.layoutManager = layoutManager
 
-        viewAdapter = PostsAdapter(viewModel.ssbServer, viewModel::updatePost)
+        viewAdapter = PostsAdapter(viewModel.ssbServer, viewModel::updatePost, this)
 
 
         binding.posts.adapter = viewAdapter
