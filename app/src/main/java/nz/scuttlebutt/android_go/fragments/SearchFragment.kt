@@ -55,7 +55,9 @@ class SearchFragment : Fragment() {
         val factory =
             PostsViewModelFactory(
                 Params(offsetlogPath, dbPath, pubKey, privateKey),
-                activityModel!!.serverActor
+                activityModel!!.serverActor,
+                activityModel.patchqlBackgroundActor
+
             )
         viewModel = ViewModelProviders.of(this, factory).get(PostsViewModel::class.java)
 

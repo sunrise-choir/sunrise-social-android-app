@@ -24,12 +24,12 @@ val LIVE_DIFF_CALLBACK = object : DiffUtil.ItemCallback<LivePost>() {
 data class Post(
     val id: String,
     val text: String,
-    val likesCount: String,
+    val likesCount: Int,
     val likedByMe: Boolean,
     val authorName: String?,
     val authorImageLink: String?,
-    val referencesLength: String,
-    val repliesCount: String?,
+    val referencesLength: Int,
+    val repliesCount: Int?,
     val cursor: String?
 ){
 

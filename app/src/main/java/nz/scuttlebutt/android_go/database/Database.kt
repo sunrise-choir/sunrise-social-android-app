@@ -5,28 +5,54 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.ItemKeyedDataSource
 import com.apollographql.apollo.api.Response
+import com.sunrisechoir.graphql.PostQuery
 import com.sunrisechoir.graphql.PostsQuery
 import com.sunrisechoir.patchql.PatchqlApollo
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.SendChannel
+import nz.scuttlebutt.android_go.PublishLikeMessage
+import nz.scuttlebutt.android_go.SsbServerMsg
+import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
 import nz.scuttlebutt.android_go.models.Post
+import nz.scuttlebutt.android_go.models.ProcessNextChunk
 import nz.scuttlebutt.android_go.dao.Post as PostDao
 
-class Database(patchqlApollo: PatchqlApollo) {
+class Database(
+    patchqlApollo: PatchqlApollo,
+    private val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
+    private val process: CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>
+) {
 
     private val posts: MutableMap<String, MutableLiveData<Post>> = mutableMapOf()
 
     private val postDao = object : PostDao {
 
-        override fun load(postId: String): LiveData<Post> {
-            val existingPost = posts[postId]
-            if (existingPost != null) {
-                return existingPost
+        override fun reload(postCursor: String) {
+            val existingPost = posts[postCursor]
+
+            val PostQuery = PostQuery
+                .builder()
+                .id(existingPost!!.value!!.id)
+                .build()
+
+            patchqlApollo.query(PostQuery) {
+                it.map {
+                    it.data() as PostQuery.Data
+                }
+                    .onSuccess {
+                        val oldPost = existingPost.value!!
+                        existingPost.postValue(
+                            oldPost.copy(
+                                likesCount = it.post()!!.likesCount()
+                            )
+                        )
+
+                    }
+                    .onFailure {
+                        throw Error("patchql query failed. ${it}")
+                    }
             }
 
-            val post = MutableLiveData(Post(postId, "", "", false, "piet", "", "", "", ""))
-
-            posts[postId] = post
-
-            return post
         }
 
         override fun getAllPaged(query: String): DataSource.Factory<String, LiveData<Post>> {
@@ -43,13 +69,30 @@ class Database(patchqlApollo: PatchqlApollo) {
                     return postsDataSource
                 }
             }
-
-
         }
 
         override fun save(post: Post) {
-            println("saving post ${post.id}")
-            posts[post.cursor]!!.postValue(post)
+
+            GlobalScope.launch {
+                withContext(Dispatchers.IO) {
+                    val publishResponse = CompletableDeferred<Long>()
+                    ssbServer.await().send(
+                        PublishLikeMessage(
+                            post.id,
+                            !post.likedByMe,
+                            publishResponse
+                        )
+                    )
+                    publishResponse.await()
+                    val processResponse = CompletableDeferred<Unit>()
+
+                    process.await().send(ProcessNextChunk(processResponse))
+                    processResponse.await()
+
+                    reload(post.cursor!!)
+                }
+            }
+
         }
     }
 
@@ -140,11 +183,11 @@ class PostsDataSource(
             Post(
                 root.id(),
                 root.text(),
-                root.likesCount().toString(),
+                root.likesCount(),
                 root.likedByMe(),
                 root.author().name(),
                 root.author().imageLink(),
-                root.references().size.toString(),
+                root.references().size,
                 null,
                 cursor
             )

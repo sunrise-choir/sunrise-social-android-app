@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{post.likesCount}"
+                android:text="@{Integer.toString(post.likesCount)}"
                 app:layout_constraintBottom_toBottomOf="@+id/likes_icon_image"
                 app:layout_constraintStart_toEndOf="@+id/likes_icon_image"
                 app:layout_constraintTop_toTopOf="@+id/likes_icon_image"
@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{post.repliesCount}"
+                android:text="@{Integer.toString(post.repliesCount)}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/likes_count_text"
                 app:layout_constraintStart_toEndOf="@+id/replies_icon_image"
                 tools:text="3" />
@@ -120,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{post.referencesLength}"
+                android:text="@{Integer.toString(post.referencesLength)}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/likes_count_text"
                 app:layout_constraintStart_toEndOf="@+id/backlink_image"
                 tools:text="22" />

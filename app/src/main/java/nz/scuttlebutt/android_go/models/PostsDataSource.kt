@@ -81,11 +81,11 @@ class PostsDataSource(private val patchqlApollo: PatchqlApollo, val query: Strin
             Post(
                 root.id(),
                 root.text(),
-                root.likesCount().toString(),
+                root.likesCount(),
                 root.likedByMe(),
                 root.author().name(),
                 root.author().imageLink(),
-                root.references().size.toString(),
+                root.references().size,
                 null,
                 cursor
             )

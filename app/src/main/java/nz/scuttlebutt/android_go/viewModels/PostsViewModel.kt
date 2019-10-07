@@ -11,17 +11,19 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.SendChannel
 import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.database.Database
+import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
 import nz.scuttlebutt.android_go.models.Post
 
 
 class PostsViewModel(
     patchqlParams: Params,
-    val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>
+    val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
+    patchqlBackgroundActor: CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>
 ) : ViewModel() {
     var postsLiveData: LiveData<PagedList<LiveData<Post>>>? = null
     private var patchql: PatchqlApollo = PatchqlApollo(patchqlParams)
     private lateinit var postsDataSourceFactory: DataSource.Factory<String, LiveData<Post>>
-    val database: Database = Database(patchql)
+    val database: Database = Database(patchql, ssbServer, patchqlBackgroundActor)
 
     fun search(queryString: String){
         val pagedListConfig = PagedList.Config.Builder()

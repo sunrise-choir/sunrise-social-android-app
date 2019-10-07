@@ -83,7 +83,7 @@ class PostsAdapter(
 //            }
 
             likesIconImage.setOnClickListener {
-                val newPost = post.copy(likesCount = "200")
+                val newPost = post.copy(likesCount = 200)
                 updatePost(newPost)
                 GlobalScope.launch {
 
