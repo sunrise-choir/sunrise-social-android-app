@@ -73,15 +73,15 @@ class Database(
             }
         }
 
-        override fun save(post: Post) {
+        override fun like(postId: String, doesLike: Boolean) {
 
             GlobalScope.launch {
                 withContext(Dispatchers.IO) {
                     val publishResponse = CompletableDeferred<Long>()
                     ssbServer.await().send(
                         PublishLikeMessage(
-                            post.id,
-                            !post.likedByMe,
+                            postId,
+                            doesLike,
                             publishResponse
                         )
                     )
@@ -91,7 +91,7 @@ class Database(
                     process.await().send(ProcessNextChunk(processResponse))
                     processResponse.await()
 
-                    reload(post.id)
+                    reload(postId)
                 }
             }
 

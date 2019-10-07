@@ -54,12 +54,15 @@ android {
             universalApk true
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 
-}
-
-ext{
-    dagger_version = "2.24"
 
 }
 
@@ -90,14 +93,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.13.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // dagger
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    implementation "com.google.dagger:dagger:$dagger_version"
-
-    // dagger android
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-    implementation "com.google.dagger:dagger-android:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    implementation 'org.kodein.di:kodein-di-generic-jvm:6.4.0'
+    implementation 'org.kodein.di:kodein-di-framework-android-x:6.4.0'
 
     //Testing deps
     testImplementation 'junit:junit:4.12'

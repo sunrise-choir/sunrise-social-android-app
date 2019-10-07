@@ -10,20 +10,14 @@ import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.SendChannel
-import kotlinx.coroutines.launch
 import nz.scuttlebutt.android_go.R
-import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
 import nz.scuttlebutt.android_go.models.LIVE_DIFF_CALLBACK
 import nz.scuttlebutt.android_go.models.Post
 
 
 class PostsAdapter(
-    val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
-    val updatePost: (post: Post) -> Unit,
+    val likePost: (String, Boolean) -> Unit,
     val lifecycleOwner: LifecycleOwner
 ) :
     PagedListAdapter<LiveData<Post>, RecyclerView.ViewHolder>(LIVE_DIFF_CALLBACK) {
@@ -83,16 +77,9 @@ class PostsAdapter(
 //            }
 
             likesIconImage.setOnClickListener {
-                val newPost = post.copy(likesCount = 200)
-                updatePost(newPost)
-                GlobalScope.launch {
-
-                }
+                likePost(post.id, !post.likedByMe)
             }
-
-
         }
-
     }
 
     // Create new views (invoked by the layout manager)

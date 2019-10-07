@@ -11,17 +11,21 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.sunrisechoir.patchql.Params
+import kotlinx.serialization.Serializable
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.databinding.ActivityMainBinding
 import nz.scuttlebutt.android_go.viewModels.MainActivityViewModel
-import nz.scuttlebutt.android_go.viewModels.MainActivityViewModelFactory
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
 
 
-class MainActivity : AppCompatActivity() {
+@Serializable
+data class Secret(val id: String, val private: String, val curve: String, val public: String)
+
+class MainActivity : AppCompatActivity(), KodeinAware {
 
     lateinit var drawerLayout: DrawerLayout
-
+    override val kodein by kodein()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,18 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         checkPermissions()
 
-        val externalDir = "/sdcard"
-        val repoPath = externalDir + getString(R.string.ssb_go_folder_name)
-        val dbPath =
-            getDatabasePath(getString(R.string.patchql_sqlite_db_name))?.absolutePath!!
-        val offsetlogPath = repoPath + "/log"
-
-        val pubKey = "@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519"
-        val privateKey = "123abc==.ed25519"
-
-        val factory =
-            MainActivityViewModelFactory(Params(offsetlogPath, dbPath, privateKey, pubKey))
-        ViewModelProviders.of(this, factory).get(MainActivityViewModel::class.java)
+        ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
 
 //        val myHandlerThread: MyHandlerThread = MyHandlerThread("myHandlerThread", repoPath)

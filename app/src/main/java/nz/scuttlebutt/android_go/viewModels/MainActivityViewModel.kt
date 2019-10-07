@@ -1,8 +1,7 @@
 package nz.scuttlebutt.android_go.viewModels
 
-import android.os.Environment
-import androidx.lifecycle.ViewModel
-import com.sunrisechoir.patchql.Params
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import com.sunrisechoir.patchql.PatchqlApollo
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
@@ -12,17 +11,24 @@ import nz.scuttlebutt.android_go.StopServer
 import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
 import nz.scuttlebutt.android_go.models.patchqlBackgroundActor
 import nz.scuttlebutt.android_go.ssbServerActor
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
-class MainActivityViewModel(patchqlParams: Params) : ViewModel() {
 
-    var serverActor: CompletableDeferred<SendChannel<SsbServerMsg>> = CompletableDeferred()
-    var patchqlBackgroundActor: CompletableDeferred<SendChannel<PatchqlBackgroundMessage>> =
-        CompletableDeferred()
-    private var patchql: PatchqlApollo = PatchqlApollo(patchqlParams)
+class MainActivityViewModel(app: Application) : AndroidViewModel(app), KodeinAware {
+
+    override val kodein by kodein(app)
+
+    val serverActor: CompletableDeferred<SendChannel<SsbServerMsg>> by instance("ssbServerActor")
+    val patchqlBackgroundActor: CompletableDeferred<SendChannel<PatchqlBackgroundMessage>> by instance(
+        "patchqlProcessActor"
+    )
+
+    private val patchql: PatchqlApollo by instance()
+    private val repoPath: String by instance("repoPath")
 
     init {
-        val externalDir = Environment.getExternalStorageDirectory().path
-        val repoPath = externalDir + "/golog"
 
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
