@@ -27,12 +27,12 @@ class Database(
 
     private val postDao = object : PostDao {
 
-        override fun reload(postCursor: String) {
-            val existingPost = posts[postCursor]
+        override fun reload(postId: String) {
+            val existingPost = posts[postId]!!
 
             val PostQuery = PostQuery
                 .builder()
-                .id(existingPost!!.value!!.id)
+                .id(postId)
                 .build()
 
             patchqlApollo.query(PostQuery) {
@@ -41,9 +41,11 @@ class Database(
                 }
                     .onSuccess {
                         val oldPost = existingPost.value!!
+                        val newPost = it.post()!!
                         existingPost.postValue(
                             oldPost.copy(
-                                likesCount = it.post()!!.likesCount()
+                                likesCount = newPost.likesCount(),
+                                likedByMe = newPost.likedByMe()
                             )
                         )
 
@@ -89,7 +91,7 @@ class Database(
                     process.await().send(ProcessNextChunk(processResponse))
                     processResponse.await()
 
-                    reload(post.cursor!!)
+                    reload(post.id)
                 }
             }
 
@@ -192,13 +194,13 @@ class PostsDataSource(
                 cursor
             )
         }.map {
-            val livePost = posts[it.cursor!!]
+            val livePost = posts[it.id]
             if (livePost == null)
-                posts[it.cursor] = MutableLiveData(it)
+                posts[it.id] = MutableLiveData(it)
             else
                 livePost.postValue(it)
 
-            posts[it.cursor]!!
+            posts[it.id]!!
         }
 
     }
