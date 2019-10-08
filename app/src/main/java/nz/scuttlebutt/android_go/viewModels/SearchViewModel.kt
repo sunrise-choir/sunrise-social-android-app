@@ -7,6 +7,7 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.sunrisechoir.graphql.PostsQuery
+import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.database.Database
 import nz.scuttlebutt.android_go.models.Post
 import org.kodein.di.KodeinAware
@@ -21,6 +22,7 @@ class SearchViewModel(
     override val kodein by kodein(app)
 
     private val database: Database by instance()
+    val markwon: Markwon by instance()
 
     var postsLiveData: LiveData<PagedList<LiveData<Post>>>? = null
     private lateinit var postsDataSourceFactory: DataSource.Factory<String, LiveData<Post>>

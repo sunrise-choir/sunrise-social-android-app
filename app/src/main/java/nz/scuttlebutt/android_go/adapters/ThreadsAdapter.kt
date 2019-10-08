@@ -2,113 +2,55 @@ package nz.scuttlebutt.android_go.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.SendChannel
-import nz.scuttlebutt.android_go.PublishLikeMessage
 import nz.scuttlebutt.android_go.R
-import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
 import nz.scuttlebutt.android_go.fragments.ThreadsFragmentDirections
-import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
-import nz.scuttlebutt.android_go.models.ProcessNextChunk
+import nz.scuttlebutt.android_go.models.LIVE_THREAD_DIFF_CALLBACK
 import nz.scuttlebutt.android_go.models.Thread
 
 
 class ThreadsAdapter(
-    val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
-    val process: CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>,
-    val invalidate: () -> Unit
+    val likePost: (String, Boolean) -> Unit,
+    val lifecycleOwner: LifecycleOwner,
+    val markwon: Markwon
 ) :
-    PagedListAdapter<Thread, RecyclerView.ViewHolder>(Thread.DIFF_CALLBACK) {
+    PagedListAdapter<LiveData<Thread>, RecyclerView.ViewHolder>(LIVE_THREAD_DIFF_CALLBACK) {
 
-    private lateinit var markWon: Markwon
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder.
-    // Each data item is just a string in this case that is shown in a TextView.
-    class ThreadsViewHolder(
+    inner class ThreadsViewHolder(
         private val binding: FragmentThreadSummaryBinding,
-        private val markwon: Markwon,
-        private val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>,
-        val process: CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>,
-        val navController: NavController,
-        val invalidate: () -> Unit
+        val navController: NavController
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindTo(thread: Thread) {
+        fun bindTo(liveThread: LiveData<Thread>) {
 
-            val root = binding.root
+            val thread = liveThread.value!!
+
+            val likesIconImage = binding.fragmentPost.likesIconImage
+
+            liveThread.observe(lifecycleOwner, Observer {
+                binding.fragmentPost.post = it.root
+
+                val image =
+                    if (it.root.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
+                likesIconImage.setImageResource(image)
+            })
 
             binding.fragmentPost.post = thread.root
 
             markwon.setMarkdown(binding.fragmentPost.rootPostText, thread.root.text)
 
-            val likesIconImage = binding.fragmentPost.likesIconImage
-            val image =
-                if (thread.root.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
-            likesIconImage.setImageResource(image)
-
-//            if (thread.root.authorImageLink != null) {
-//                GlobalScope.launch {
-//                    withContext(Dispatchers.IO) {
-//                        val response = CompletableDeferred<ByteArray>()
-//                        ssbServer.await().send(
-//                            GetBlob(
-//                                thread.root.authorImageLink,
-//                                response
-//                            )
-//                        )
-//                        try {
-//                            val bytes = response.await()
-//                            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-//                            binding.fragmentPost.authorImage.post {
-//                                binding.fragmentPost.authorImage.setImageBitmap(bmp)
-//                            }
-//
-//
-//                        } catch (_: Exception) {
-//
-//                        }
-//
-//
-//                    }
-//                }
-//            }
-
-
             likesIconImage.setOnClickListener {
-
-                GlobalScope.launch {
-                    withContext(Dispatchers.IO) {
-                        val response = CompletableDeferred<Long>()
-                        ssbServer.await().send(
-                            PublishLikeMessage(
-                                thread.root.id,
-                                !thread.root.likedByMe,
-                                response
-                            )
-                        )
-                        response.await()
-                        val response2 = CompletableDeferred<Unit>()
-
-                        process.await().send(ProcessNextChunk(response2))
-                        response2.await()
-
-                        likesIconImage.post{
-                            invalidate()
-                        }
-
-
-                    }
-                }
+                val post = liveThread.value!!.root
+                likePost(post.id, !post.likedByMe)
             }
-
 
             //It's odd that we need to set a click listener on the text as well as the root, but so be it. It works.
             binding.fragmentPost.root.setOnClickListener { navigateToThread(thread) }
@@ -131,7 +73,7 @@ class ThreadsAdapter(
         parent: ViewGroup,
         viewType: Int
     ): ThreadsViewHolder {
-        markWon = Markwon.create(parent.context)
+
 
         val inflater = LayoutInflater.from(parent.context)
         val binding = FragmentThreadSummaryBinding.inflate(inflater)
@@ -139,11 +81,7 @@ class ThreadsAdapter(
 
         return ThreadsViewHolder(
             binding,
-            markWon,
-            ssbServer,
-            process,
-            navController,
-            invalidate
+            navController
         )
     }
 

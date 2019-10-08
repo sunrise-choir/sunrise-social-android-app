@@ -4,6 +4,9 @@ package nz.scuttlebutt.android_go
 import android.app.Application
 import com.sunrisechoir.patchql.Params
 import com.sunrisechoir.patchql.PatchqlApollo
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.MarkwonConfiguration
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.serialization.json.Json
@@ -51,6 +54,28 @@ class ScuttlebuttApp : Application(), KodeinAware {
                 instance("ssbServerActor"),
                 instance("patchqlProcessActor")
             )
+        }
+
+        bind<Markwon>() with singleton {
+            val plugin = object : AbstractMarkwonPlugin() {
+                override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
+                    super.configureConfiguration(builder)
+                    builder.urlProcessor {
+
+                        val linkRegex = Regex("^(@|%|&)([A-Za-z0-9\\/+]{43}=)\\.([\\w\\d]+\$)")
+                        if (linkRegex.matches(it)) {
+                            println("found an ssb url: $it")
+                            val split = linkRegex.matchEntire(it)
+                            println("split: ${split!!.groupValues}")
+                            val (_, sigil, key, keyType) = split.groupValues
+                            println("sigil: $sigil, key: $key, keyType: $keyType")
+                        }
+
+                        it
+                    }
+                }
+            }
+            Markwon.builder(applicationContext).usePlugin(plugin).build()
         }
 
         constant("repoPath") with repoPath

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.sunrisechoir.graphql.PostsQuery
+import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.database.Database
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -18,6 +19,7 @@ class NotificationsViewModel(
     private val me: String by instance("mySsbIdentity")
 
     private val database: Database by instance()
+    val markwon: Markwon by instance()
 
     val query = { PostsQuery.builder().mentionsAuthors(listOf(me)) }
 

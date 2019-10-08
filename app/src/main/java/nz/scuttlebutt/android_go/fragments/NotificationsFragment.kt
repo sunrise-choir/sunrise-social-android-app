@@ -38,15 +38,15 @@ class NotificationsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         binding.posts.layoutManager = layoutManager
 
-        viewAdapter = PostsAdapter(viewModel::like, this)
+        viewAdapter = PostsAdapter(viewModel::like, this, viewModel.markwon)
 
         binding.posts.adapter = viewAdapter
 
-        if (viewModel.postsLiveData != null) {
-            viewModel.postsLiveData.observe(this, Observer { list ->
-                viewAdapter.submitList(list)
-            })
-        }
+
+        viewModel.postsLiveData.observe(this, Observer { list ->
+            viewAdapter.submitList(list)
+        })
+
 
         return binding.root
     }

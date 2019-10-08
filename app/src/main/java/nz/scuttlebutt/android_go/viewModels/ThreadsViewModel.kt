@@ -1,36 +1,40 @@
 package nz.scuttlebutt.android_go.viewModels
 
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.sunrisechoir.patchql.Params
-import com.sunrisechoir.patchql.PatchqlApollo
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.channels.SendChannel
-import nz.scuttlebutt.android_go.SsbServerMsg
-import nz.scuttlebutt.android_go.models.Thread
-import nz.scuttlebutt.android_go.models.ThreadsDataSourceFactory
+import com.sunrisechoir.graphql.ThreadsSummaryQuery
+import io.noties.markwon.Markwon
+import nz.scuttlebutt.android_go.database.Database
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
 
 class ThreadsViewModel(
-    patchqlParams: Params,
-    val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>
-) : ViewModel() {
-    val threadsLiveData: LiveData<PagedList<Thread>>
-    private var patchql: PatchqlApollo = PatchqlApollo(patchqlParams)
-    private val threadsDataSourceFactory = ThreadsDataSourceFactory(patchql)
+    app: Application
+) : AndroidViewModel(app), KodeinAware {
 
-    init{
-        val pagedListConfig = PagedList.Config.Builder()
-            .setEnablePlaceholders(true)
-            .setInitialLoadSizeHint(10)
-            .setPageSize(20).build()
+    override val kodein by kodein(app)
 
-        threadsLiveData = LivePagedListBuilder(threadsDataSourceFactory, pagedListConfig).build()
+    private val database: Database by instance()
+    val markwon: Markwon by instance()
+
+    val query = { ThreadsSummaryQuery.builder() }
+
+    val threadsDataSourceFactory = database.threadsDao().getAllPaged(query)
+
+    val pagedListConfig = PagedList.Config.Builder()
+        .setEnablePlaceholders(false)
+        .setInitialLoadSizeHint(10)
+        .setPageSize(20).build()
+
+    val threadsLiveData = LivePagedListBuilder(threadsDataSourceFactory, pagedListConfig).build()
+
+    fun like(postId: String, doesLike: Boolean) {
+        database.threadsDao().like(postId, doesLike)
     }
-
-    fun invalidateDataSource() = threadsDataSourceFactory.mutableLiveData.value?.invalidate()
 
 }

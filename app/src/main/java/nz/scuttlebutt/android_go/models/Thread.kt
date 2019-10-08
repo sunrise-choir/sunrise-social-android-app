@@ -1,6 +1,25 @@
 package nz.scuttlebutt.android_go.models
 
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
+
+typealias LiveThread = LiveData<Thread>
+
+val LIVE_THREAD_DIFF_CALLBACK = object : DiffUtil.ItemCallback<LiveThread>() {
+    override fun areItemsTheSame(
+        oldItem: LiveThread,
+        newItem: LiveThread
+    ): Boolean {
+        return oldItem.value?.root!!.id === newItem.value?.root!!.id
+    }
+
+    override fun areContentsTheSame(
+        oldItem: LiveThread,
+        newItem: LiveThread
+    ): Boolean {
+        return oldItem.equals(newItem)
+    }
+}
 
 data class Thread(val root: Post, val cursor: String) {
     companion object {

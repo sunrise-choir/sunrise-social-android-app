@@ -11,14 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sunrisechoir.patchql.Params
 import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.adapters.ThreadsAdapter
 import nz.scuttlebutt.android_go.databinding.FragmentThreadsBinding
-import nz.scuttlebutt.android_go.viewModels.MainActivityViewModel
 import nz.scuttlebutt.android_go.viewModels.ThreadsViewModel
-import nz.scuttlebutt.android_go.viewModels.ThreadsViewModelFactory
 
 
 /**
@@ -52,37 +49,19 @@ class ThreadsFragment : Fragment() {
             navController.navigate(ThreadsFragmentDirections.actionThreadsFragmentToPublishFragment())
         }
 
-        val externalDir = "/sdcard"
-        val repoPath = externalDir + getString(R.string.ssb_go_folder_name)
-        val dbPath =
-            context?.getDatabasePath(getString(R.string.patchql_sqlite_db_name))?.absolutePath!!
-        val offsetlogPath = repoPath + "/log"
-
-        val pubKey = "@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519"
-        val privateKey = "123abc==.ed25519"
-
-        val activityModel = activity?.run {
-            ViewModelProviders.of(this)[MainActivityViewModel::class.java]
-        }
-        val factory =
-            ThreadsViewModelFactory(
-                Params(offsetlogPath, dbPath, pubKey, privateKey),
-                activityModel!!.serverActor
-            )
-
-        viewModel = ViewModelProviders.of(this, factory).get(ThreadsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ThreadsViewModel::class.java)
 
         val layoutManager = LinearLayoutManager(context)
         binding.threads.layoutManager = layoutManager
 
-        viewAdapter = ThreadsAdapter(viewModel.ssbServer, activityModel.patchqlBackgroundActor, {viewModel.invalidateDataSource()})
+        viewAdapter = ThreadsAdapter(viewModel::like, this, viewModel.markwon)
+
+        binding.threads.adapter = viewAdapter
 
 
         viewModel.threadsLiveData.observe(this, Observer { list ->
-            if (list != null)
-                viewAdapter.submitList(list)
+            viewAdapter.submitList(list)
         })
-        binding.threads.adapter = viewAdapter
 
 
         return binding.root

@@ -16,15 +16,13 @@ import nz.scuttlebutt.android_go.models.Post
 
 class PostsAdapter(
     val likePost: (String, Boolean) -> Unit,
-    val lifecycleOwner: LifecycleOwner
+    val lifecycleOwner: LifecycleOwner,
+    val markwon: Markwon
 ) :
     PagedListAdapter<LiveData<Post>, RecyclerView.ViewHolder>(LIVE_DIFF_CALLBACK) {
 
-    private lateinit var markWon: Markwon
-
     inner class PostsViewHolder(
-        private val binding: FragmentThreadSummaryBinding,
-        private val markwon: Markwon
+        private val binding: FragmentThreadSummaryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindTo(livePost: LiveData<Post>) {
@@ -59,14 +57,13 @@ class PostsAdapter(
         parent: ViewGroup,
         viewType: Int
     ): PostsViewHolder {
-        markWon = Markwon.create(parent.context)
+
 
         val inflater = LayoutInflater.from(parent.context)
         val binding = FragmentThreadSummaryBinding.inflate(inflater)
 
         return PostsViewHolder(
-            binding,
-            markWon
+            binding
         )
     }
 
