@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
@@ -30,13 +28,21 @@ class PostsAdapter(
     // Each data item is just a string in this case that is shown in a TextView.
     inner class PostsViewHolder(
         private val binding: FragmentThreadSummaryBinding,
-        private val markwon: Markwon,
-        val navController: NavController
+        private val markwon: Markwon
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindTo(livePost: LiveData<Post>) {
 
-            livePost.observe(lifecycleOwner, Observer { binding.fragmentPost.post = it })
+            val likesIconImage = binding.fragmentPost.likesIconImage
+
+            livePost.observe(lifecycleOwner, Observer {
+                binding.fragmentPost.post = it
+
+                val image =
+                    if (it.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
+                likesIconImage.setImageResource(image)
+            })
+
 
             val post = livePost.value!!
 
@@ -44,39 +50,8 @@ class PostsAdapter(
 
             markwon.setMarkdown(binding.fragmentPost.rootPostText, post.text)
 
-            val likesIconImage = binding.fragmentPost.likesIconImage
-            val image =
-                if (post.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
-            likesIconImage.setImageResource(image)
-
-//            if (post.authorImageLink != null) {
-//                GlobalScope.launch {
-//                    withContext(Dispatchers.IO) {
-//                        val response = CompletableDeferred<ByteArray>()
-//                        ssbServer.await().send(
-//                            GetBlob(
-//                                post.authorImageLink,
-//                                response
-//                            )
-//                        )
-//                        try {
-//                            val bytes = response.await()
-//                            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-//                            binding.fragmentPost.authorImage.post {
-//                                binding.fragmentPost.authorImage.setImageBitmap(bmp)
-//                            }
-//
-//
-//                        } catch (_: Exception) {
-//
-//                        }
-//
-//
-//                    }
-//                }
-//            }
-
             likesIconImage.setOnClickListener {
+                val post = livePost.value!!
                 likePost(post.id, !post.likedByMe)
             }
         }
@@ -91,12 +66,10 @@ class PostsAdapter(
 
         val inflater = LayoutInflater.from(parent.context)
         val binding = FragmentThreadSummaryBinding.inflate(inflater)
-        val navController = parent.findNavController()
 
         return PostsViewHolder(
             binding,
-            markWon,
-            navController
+            markWon
         )
     }
 

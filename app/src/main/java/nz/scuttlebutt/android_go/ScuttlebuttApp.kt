@@ -36,8 +36,8 @@ class ScuttlebuttApp : Application(), KodeinAware {
                 Params(
                     offsetlogPath,
                     dbPath,
-                    privateKey,
-                    pubKey
+                    pubKey,
+                    privateKey
                 )
             )
         }
