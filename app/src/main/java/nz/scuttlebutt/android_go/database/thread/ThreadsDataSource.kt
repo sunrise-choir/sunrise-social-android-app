@@ -1,4 +1,4 @@
-package nz.scuttlebutt.android_go.database.post
+package nz.scuttlebutt.android_go.database.thread
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -75,6 +75,7 @@ class ThreadsDataSource(
                 }
         }
     }
+
 
     private fun responseIntoThreads(it: Response<*>): List<LiveData<Thread>> {
 
