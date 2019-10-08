@@ -1,10 +1,13 @@
 package nz.scuttlebutt.android_go.fragments
 
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,6 +17,7 @@ import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.adapters.PostsAdapter
 import nz.scuttlebutt.android_go.databinding.FragmentSearchBinding
 import nz.scuttlebutt.android_go.viewModels.PostsViewModel
+
 
 /**
  * A simple [Fragment] subclass.
@@ -55,10 +59,20 @@ class SearchFragment : Fragment() {
             viewModel.postsLiveData?.observe(this, Observer { list ->
                 viewAdapter.submitList(list)
             })
+
+            val view = this.view!!.rootView
+            hideKeyboardFrom(this.context!!, view)
+
         }
 
         return binding.root
     }
 
 
+}
+
+fun hideKeyboardFrom(context: Context, view: View) {
+    val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+    view.clearFocus()
 }
