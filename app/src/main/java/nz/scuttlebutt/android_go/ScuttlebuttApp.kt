@@ -13,6 +13,7 @@ import kotlinx.serialization.json.Json
 import nz.scuttlebutt.android_go.activities.Secret
 import nz.scuttlebutt.android_go.database.Database
 import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
+import nz.scuttlebutt.android_go.utils.SsbUri
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.*
@@ -62,14 +63,12 @@ class ScuttlebuttApp : Application(), KodeinAware {
                     super.configureConfiguration(builder)
                     builder.urlProcessor {
 
-                        val linkRegex = Regex("^(@|%|&)([A-Za-z0-9\\/+]{43}=)\\.([\\w\\d]+\$)")
-                        if (linkRegex.matches(it)) {
-                            println("found an ssb url: $it")
-                            val split = linkRegex.matchEntire(it)
-                            println("split: ${split!!.groupValues}")
-                            val (_, sigil, key, keyType) = split.groupValues
-                            println("sigil: $sigil, key: $key, keyType: $keyType")
-                        }
+
+                        if (SsbUri.isSsbRef(it)) {
+                            val uri = SsbUri.fromSigilLink(it)
+                            uri.toUriString()
+
+                        } else
 
                         it
                     }
