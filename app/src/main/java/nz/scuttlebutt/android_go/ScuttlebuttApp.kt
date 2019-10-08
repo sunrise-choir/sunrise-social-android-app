@@ -54,6 +54,7 @@ class ScuttlebuttApp : Application(), KodeinAware {
         }
 
         constant("repoPath") with repoPath
+        constant("mySsbIdentity") with pubKey
     }
 
 }

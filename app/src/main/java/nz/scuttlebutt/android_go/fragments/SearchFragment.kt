@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.adapters.PostsAdapter
 import nz.scuttlebutt.android_go.databinding.FragmentSearchBinding
-import nz.scuttlebutt.android_go.viewModels.PostsViewModel
+import nz.scuttlebutt.android_go.viewModels.SearchViewModel
 
 
 /**
@@ -24,7 +24,7 @@ import nz.scuttlebutt.android_go.viewModels.PostsViewModel
  */
 class SearchFragment : Fragment() {
 
-    private lateinit var viewModel: PostsViewModel
+    private lateinit var viewModel: SearchViewModel
     private lateinit var viewAdapter: PostsAdapter
 
     override fun onCreateView(
@@ -38,7 +38,7 @@ class SearchFragment : Fragment() {
             false
         )
 
-        viewModel = ViewModelProviders.of(this).get(PostsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
 
         val layoutManager = LinearLayoutManager(context)
         binding.posts.layoutManager = layoutManager
@@ -67,8 +67,6 @@ class SearchFragment : Fragment() {
 
         return binding.root
     }
-
-
 }
 
 fun hideKeyboardFrom(context: Context, view: View) {

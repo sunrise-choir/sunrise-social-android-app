@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.sunrisechoir.graphql.PostsQuery
 import nz.scuttlebutt.android_go.database.Database
 import nz.scuttlebutt.android_go.models.Post
 import org.kodein.di.KodeinAware
@@ -13,7 +14,7 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 
-class PostsViewModel(
+class SearchViewModel(
     app: Application
 ) : AndroidViewModel(app), KodeinAware {
 
@@ -31,7 +32,8 @@ class PostsViewModel(
             .setPageSize(20).build()
 
 
-        postsDataSourceFactory = database.postDao().getAllPaged(queryString)
+        val searchQuery = { PostsQuery.builder().query(queryString) }
+        postsDataSourceFactory = database.postDao().getAllPaged(searchQuery)
         postsLiveData = LivePagedListBuilder(postsDataSourceFactory, pagedListConfig).build()
     }
 

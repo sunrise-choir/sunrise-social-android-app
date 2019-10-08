@@ -22,10 +22,6 @@ class PostsAdapter(
 
     private lateinit var markWon: Markwon
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder.
-    // Each data item is just a string in this case that is shown in a TextView.
     inner class PostsViewHolder(
         private val binding: FragmentThreadSummaryBinding,
         private val markwon: Markwon
@@ -51,6 +47,7 @@ class PostsAdapter(
             markwon.setMarkdown(binding.fragmentPost.rootPostText, post.text)
 
             likesIconImage.setOnClickListener {
+                // Get the latest post from the observable
                 val post = livePost.value!!
                 likePost(post.id, !post.likedByMe)
             }
@@ -74,7 +71,6 @@ class PostsAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         (holder as PostsViewHolder).bindTo(getItem(position)!!)
     }
 
