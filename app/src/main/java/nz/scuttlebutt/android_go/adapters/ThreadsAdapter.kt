@@ -59,9 +59,12 @@ class ThreadsAdapter(
         }
 
         private fun navigateToThread(thread: Thread) {
+            if (navController.currentDestination?.id != R.id.threads_fragment)
+                return
             navController.navigate(
                 ThreadsFragmentDirections.actionThreadsFragmentToThreadFragment(
-                    thread.root.id
+                    thread.root.id,
+                    null
                 )
             )
         }

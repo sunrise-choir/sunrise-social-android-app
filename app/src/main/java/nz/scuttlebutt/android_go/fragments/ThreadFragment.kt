@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.sunrisechoir.graphql.ThreadQuery
-import com.sunrisechoir.graphql.ThreadQuery.Data
+import com.sunrisechoir.graphql.ThreadForPostQuery
+import com.sunrisechoir.graphql.ThreadForPostQuery.Data
 import com.sunrisechoir.patchql.Params
 import com.sunrisechoir.patchql.PatchqlApollo
 import io.noties.markwon.Markwon
@@ -28,7 +28,7 @@ import nz.scuttlebutt.android_go.models.Post
 class ThreadFragment : Fragment() {
 
 
-    private lateinit var threadRootId: String
+    private lateinit var postId: String
 
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private lateinit var viewAdapter: ThreadAdapter
@@ -41,7 +41,11 @@ class ThreadFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val args = ThreadFragmentArgs.fromBundle(arguments!!)
-        threadRootId = args.threadRootId
+
+        // We can either pass the id of some post that is a member of the thread, or the root id of the thread.
+        // If the root is defined, use that, otherwise use the id of the member post. (Which we will scroll to)
+        postId = args.threadRootId ?: args.postId!!
+
 
         val binding: FragmentThreadBinding =
             DataBindingUtil.inflate(
@@ -95,7 +99,7 @@ class ThreadFragment : Fragment() {
         recyclerView: RecyclerView,
         totalItemsCount: Int
     ) {
-        val threadsQuery = ThreadQuery.builder().rootId(threadRootId).build()
+        val threadsQuery = ThreadForPostQuery.builder().postId(postId).build()
         apolloPatchql.query(threadsQuery) {
             val data: Data = it.getOrNull()?.data() as Data
             val newCursor = null
@@ -103,8 +107,8 @@ class ThreadFragment : Fragment() {
             recyclerView.post {
                 scrollListener.currentCursor = newCursor
 
-                val root = data.thread()?.root()!!
-                val replies = data.thread()?.replies()!!
+                val root = data.threadForPost()?.root()!!
+                val replies = data.threadForPost()?.replies()!!
                 val rootPost = Post(
                     root.id(),
                     root.text(),

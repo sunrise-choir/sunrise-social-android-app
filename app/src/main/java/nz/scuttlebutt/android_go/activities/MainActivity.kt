@@ -11,16 +11,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import kotlinx.serialization.Serializable
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.databinding.ActivityMainBinding
 import nz.scuttlebutt.android_go.viewModels.MainActivityViewModel
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 
-
-@Serializable
-data class Secret(val id: String, val private: String, val curve: String, val public: String)
 
 class MainActivity : AppCompatActivity(), KodeinAware {
 

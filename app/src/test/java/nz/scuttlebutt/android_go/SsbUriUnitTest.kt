@@ -18,9 +18,12 @@ class SsbUriUnitTest {
             uri.toUriString()
         )
 
+        assertEquals(SsbUri.fromSsbUriLink(uri.toUriString()), uri)
+
         assert(SsbUri.isSsbRef(refMsgLink))
         assert(SsbUri.isSsbUri(uri.toUriString()))
         assertEquals(SsbUri.toSigilLink(uri.toUriString()), refMsgLink)
+        assert(uri.isFeed())
 
         val ref = uri.toSigilLink()
         assertEquals(ref, refMsgLink)
@@ -33,6 +36,7 @@ class SsbUriUnitTest {
         assertEquals(SsbUri.Companion.UriType.message, uri.type)
         assertEquals("U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=", uri.key)
         assertEquals("sha256", uri.keyType)
+        assert(uri.isMessage())
 
         val ref = uri.toSigilLink()
         assertEquals(ref, refMsgLink)
@@ -46,6 +50,7 @@ class SsbUriUnitTest {
         assertEquals(SsbUri.Companion.UriType.blob, uri.type)
         assertEquals("U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=", uri.key)
         assertEquals("sha256", uri.keyType)
+        assert(uri.isBlob())
 
         val ref = uri.toSigilLink()
         assertEquals(ref, refMsgLink)
