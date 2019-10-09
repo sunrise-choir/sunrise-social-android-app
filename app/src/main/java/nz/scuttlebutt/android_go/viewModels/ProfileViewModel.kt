@@ -13,7 +13,7 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 
-class ThreadsViewModel(
+class ProfileViewModel(
     app: Application
 ) : AndroidViewModel(app), KodeinAware {
 

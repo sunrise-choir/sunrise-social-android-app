@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import nz.scuttlebutt.android_go.R
+import nz.scuttlebutt.android_go.databinding.FragmentProfileBinding
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class ProfileFragment : Fragment() {
 
     override fun onCreateView(
@@ -18,8 +18,12 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        val binding: FragmentProfileBinding =
+            DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_profile, container, false
+            )
+
+        return binding.root
     }
-
-
 }

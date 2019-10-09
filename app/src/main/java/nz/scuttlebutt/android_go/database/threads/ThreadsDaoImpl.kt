@@ -1,4 +1,4 @@
-package nz.scuttlebutt.android_go.database.thread
+package nz.scuttlebutt.android_go.database.threads
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

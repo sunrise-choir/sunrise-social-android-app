@@ -54,6 +54,12 @@ class ThreadAdapter(
         val likesCountTextView: TextView = view.findViewById(R.id.likes_count_text)
         likesCountTextView.text = data.likesCount.toString()
 
+//        val likesIconImage: ImageView = view.findViewById(R.id.likes_icon_image)
+//        likesIconImage.setOnClickListener {
+//            val post = liveThread.value!!.root
+//            likePost(post.id, !post.likedByMe)
+//        }
+
         //TODO
         //val repliesCountTextView: TextView = view.findViewById(R.id.replies_count_text)
         //repliesCountTextView.text = data.size.toString()

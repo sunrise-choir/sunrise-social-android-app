@@ -18,4 +18,12 @@
     <string name="profile_menu_item">Profile</string>
     <string name="example_search_string">possum AND stew NOT loomi*</string>
     <string name="search_button">Search</string>
+    <string name="follow_button">Follow</string>
+    <string name="block_button">Block</string>
+    <string name="posts">Posts</string>
+    <string name="mentions">Mentions</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="blocking">Blocking</string>
+    <string name="blockers">Blockers</string>
 </resources>
