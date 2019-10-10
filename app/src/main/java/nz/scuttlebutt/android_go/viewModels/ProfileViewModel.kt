@@ -3,11 +3,10 @@ package nz.scuttlebutt.android_go.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import com.sunrisechoir.graphql.ThreadsSummaryQuery
+import com.sunrisechoir.graphql.AuthorProfileQuery
 import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.database.Database
+import nz.scuttlebutt.android_go.models.LiveAuthor
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -21,19 +20,10 @@ class ProfileViewModel(
 
     private val database: Database by instance()
     val markwon: Markwon by instance()
+    private val me: String by instance("mySsbIdentity")
 
-    val query = { ThreadsSummaryQuery.builder() }
-
-    val threadsDataSourceFactory = database.threadsDao().getAllPaged(query)
-
-    val pagedListConfig = PagedList.Config.Builder()
-        .setEnablePlaceholders(false)
-        .setInitialLoadSizeHint(10)
-        .setPageSize(20).build()
-
-    val threadsLiveData = LivePagedListBuilder(threadsDataSourceFactory, pagedListConfig).build()
-
-    fun like(postId: String, doesLike: Boolean) {
-        database.threadsDao().like(postId, doesLike)
+    fun getAuthor(authorId: String): LiveAuthor {
+        val query = { AuthorProfileQuery.builder().id(authorId).me(me) }
+        return database.authorProfileDao().get(query)
     }
 }

@@ -2,6 +2,9 @@ package nz.scuttlebutt.android_go.models
 
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
+import com.sunrisechoir.graphql.AuthorProfileQuery
+import com.sunrisechoir.graphql.type.ContactState
+
 
 typealias LiveAuthor = LiveData<Author>
 
@@ -28,6 +31,24 @@ data class Author(
     val followingCount: Int,
     val followerCount: Int,
     val blockingCount: Int,
-    val blockerCount: Int
-    //relationShipToMe:
-)
+    val blockerCount: Int,
+    val relationShipToMe: ContactState
+
+) {
+    companion object {
+        fun fromAuthorProfile(profile: AuthorProfileQuery.Data): Author {
+            val author = profile.author()!!
+
+            return Author(
+                id = author.id(),
+                name = author.name(),
+                description = author.description(),
+                followerCount = author.follows().size,
+                followingCount = author.followedBy().size,
+                blockerCount = author.blockedBy().size,
+                blockingCount = author.blocks().size,
+                relationShipToMe = author.contactStatusFrom().public_()
+            )
+        }
+    }
+}
