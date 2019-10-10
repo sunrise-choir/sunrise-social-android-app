@@ -87,15 +87,16 @@ class ThreadsDataSource(
             val repliesLength = edge.node().replies().size
 
             val rootPost = Post(
-                root.id(),
-                root.text(),
-                root.likesCount(),
-                root.likedByMe(),
-                root.author().name(),
-                root.author().imageLink(),
-                root.references().size,
-                repliesLength,
-                null
+                id = root.id(),
+                text = root.text(),
+                likesCount = root.likesCount(),
+                likedByMe = root.likedByMe(),
+                authorId = root.author().id(),
+                authorName = root.author().name(),
+                authorImageLink = root.author().imageLink(),
+                referencesLength = root.references().size,
+                repliesCount = repliesLength,
+                cursor = null
             )
 
             Thread(rootPost, cursor.orEmpty())

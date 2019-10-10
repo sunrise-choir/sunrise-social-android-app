@@ -5,9 +5,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
+import nz.scuttlebutt.android_go.NavigationDirections
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
 import nz.scuttlebutt.android_go.models.LIVE_DIFF_CALLBACK
@@ -22,12 +25,14 @@ class PostsAdapter(
     PagedListAdapter<LiveData<Post>, RecyclerView.ViewHolder>(LIVE_DIFF_CALLBACK) {
 
     inner class PostsViewHolder(
-        private val binding: FragmentThreadSummaryBinding
+        private val binding: FragmentThreadSummaryBinding,
+        private val navController: NavController
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindTo(livePost: LiveData<Post>) {
 
             val likesIconImage = binding.fragmentPost.likesIconImage
+            val authorImage = binding.fragmentPost.authorImage
 
             livePost.observe(lifecycleOwner, Observer {
                 binding.fragmentPost.post = it
@@ -49,6 +54,20 @@ class PostsAdapter(
                 val post = livePost.value!!
                 likePost(post.id, !post.likedByMe)
             }
+
+            authorImage.setOnClickListener {
+                val post = livePost.value!!
+                navigateToAuthor(post.authorId)
+
+            }
+        }
+
+        private fun navigateToAuthor(authorId: String) {
+            if (navController.currentDestination?.id != R.id.thread_fragment)
+                return
+            navController.navigate(
+                NavigationDirections.actionGlobalProfileFragment(authorId)
+            )
         }
     }
 
@@ -61,9 +80,11 @@ class PostsAdapter(
 
         val inflater = LayoutInflater.from(parent.context)
         val binding = FragmentThreadSummaryBinding.inflate(inflater)
+        val navController = parent.findNavController()
 
         return PostsViewHolder(
-            binding
+            binding,
+            navController
         )
     }
 

@@ -10,10 +10,12 @@
             type="nz.scuttlebutt.android_go.models.Post" />
     </data>
 
-    <androidx.cardview.widget.CardView
-
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,6 +42,7 @@
                 android:contentDescription="@string/avataar_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_person_black_24dp"
                 tools:src="@tools:sample/avatars" />
 
             <TextView
@@ -134,7 +137,9 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
+
+
 </layout>
 
 

@@ -98,6 +98,7 @@ class ThreadDataSource(
             text = fragment.text(),
             likesCount = fragment.likesCount(),
             likedByMe = fragment.likedByMe(),
+            authorId = fragment.author().id(),
             authorName = fragment.author().name(),
             authorImageLink = fragment.author().imageLink(),
             referencesLength = fragment.references().size,

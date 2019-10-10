@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
+import nz.scuttlebutt.android_go.NavigationDirections
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
 import nz.scuttlebutt.android_go.fragments.ThreadsFragmentDirections
@@ -34,6 +35,7 @@ class ThreadsAdapter(
             val thread = liveThread.value!!
 
             val likesIconImage = binding.fragmentPost.likesIconImage
+            val authorImage = binding.fragmentPost.authorImage
 
             liveThread.observe(lifecycleOwner, Observer {
                 binding.fragmentPost.post = it.root
@@ -51,6 +53,11 @@ class ThreadsAdapter(
                 val post = liveThread.value!!.root
                 likePost(post.id, !post.likedByMe)
             }
+            authorImage.setOnClickListener {
+                val post = liveThread.value!!
+                navigateToAuthor(post.root.authorId)
+
+            }
 
             //It's odd that we need to set a click listener on the text as well as the root, but so be it. It works.
             binding.fragmentPost.root.setOnClickListener { navigateToThread(thread) }
@@ -66,6 +73,14 @@ class ThreadsAdapter(
                     thread.root.id,
                     null
                 )
+            )
+        }
+
+        private fun navigateToAuthor(authorId: String) {
+            if (navController.currentDestination?.id != R.id.threads_fragment)
+                return
+            navController.navigate(
+                NavigationDirections.actionGlobalProfileFragment(authorId)
             )
         }
 

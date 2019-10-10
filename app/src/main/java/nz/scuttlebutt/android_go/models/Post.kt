@@ -26,6 +26,7 @@ data class Post(
     val text: String,
     val likesCount: Int,
     val likedByMe: Boolean,
+    val authorId: String,
     val authorName: String?,
     val authorImageLink: String?,
     val referencesLength: Int,

@@ -83,15 +83,16 @@ class PostsDataSource(
             val cursor = edge.cursor()
 
             Post(
-                root.id(),
-                root.text(),
-                root.likesCount(),
-                root.likedByMe(),
-                root.author().name(),
-                root.author().imageLink(),
-                root.references().size,
-                null,
-                cursor
+                id = root.id(),
+                text = root.text(),
+                likesCount = root.likesCount(),
+                likedByMe = root.likedByMe(),
+                authorId = root.author().id(),
+                authorName = root.author().name(),
+                authorImageLink = root.author().imageLink(),
+                referencesLength = root.references().size,
+                repliesCount = null,
+                cursor = cursor
             )
         }.map {
             val livePost = posts[it.id]
