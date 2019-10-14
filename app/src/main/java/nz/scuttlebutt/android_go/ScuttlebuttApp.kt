@@ -80,6 +80,13 @@ class ScuttlebuttApp : Application(), KodeinAware {
                         val jsonEmoji = mdToEmoji[it.groups[1]?.value]
                         val emoji = jsonEmoji?.content ?: it.value
                         emoji
+                    }.replace(SsbUri.linkRegex) {
+                        val link = SsbUri.fromSigilLink(it.value)
+                        if (link.isMessage() || link.isFeed()) {
+                            "[${it.value}](${it.value})"
+                        } else {
+                            it.value
+                        }
                     }
                 }
 

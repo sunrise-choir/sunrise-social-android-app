@@ -43,166 +43,179 @@
 
         </com.google.android.material.tabs.TabLayout>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabs">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/avataarImageView"
-                    android:layout_width="120dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:contentDescription="@string/avataar_description"
-                    app:layout_constraintDimensionRatio="h,1:1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_person_black_24dp"
-                    tools:src="@tools:sample/avatars" />
-
-                <TextView
-                    android:id="@+id/nameTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@{author.name}"
-                    android:textColor="@color/design_default_color_on_secondary"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toStartOf="@+id/followButton"
-                    app:layout_constraintStart_toEndOf="@+id/avataarImageView"
-                    app:layout_constraintTop_toTopOf="@+id/avataarImageView"
-                    tools:text="piet andoid-mobile!" />
-
-                <TextView
-                    android:id="@+id/descriptionTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/avataarImageView"
-                    tools:text="I’m not here to frack spiders, au, you don’t know his story, bro. Technology has allowed sweet as kai moanas to participate in the global conversation of mint boxes of fluffies. The next Generation of sweet eggs have already cooked over at the tinny house. What’s the hurry Bazza? There’s plenty of cookie times in the wop wops. Mt Cook holds the most rip-off community in the country.. Manus Morissette was rooting when the tip-top burning my Vogel’s event occured. Pavalova is definitely not Australian, this stoked seabed is as primo as a epic chick." />
-
-                <TextView
-                    android:id="@+id/pubKeyTextView"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="@{author.id}"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toStartOf="@+id/nameTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/nameTextView"
-                    tools:text="\@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519" />
-
-                <TextView
-                    android:id="@+id/followCountTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@{Integer.toString(author.followingCount)}"
-                    app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
-                    tools:text="21" />
-
-                <TextView
-                    android:id="@+id/followingTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/following"
-                    android:textColor="@color/design_default_color_primary"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/followCountTextView"
-                    app:layout_constraintStart_toEndOf="@+id/followCountTextView" />
-
-                <TextView
-                    android:id="@+id/followersCountTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@{Integer.toString(author.followerCount)}"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/followCountTextView"
-                    app:layout_constraintStart_toEndOf="@+id/followingTextView"
-                    tools:text="33" />
-
-                <TextView
-                    android:id="@+id/followersTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/followers"
-                    android:textColor="@color/design_default_color_primary"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/followCountTextView"
-                    app:layout_constraintStart_toEndOf="@+id/followersCountTextView" />
-
-
-                <TextView
-                    android:id="@+id/blockCountTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@{Integer.toString(author.blockingCount)}"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/followCountTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/followCountTextView"
-                    tools:text="12" />
-
-                <TextView
-                    android:id="@+id/blockingTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/blocking"
-                    android:textColor="@color/design_default_color_primary"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/blockCountTextView"
-                    app:layout_constraintStart_toEndOf="@+id/blockCountTextView" />
-
-                <TextView
-                    android:id="@+id/blockersCountTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@{Integer.toString(author.blockerCount)}"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/blockCountTextView"
-                    app:layout_constraintStart_toEndOf="@+id/blockingTextView"
-                    tools:text="1" />
-
-                <TextView
-                    android:id="@+id/blockersTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/blockers"
-                    android:textColor="@color/design_default_color_primary"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/blockCountTextView"
-                    app:layout_constraintStart_toEndOf="@+id/blockersCountTextView" />
-
-                <Button
-                    android:id="@+id/followButton"
-                    style="@android:style/Widget.Material.Button.Toggle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/follow_button"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/nameTextView" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tabs">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-        </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:id="@+id/avataarImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:contentDescription="@string/avataar_description"
+                            app:layout_constraintDimensionRatio="h,1:1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_person_black_24dp"
+                            tools:src="@tools:sample/avatars" />
+
+                        <TextView
+                            android:id="@+id/nameTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:text="@{author.name}"
+                            android:textColor="@color/design_default_color_on_secondary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toStartOf="@+id/followButton"
+                            app:layout_constraintStart_toEndOf="@+id/avataarImageView"
+                            app:layout_constraintTop_toTopOf="@+id/avataarImageView"
+                            tools:text="piet andoid-mobile!" />
+
+                        <TextView
+                            android:id="@+id/descriptionTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/blockCountTextView"
+                            tools:text="I’m not here to frack spiders, au, you don’t know his story, bro. Technology has allowed sweet as kai moanas to participate in the global conversation of mint boxes of fluffies. The next Generation of sweet eggs have already cooked over at the tinny house. What’s the hurry Bazza? There’s plenty of cookie times in the wop wops. Mt Cook holds the most rip-off community in the country.. Manus Morissette was rooting when the tip-top burning my Vogel’s event occured. Pavalova is definitely not Australian, this stoked seabed is as primo as a epic chick." />
+
+                        <TextView
+                            android:id="@+id/pubKeyTextView"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@{author.id}"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toStartOf="@+id/nameTextView"
+                            app:layout_constraintTop_toBottomOf="@+id/nameTextView"
+                            tools:text="\@U5GvOKP/YUza9k53DSXxT0mk3PIrnyAmessvNfZl5E0=.ed25519" />
+
+                        <TextView
+                            android:id="@+id/followCountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@{Integer.toString(author.followingCount)}"
+                            app:layout_constraintStart_toStartOf="@+id/avataarImageView"
+                            app:layout_constraintTop_toBottomOf="@+id/avataarImageView"
+                            tools:text="21" />
+
+                        <TextView
+                            android:id="@+id/followingTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/following"
+                            android:textColor="@color/design_default_color_primary"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/followCountTextView"
+                            app:layout_constraintStart_toEndOf="@+id/followCountTextView" />
+
+                        <TextView
+                            android:id="@+id/followersCountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="@{Integer.toString(author.followerCount)}"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/followCountTextView"
+                            app:layout_constraintStart_toEndOf="@+id/followingTextView"
+                            tools:text="33" />
+
+                        <TextView
+                            android:id="@+id/followersTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/followers"
+                            android:textColor="@color/design_default_color_primary"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/followCountTextView"
+                            app:layout_constraintStart_toEndOf="@+id/followersCountTextView" />
+
+
+                        <TextView
+                            android:id="@+id/blockCountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginTop="8dp"
+                            android:text="@{Integer.toString(author.blockingCount)}"
+                            app:layout_constraintStart_toStartOf="@+id/followCountTextView"
+                            app:layout_constraintTop_toBottomOf="@+id/followCountTextView"
+                            tools:text="12" />
+
+                        <TextView
+                            android:id="@+id/blockingTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/blocking"
+                            android:textColor="@color/design_default_color_primary"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/blockCountTextView"
+                            app:layout_constraintStart_toEndOf="@+id/blockCountTextView" />
+
+                        <TextView
+                            android:id="@+id/blockersCountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="@{Integer.toString(author.blockerCount)}"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/blockCountTextView"
+                            app:layout_constraintStart_toEndOf="@+id/blockingTextView"
+                            tools:text="1" />
+
+                        <TextView
+                            android:id="@+id/blockersTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/blockers"
+                            android:textColor="@color/design_default_color_primary"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/blockCountTextView"
+                            app:layout_constraintStart_toEndOf="@+id/blockersCountTextView" />
+
+                        <Button
+                            android:id="@+id/followButton"
+                            style="@android:style/Widget.Material.Button.Toggle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:text="@string/follow_button"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/nameTextView" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+
 
         <!--        <com.google.android.material.tabs.TabLayout-->
         <!--            android:id="@+id/tabs"-->

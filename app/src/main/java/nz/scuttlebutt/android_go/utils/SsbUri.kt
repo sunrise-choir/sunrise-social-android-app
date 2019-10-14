@@ -35,7 +35,7 @@ data class SsbUri(val type: UriType, val key: String, val keyType: String) {
             channel("#")
         }
 
-        private val linkRegex = Regex("^([@%&])([A-Za-z0-9/+]{43}=)\\.([\\w\\d]+\$)")
+        val linkRegex = Regex("([@%&])([A-Za-z0-9/+]{43}=)\\.([\\w\\d]+)")
         private val uriRegex = Regex("^ssb:(\\w+):(\\w+):(.+\$)")
         private const val scheme = "ssb"
 
