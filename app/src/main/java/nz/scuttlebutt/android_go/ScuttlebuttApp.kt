@@ -13,6 +13,8 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.content
 
 import nz.scuttlebutt.android_go.database.Database
 import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
@@ -27,6 +29,7 @@ import java.io.File
 data class Secret(val id: String, val private: String, val curve: String, val public: String)
 
 
+
 class ScuttlebuttApp : Application(), KodeinAware {
 
     override val kodein: Kodein by Kodein.lazy {
@@ -39,6 +42,8 @@ class ScuttlebuttApp : Application(), KodeinAware {
         val secretFile = File(repoPath + "/secret")
 
         val secrets = Json.parse(Secret.serializer(), secretFile.readText())
+
+
         val pubKey = secrets.id
         val privateKey = secrets.private
 
@@ -64,8 +69,20 @@ class ScuttlebuttApp : Application(), KodeinAware {
             )
         }
 
+        val mdToEmoji: JsonObject =
+            Json.parse(JsonObject.serializer(), getString(R.string.mdToEmoji))
+        val mdRegex = Regex(":(\\w+):")
+
         bind<Markwon>() with singleton {
             val plugin = object : AbstractMarkwonPlugin() {
+                override fun processMarkdown(markdown: String): String {
+                    return markdown.replace(mdRegex) {
+                        val jsonEmoji = mdToEmoji[it.groups[1]?.value]
+                        val emoji = jsonEmoji?.content ?: it.value
+                        emoji
+                    }
+                }
+
                 override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
                     super.configureConfiguration(builder)
 

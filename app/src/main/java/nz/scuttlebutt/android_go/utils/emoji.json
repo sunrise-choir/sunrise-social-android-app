@@ -1,33 +1,4 @@
-<resources>
-    <string name="app_name">Scuttle Droid</string>
-    <string name="post_button">Post</string>
-    <string name="edit_post_hint">Add your post text here…</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="publish_menu">Publish</string>
-    <string name="post_text">Spent some time this afternoon trying to make progress getting @cryptix\'s go sbot + #patchql going on #android \nI hit a small milestone just now:  with the server running on android publish a few contact messages and a few posts using the go ssb client on my computer got patchql to parse the go server offset file and I can see those messages in the sql db.\n (!!!)  \nThis is very cool and it also feels like there\'s a hell of a lot to do to get this usable.  \nI\'m dealing with a few bugs / crashes / etc, and I need to do a bunch of stuff manually to make this work.  \ncc @Luandro @mixmix @Maui @dinoƧ𝔸Ⓤᖇ</string>
-    <string name="avataar_description">Author Image</string>
-    <string name="likes_count_description">Likes Count</string>
-    <string name="ssb_go_folder_name">/golog</string>
-    <string name="patchql_sqlite_db_name">db.sqlite</string>
-    <string name="messages_icon_description">Messages</string>
-    <string name="notifications_icon_description">Notifications</string>
-    <string name="search_icon_description">Search</string>
-    <string name="home_icon_description">Home</string>
-    <string name="profile_menu_item">Profile</string>
-    <string name="example_search_string">possum AND stew NOT loomi*</string>
-    <string name="search_button">Search</string>
-    <string name="follow_button">Follow</string>
-    <string name="block_button">Block</string>
-    <string name="posts">Posts</string>
-    <string name="mentions">Mentions</string>
-    <string name="following">Following</string>
-    <string name="followers">Followers</string>
-    <string name="blocking">Blocking</string>
-    <string name="blockers">Blockers</string>
-
-    <string name="mdToEmoji">{
+{
   "100": "💯",
   "1234": "🔢",
   "grinning": "😀",
@@ -1508,5 +1479,4 @@
   "yemen": "🇾🇪",
   "zambia": "🇿🇲",
   "zimbabwe": "🇿🇼"
-}</string>
-</resources>
+}
