@@ -54,7 +54,7 @@
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/author_image"
-                app:layout_constraintTop_toBottomOf="@+id/author_name_text"
+                app:layout_constraintTop_toBottomOf="@+id/postTimeTextView"
                 tools:text="@string/post_text" />
 
             <ImageView
@@ -134,6 +134,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <com.github.curioustechizen.ago.RelativeTimeTextView
+                android:id="@+id/postTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/author_name_text"
+                app:layout_constraintTop_toBottomOf="@+id/author_name_text"
+                tools:text="2 days ago" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

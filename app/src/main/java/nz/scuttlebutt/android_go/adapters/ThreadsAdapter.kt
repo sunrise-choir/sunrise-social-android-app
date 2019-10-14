@@ -17,6 +17,7 @@ import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
 import nz.scuttlebutt.android_go.fragments.ThreadsFragmentDirections
 import nz.scuttlebutt.android_go.models.LIVE_THREAD_DIFF_CALLBACK
 import nz.scuttlebutt.android_go.models.Thread
+import java.util.*
 
 
 class ThreadsAdapter(
@@ -45,8 +46,6 @@ class ThreadsAdapter(
                 val image =
                     if (it.root.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
                 likesIconImage.setImageResource(image)
-
-
             })
 
             if (thread.root.authorImageLink != null) {
@@ -56,9 +55,15 @@ class ThreadsAdapter(
                 })
             }
 
+            val assertedTime = thread.root.assertedTime
+            if (assertedTime != null) {
+                binding.fragmentPost.postTimeTextView.setReferenceTime(Date(assertedTime).time)
+            }
+
             binding.fragmentPost.post = thread.root
 
             markwon.setMarkdown(binding.fragmentPost.rootPostText, thread.root.text)
+
 
             likesIconImage.setOnClickListener {
                 val post = liveThread.value!!.root

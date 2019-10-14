@@ -15,6 +15,7 @@ import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
 import nz.scuttlebutt.android_go.models.LIVE_DIFF_CALLBACK
 import nz.scuttlebutt.android_go.models.Post
+import java.util.*
 
 
 class PostsAdapter(
@@ -44,6 +45,11 @@ class PostsAdapter(
 
 
             val post = livePost.value!!
+
+            val assertedTime = post.assertedTime
+            if (assertedTime != null) {
+                binding.fragmentPost.postTimeTextView.setReferenceTime(Date(assertedTime).time)
+            }
 
             binding.fragmentPost.post = post
 

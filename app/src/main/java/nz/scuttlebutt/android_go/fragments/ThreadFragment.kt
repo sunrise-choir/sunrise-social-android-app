@@ -53,6 +53,7 @@ class ThreadFragment : Fragment() {
 //            navController.navigate(ThreadsFragmentDirections.actionThreadsFragmentToPublishFragment())
 //        }
 
+
         viewModel = ViewModelProviders.of(this).get(ThreadViewModel::class.java)
         viewModel.setPostId(postId)
 
@@ -68,10 +69,9 @@ class ThreadFragment : Fragment() {
             viewAdapter.submitList(list)
         })
 
+
         return binding.root
     }
-
-
 
 
 }

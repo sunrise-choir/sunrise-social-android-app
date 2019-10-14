@@ -103,7 +103,8 @@ class ThreadDataSource(
             authorImageLink = fragment.author().imageLink(),
             referencesLength = fragment.references().size,
             repliesCount = null,
-            cursor = null
+            cursor = null,
+            assertedTime = fragment.assertedTimestamp()?.toLong()
         )
     }
 }

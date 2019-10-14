@@ -31,7 +31,8 @@ data class Post(
     val authorImageLink: String?,
     val referencesLength: Int,
     val repliesCount: Int?,
-    val cursor: String?
+    val cursor: String?,
+    val assertedTime: Long?
 ){
 
     companion object {

@@ -96,7 +96,8 @@ class ThreadsDataSource(
                 authorImageLink = root.author().imageLink(),
                 referencesLength = root.references().size,
                 repliesCount = repliesLength,
-                cursor = null
+                cursor = null,
+                assertedTime = root.assertedTimestamp()?.toLong()
             )
 
             Thread(rootPost, cursor.orEmpty())
