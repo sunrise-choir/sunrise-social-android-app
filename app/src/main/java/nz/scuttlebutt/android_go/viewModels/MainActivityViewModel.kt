@@ -2,12 +2,17 @@ package nz.scuttlebutt.android_go.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import com.sunrisechoir.graphql.PostsQuery
+import com.sunrisechoir.graphql.ThreadsSummaryQuery
+import com.sunrisechoir.graphql.type.Privacy
 import com.sunrisechoir.patchql.PatchqlApollo
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
 import nz.scuttlebutt.android_go.SsbServerMsg
 import nz.scuttlebutt.android_go.StartServer
 import nz.scuttlebutt.android_go.StopServer
+import nz.scuttlebutt.android_go.database.Database
 import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
 import nz.scuttlebutt.android_go.models.patchqlBackgroundActor
 import nz.scuttlebutt.android_go.ssbServerActor
@@ -28,7 +33,31 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app), KodeinAwa
     private val patchql: PatchqlApollo by instance()
     private val repoPath: String by instance("repoPath")
 
+    private val database: Database by instance()
+
+    private val me: String by instance("mySsbIdentity")
+
+    var threadNotifications: Pair<LiveData<Int>, () -> Unit>
+    var mentionsNotifications: Pair<LiveData<Int>, () -> Unit>
+    var messagesNotifications: Pair<LiveData<Int>, () -> Unit>
+
     init {
+
+        val threadNotificationQuery: () -> ThreadsSummaryQuery.Builder =
+            { ThreadsSummaryQuery.builder() }
+
+        val messagesNotificationQuery: () -> ThreadsSummaryQuery.Builder =
+            { ThreadsSummaryQuery.builder().privacy(Privacy.PRIVATE) }
+
+        val mentionsNotificationQuery: () -> PostsQuery.Builder =
+            { PostsQuery.builder().mentionsAuthors(listOf(me)) }
+
+        threadNotifications =
+            database.notifcationsDao().getThreadsNotifications(threadNotificationQuery)
+        messagesNotifications =
+            database.notifcationsDao().getThreadsNotifications(messagesNotificationQuery)
+        mentionsNotifications =
+            database.notifcationsDao().getPostsNotifications(mentionsNotificationQuery)
 
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
@@ -48,6 +77,10 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app), KodeinAwa
 
     }
 
+    fun setThreadsNumberOfHops(numberOfHops: ThreadsNumberOfHops) {
+
+    }
+
     override fun onCleared() {
         super.onCleared()
         GlobalScope.launch {
@@ -60,5 +93,11 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app), KodeinAwa
                 patchqlBackgroundActor.await().send(nz.scuttlebutt.android_go.models.StopServer)
             }
         }
+    }
+
+    enum class ThreadsNumberOfHops {
+        FOLLOWING,
+        FOLLOWING_PLUS_ONE,
+        ALL
     }
 }

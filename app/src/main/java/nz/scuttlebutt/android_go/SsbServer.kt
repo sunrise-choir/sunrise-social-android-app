@@ -53,7 +53,7 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
     val likeSerializer = Like.serializer()
     var isServerRunning = false
 
-    for (msg in channel) { // iterate over incoming messages
+    outer_loop@ for (msg in channel) { // iterate over incoming messages
         when (msg) {
             is StartServer -> {
                 if (!isServerRunning) {
@@ -71,6 +71,7 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                     isServerRunning = false
                     Log.i(tag, "stopped sbot")
                     channel.close()
+                    break@outer_loop
 
                 }
             }

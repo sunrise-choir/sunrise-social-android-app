@@ -58,11 +58,9 @@ class ThreadsFragment : Fragment() {
 
         binding.threads.adapter = viewAdapter
 
-
         viewModel.threadsLiveData.observe(this, Observer { list ->
             viewAdapter.submitList(list)
         })
-
 
         return binding.root
     }

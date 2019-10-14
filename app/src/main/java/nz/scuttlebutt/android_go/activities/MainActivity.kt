@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -16,7 +17,6 @@ import nz.scuttlebutt.android_go.databinding.ActivityMainBinding
 import nz.scuttlebutt.android_go.viewModels.MainActivityViewModel
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
-
 
 class MainActivity : AppCompatActivity(), KodeinAware {
 
@@ -36,19 +36,35 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         NavigationUI.setupWithNavController(binding.navView, navController)
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
 
-        val notificationsBadge =
-            binding.bottomNavigation.getOrCreateBadge(R.id.notifications_fragment)
-        notificationsBadge.number = 12
 
         checkPermissions()
 
-        ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+
+        viewModel.threadNotifications.first.observe(
+            this,
+            observeNotification(R.id.threads_fragment, binding)
+        )
+        viewModel.messagesNotifications.first.observe(
+            this,
+            observeNotification(R.id.messages_fragment, binding)
+        )
+        viewModel.mentionsNotifications.first.observe(
+            this,
+            observeNotification(R.id.notifications_fragment, binding)
+        )
 
 
-//        val myHandlerThread: MyHandlerThread = MyHandlerThread("myHandlerThread", repoPath)
-//        myHandlerThread.start()
-//        val looper = myHandlerThread.looper
-//        val handler = Handler(looper)
+        // TODO: Using addOnDestinationChangedListener is not _quite_ what we want. It gets called on first entry. This is
+        // not going to work once we start persisting notifications state because the threads notifications will be cleared when the app starts.
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                // The `second` part of the `Pair` is a reset function that resets the count of the query.
+                R.id.threads_fragment -> viewModel.threadNotifications.second()
+                R.id.messages_fragment -> viewModel.messagesNotifications.second()
+                R.id.notifications_fragment -> viewModel.mentionsNotifications.second()
+            }
+        }
 
 //        handler.post {
 //            val aBlob: ByteArray = byteArrayOf(1,2,3)
@@ -145,6 +161,18 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     override fun onSupportNavigateUp(): Boolean {
         val navController = this.findNavController(R.id.nav_host_fragment)
         return NavigationUI.navigateUp(navController, drawerLayout)
+    }
+
+    fun observeNotification(badgeId: Int, binding: ActivityMainBinding): Observer<Int> {
+        return Observer {
+            if (it > 0) {
+                val notificationsBadge =
+                    binding.bottomNavigation.getOrCreateBadge(badgeId)
+                notificationsBadge.number = it
+            } else {
+                binding.bottomNavigation.removeBadge(badgeId)
+            }
+        }
     }
 
 
