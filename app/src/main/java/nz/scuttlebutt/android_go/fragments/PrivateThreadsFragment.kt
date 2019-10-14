@@ -53,7 +53,7 @@ class PrivateThreadsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         binding.threads.layoutManager = layoutManager
 
-        viewAdapter = ThreadsAdapter(viewModel::like, this, viewModel.markwon)
+        viewAdapter = ThreadsAdapter(viewModel::like, this, viewModel.markwon, viewModel::getBlob)
 
         binding.threads.adapter = viewAdapter
 

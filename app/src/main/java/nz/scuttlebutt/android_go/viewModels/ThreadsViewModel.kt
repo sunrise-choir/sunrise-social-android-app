@@ -33,7 +33,8 @@ class ThreadsViewModel(
 
     val threadsLiveData = LivePagedListBuilder(threadsDataSourceFactory, pagedListConfig).build()
 
-    fun like(postId: String, doesLike: Boolean) {
+    fun like(postId: String, doesLike: Boolean) =
         database.threadsDao().like(postId, doesLike)
-    }
+
+    fun getBlob(blobId: String) = database.blobsDao().get(blobId = blobId)
 }

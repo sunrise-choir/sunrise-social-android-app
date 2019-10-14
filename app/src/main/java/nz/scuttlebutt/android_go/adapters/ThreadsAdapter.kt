@@ -1,5 +1,6 @@
 package nz.scuttlebutt.android_go.adapters
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -21,7 +22,8 @@ import nz.scuttlebutt.android_go.models.Thread
 class ThreadsAdapter(
     val likePost: (String, Boolean) -> Unit,
     val lifecycleOwner: LifecycleOwner,
-    val markwon: Markwon
+    val markwon: Markwon,
+    val getBlob: (String) -> LiveData<ByteArray>
 ) :
     PagedListAdapter<LiveData<Thread>, RecyclerView.ViewHolder>(LIVE_THREAD_DIFF_CALLBACK) {
 
@@ -43,7 +45,16 @@ class ThreadsAdapter(
                 val image =
                     if (it.root.likedByMe) R.drawable.ic_favorite_fuscia_24dp else R.drawable.ic_favorite_border_black_24dp
                 likesIconImage.setImageResource(image)
+
+
             })
+
+            if (thread.root.authorImageLink != null) {
+                getBlob(thread.root.authorImageLink).observe(lifecycleOwner, Observer {
+                    val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
+                    binding.fragmentPost.authorImage.setImageBitmap(bitmap)
+                })
+            }
 
             binding.fragmentPost.post = thread.root
 
@@ -56,7 +67,6 @@ class ThreadsAdapter(
             authorImage.setOnClickListener {
                 val post = liveThread.value!!
                 navigateToAuthor(post.root.authorId)
-
             }
 
             //It's odd that we need to set a click listener on the text as well as the root, but so be it. It works.
