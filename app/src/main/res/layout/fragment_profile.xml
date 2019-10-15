@@ -27,19 +27,19 @@
                 android:layout_height="match_parent"
                 android:icon="@drawable/ic_person_black_24dp"
 
-                android:text="Profile" />
+                android:text="@string/profile" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:icon="@drawable/ic_public_black_24dp"
-                android:text="Posts" />
+                android:text="@string/posts" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:icon="@drawable/ic_notifications_none_black_24dp"
-                android:text="Mentions" />
+                android:text="@string/mentions" />
 
         </com.google.android.material.tabs.TabLayout>
 

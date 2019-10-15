@@ -20,8 +20,6 @@
     <string name="search_button">Search</string>
     <string name="follow_button">Follow</string>
     <string name="block_button">Block</string>
-    <string name="posts">Posts</string>
-    <string name="mentions">Mentions</string>
     <string name="following">Following</string>
     <string name="followers">Followers</string>
     <string name="blocking">Blocking</string>
@@ -1509,4 +1507,7 @@
   "zambia": "🇿🇲",
   "zimbabwe": "🇿🇼"
 }</string>
+  <string name="profile">Profile</string>
+  <string name="posts">Posts</string>
+  <string name="mentions">Mentions</string>
 </resources>

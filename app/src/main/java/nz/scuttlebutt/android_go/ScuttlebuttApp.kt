@@ -72,6 +72,8 @@ class ScuttlebuttApp : Application(), KodeinAware {
         val mdToEmoji: JsonObject =
             Json.parse(JsonObject.serializer(), getString(R.string.mdToEmoji))
         val mdRegex = Regex(":(\\w+):")
+        val ssbLinkRefNotInMarkdwonLinkRegex =
+            Regex("[^\\(](([@%&])([A-Za-z0-9/+]{43}=)\\.([\\w\\d]+))[^\\)]")
 
         bind<Markwon>() with singleton {
             val plugin = object : AbstractMarkwonPlugin() {
@@ -80,10 +82,11 @@ class ScuttlebuttApp : Application(), KodeinAware {
                         val jsonEmoji = mdToEmoji[it.groups[1]?.value]
                         val emoji = jsonEmoji?.content ?: it.value
                         emoji
-                    }.replace(SsbUri.linkRegex) {
-                        val link = SsbUri.fromSigilLink(it.value)
+                    }.replace(ssbLinkRefNotInMarkdwonLinkRegex) {
+                        val (_, match) = it.groupValues
+                        val link = SsbUri.fromSigilLink(match)
                         if (link.isMessage() || link.isFeed()) {
-                            "[${it.value}](${it.value})"
+                            "[${match}](${match})"
                         } else {
                             it.value
                         }
