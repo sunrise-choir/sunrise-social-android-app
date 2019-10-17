@@ -35,4 +35,6 @@ class NotificationsViewModel(
     fun like(postId: String, doesLike: Boolean) {
         database.postDao().like(postId, doesLike)
     }
+
+    fun getBlob(blobId: String) = database.blobsDao().get(blobId = blobId)
 }

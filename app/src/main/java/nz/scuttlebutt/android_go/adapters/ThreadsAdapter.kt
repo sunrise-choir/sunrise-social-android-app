@@ -14,7 +14,7 @@ import io.noties.markwon.Markwon
 import nz.scuttlebutt.android_go.NavigationDirections
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.databinding.FragmentThreadSummaryBinding
-import nz.scuttlebutt.android_go.fragments.ThreadsFragmentDirections
+import nz.scuttlebutt.android_go.fragments.ThreadFragmentDirections
 import nz.scuttlebutt.android_go.models.LIVE_THREAD_DIFF_CALLBACK
 import nz.scuttlebutt.android_go.models.Thread
 import java.util.*
@@ -25,6 +25,7 @@ class ThreadsAdapter(
     val lifecycleOwner: LifecycleOwner,
     val markwon: Markwon,
     val getBlob: (String) -> LiveData<ByteArray>
+
 ) :
     PagedListAdapter<LiveData<Thread>, RecyclerView.ViewHolder>(LIVE_THREAD_DIFF_CALLBACK) {
 
@@ -48,6 +49,7 @@ class ThreadsAdapter(
                 likesIconImage.setImageResource(image)
             })
 
+            binding.fragmentPost.authorImage.setImageResource(R.drawable.ic_person_black_24dp)
             if (thread.root.authorImageLink != null) {
                 getBlob(thread.root.authorImageLink).observe(lifecycleOwner, Observer {
                     val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
@@ -81,10 +83,10 @@ class ThreadsAdapter(
         }
 
         private fun navigateToThread(thread: Thread) {
-            if (navController.currentDestination?.id != R.id.threads_fragment)
-                return
+//            if (navController.currentDestination?.id != R.id.threads_fragment)
+//                return
             navController.navigate(
-                ThreadsFragmentDirections.actionThreadsFragmentToThreadFragment(
+                ThreadFragmentDirections.actionGlobalThreadFragment(
                     thread.root.id,
                     null
                 )
@@ -92,8 +94,7 @@ class ThreadsAdapter(
         }
 
         private fun navigateToAuthor(authorId: String) {
-            if (navController.currentDestination?.id != R.id.threads_fragment)
-                return
+
             navController.navigate(
                 NavigationDirections.actionGlobalProfileFragment(authorId)
             )

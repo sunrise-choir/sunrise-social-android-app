@@ -43,7 +43,7 @@ class SearchFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         binding.posts.layoutManager = layoutManager
 
-        viewAdapter = PostsAdapter(viewModel::like, this, viewModel.markwon)
+        viewAdapter = PostsAdapter(viewModel::like, this, viewModel.markwon, viewModel::getBlob)
 
         binding.posts.adapter = viewAdapter
 

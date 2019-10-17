@@ -1,5 +1,6 @@
 package nz.scuttlebutt.android_go.adapters
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -21,7 +22,8 @@ import java.util.*
 class PostsAdapter(
     val likePost: (String, Boolean) -> Unit,
     val lifecycleOwner: LifecycleOwner,
-    val markwon: Markwon
+    val markwon: Markwon,
+    val getBlob: (String) -> LiveData<ByteArray>
 ) :
     PagedListAdapter<LiveData<Post>, RecyclerView.ViewHolder>(LIVE_DIFF_CALLBACK) {
 
@@ -49,6 +51,14 @@ class PostsAdapter(
             val assertedTime = post.assertedTime
             if (assertedTime != null) {
                 binding.fragmentPost.postTimeTextView.setReferenceTime(Date(assertedTime).time)
+            }
+
+            binding.fragmentPost.authorImage.setImageResource(R.drawable.ic_person_black_24dp)
+            if (post.authorImageLink != null) {
+                getBlob(post.authorImageLink).observe(lifecycleOwner, Observer {
+                    val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
+                    binding.fragmentPost.authorImage.setImageBitmap(bitmap)
+                })
             }
 
             binding.fragmentPost.post = post

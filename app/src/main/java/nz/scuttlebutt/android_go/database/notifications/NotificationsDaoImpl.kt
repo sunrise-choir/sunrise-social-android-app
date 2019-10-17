@@ -99,7 +99,9 @@ class NotificationsDaoImpl(private val patchqlApollo: PatchqlApollo) : Notificat
                     //Ugh this makes me sad
                     val nullableCursor: String? = if (cursor.isEmpty()) null else cursor
 
-                    val query = queryBuilder().after(nullableCursor).first(999).build()
+                    val query = queryBuilder().after(nullableCursor).first(
+                        99999
+                    ).build()
 
                     Observable.interval(2000, TimeUnit.MILLISECONDS)
                         .map {

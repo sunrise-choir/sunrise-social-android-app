@@ -43,4 +43,6 @@ class SearchViewModel(
         database.postDao().like(postId, doesLike)
     }
 
+    fun getBlob(blobId: String) = database.blobsDao().get(blobId = blobId)
+
 }

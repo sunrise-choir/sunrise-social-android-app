@@ -1,7 +1,12 @@
 package nz.scuttlebutt.android_go
 
 
+import android.Manifest
+import android.app.Activity
 import android.app.Application
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.sunrisechoir.patchql.Params
 import com.sunrisechoir.patchql.PatchqlApollo
@@ -15,7 +20,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.content
-
 import nz.scuttlebutt.android_go.database.Database
 import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
 import nz.scuttlebutt.android_go.utils.SsbUri
@@ -33,20 +37,29 @@ data class Secret(val id: String, val private: String, val curve: String, val pu
 class ScuttlebuttApp : Application(), KodeinAware {
 
     override val kodein: Kodein by Kodein.lazy {
+        checkPermissions()
         val externalDir = "/sdcard"
         val repoPath = externalDir + getString(R.string.ssb_go_folder_name)
         val dbPath =
             getDatabasePath(getString(R.string.patchql_sqlite_db_name))?.absolutePath!!
         val offsetlogPath = repoPath + "/log"
 
+        // Remove me!
+        //Gobotexample.start(repoPath)
+
+        //We won't have these on first startup
         val secretFile = File(repoPath + "/secret")
 
         val secrets = Json.parse(Secret.serializer(), secretFile.readText())
-
-
         val pubKey = secrets.id
         val privateKey = secrets.private
 
+
+
+        bind<CompletableDeferred<SendChannel<SsbServerMsg>>>("ssbServerActor") with singleton { CompletableDeferred<SendChannel<SsbServerMsg>>() }
+        bind<CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>>("patchqlProcessActor") with singleton { CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>() }
+
+        //We should check if the offset file exists yet (it won't if this if the first startup)
         bind<PatchqlApollo>() with singleton {
             PatchqlApollo(
                 Params(
@@ -57,9 +70,6 @@ class ScuttlebuttApp : Application(), KodeinAware {
                 )
             )
         }
-
-        bind<CompletableDeferred<SendChannel<SsbServerMsg>>>("ssbServerActor") with singleton { CompletableDeferred<SendChannel<SsbServerMsg>>() }
-        bind<CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>>("patchqlProcessActor") with singleton { CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>() }
 
         bind<Database>() with provider {
             Database(
@@ -96,6 +106,7 @@ class ScuttlebuttApp : Application(), KodeinAware {
                 override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
                     super.configureConfiguration(builder)
 
+
                     builder.linkResolver { view, link ->
 
                         if (SsbUri.isSsbRef(link)) {
@@ -125,11 +136,39 @@ class ScuttlebuttApp : Application(), KodeinAware {
 
                 }
             }
-            Markwon.builder(applicationContext).usePlugin(plugin).build()
+            Markwon.builder(applicationContext)
+                .usePlugin(plugin)
+                .build()
         }
 
         constant("repoPath") with repoPath
         constant("mySsbIdentity") with pubKey
+
+    }
+
+
+    private fun checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            val permissions: Array<String> = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            ActivityCompat.requestPermissions(applicationContext as Activity, permissions, 0)
+            //requestPermissions(permissions, 0)
+            // Permission is not granted
+            //throw Error("no permissions for external storage")
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            val permissions: Array<String> = arrayOf(Manifest.permission.INTERNET)
+            ActivityCompat.requestPermissions(applicationContext as Activity, permissions, 0)
+            //requestPermissions(permissions, 0)
+            // Permission is not granted
+            //throw Error("no permissions for external storage")
+        }
     }
 
 }

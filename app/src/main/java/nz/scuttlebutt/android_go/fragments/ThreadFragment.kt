@@ -61,7 +61,7 @@ class ThreadFragment : Fragment() {
         binding.thread.layoutManager = layoutManager
 
 
-        viewAdapter = PostsAdapter(viewModel::like, this, viewModel.markwon)
+        viewAdapter = PostsAdapter(viewModel::like, this, viewModel.markwon, viewModel::getBlob)
 
         binding.thread.adapter = viewAdapter
 

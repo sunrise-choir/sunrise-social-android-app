@@ -35,6 +35,7 @@ class PrivateThreadsViewModel(
     val threadsLiveData = LivePagedListBuilder(threadsDataSourceFactory, pagedListConfig).build()
 
     fun like(postId: String, doesLike: Boolean) {
+        //TODO this needs to publish a private like message
         database.threadsDao().like(postId, doesLike)
     }
 

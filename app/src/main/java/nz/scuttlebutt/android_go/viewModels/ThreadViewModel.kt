@@ -42,4 +42,6 @@ class ThreadViewModel(
     fun like(postId: String, doesLike: Boolean) {
         database.threadDao().like(postId, doesLike)
     }
+
+    fun getBlob(blobId: String) = database.blobsDao().get(blobId = blobId)
 }

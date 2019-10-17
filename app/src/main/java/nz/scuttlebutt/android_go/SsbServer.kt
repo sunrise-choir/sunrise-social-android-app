@@ -70,8 +70,8 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                     Gobotexample.stop()
                     isServerRunning = false
                     Log.i(tag, "stopped sbot")
-                    channel.close()
-                    break@outer_loop
+                    //channel.close()
+                    //break@outer_loop
 
                 }
             }
@@ -89,11 +89,11 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                 Log.i(tag, "Published like for ${msg.msgId}, doesLike ${msg.doesLike}")
                 val likeMessage = Like(msg.msgId, if (msg.doesLike) 1 else 0)
                 val likeJson = json.stringify(likeSerializer, likeMessage)
-                val seq: Long = Gobotexample.publish(
+                Gobotexample.publish(
                     likeJson,
                     recps.marshalJSON()
                 )
-                msg.response.complete(seq)
+                msg.response.complete(0)
             }
             is PublishPostMessage -> {
 
@@ -101,12 +101,12 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                 val postMsg = Post(msg.msgText)
                 val postJson = json.stringify(postSerializer, postMsg)
 
-                val seq: Long = Gobotexample.publish(
+                Gobotexample.publish(
                     postJson,
                     recps.marshalJSON()
                 )
 
-                msg.response.complete(seq)
+                msg.response.complete(0)
             }
         }
     }
