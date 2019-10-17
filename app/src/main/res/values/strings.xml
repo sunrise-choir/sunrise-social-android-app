@@ -19,6 +19,7 @@
     <string name="example_search_string">possum AND stew NOT loomi*</string>
     <string name="search_button">Search</string>
     <string name="follow_button">Follow</string>
+  <string name="unfollow_button">Unfollow</string>
     <string name="block_button">Block</string>
     <string name="following">Following</string>
     <string name="followers">Followers</string>

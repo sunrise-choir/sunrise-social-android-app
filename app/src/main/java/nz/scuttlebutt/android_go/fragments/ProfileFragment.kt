@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.sunrisechoir.graphql.type.ContactState
 import nz.scuttlebutt.android_go.R
 import nz.scuttlebutt.android_go.databinding.FragmentProfileBinding
 import nz.scuttlebutt.android_go.viewModels.ProfileViewModel
@@ -38,6 +39,18 @@ class ProfileFragment : Fragment() {
         author.observe(this, Observer {
             binding.author = it
             viewModel.markwon.setMarkdown(binding.descriptionTextView, it.description.orEmpty())
+
+            when (it.relationshipToThem) {
+                ContactState.FOLLOW -> {
+                    binding.followButton.text = getText(R.string.unfollow_button)
+                    binding.followButton.setOnClickListener { viewModel.unfollowAuthor(authorId) }
+                }
+                ContactState.NEUTRAL -> {
+                    binding.followButton.text = getText(R.string.follow_button)
+                    binding.followButton.setOnClickListener { viewModel.followAuthor(authorId) }
+                }
+            }
+
         })
 
 

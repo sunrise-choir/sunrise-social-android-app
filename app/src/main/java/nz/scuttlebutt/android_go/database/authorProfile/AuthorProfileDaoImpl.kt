@@ -3,13 +3,15 @@ package nz.scuttlebutt.android_go.database.authorProfile
 import androidx.lifecycle.MutableLiveData
 import com.sunrisechoir.graphql.AuthorProfileQuery
 import com.sunrisechoir.patchql.PatchqlApollo
-import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
+import nz.scuttlebutt.android_go.PublishContactMessage
 import nz.scuttlebutt.android_go.SsbServerMsg
-import nz.scuttlebutt.android_go.dao.AuthorRelationship
+import nz.scuttlebutt.android_go.lib.AuthorRelationship
 import nz.scuttlebutt.android_go.models.Author
 import nz.scuttlebutt.android_go.models.LiveAuthor
 import nz.scuttlebutt.android_go.models.PatchqlBackgroundMessage
+import nz.scuttlebutt.android_go.models.ProcessNextChunk
 import nz.scuttlebutt.android_go.dao.Author as AuthorDao
 
 class AuthorProfileDaoImpl(
@@ -19,9 +21,18 @@ class AuthorProfileDaoImpl(
 ) : AuthorDao {
 
     private val author = MutableLiveData<Author>()
+    private var query: (() -> AuthorProfileQuery.Builder)? = null
 
     override fun get(query: () -> AuthorProfileQuery.Builder): LiveAuthor {
-        patchqlApollo.query(query().build()) {
+        this.query = query
+
+        load()
+
+        return author
+    }
+
+    fun load() {
+        patchqlApollo.query(query!!().build()) {
             it.map {
                 it.data() as AuthorProfileQuery.Data
             }.map {
@@ -32,11 +43,23 @@ class AuthorProfileDaoImpl(
                 throw Error("error getting author profile")
             }
         }
-        return author
-
     }
 
-    override fun changeRelationship(relationship: AuthorRelationship) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun changeRelationship(relationship: AuthorRelationship, authorId: String) {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val publishResponse = CompletableDeferred<Long>()
+                ssbServer.await().send(
+                    PublishContactMessage(relationship, authorId, publishResponse)
+                )
+                publishResponse.await()
+                val processResponse = CompletableDeferred<Unit>()
+
+                process.await().send(ProcessNextChunk(processResponse))
+                processResponse.await()
+
+                load()
+            }
+        }
     }
 }

@@ -9,11 +9,17 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+import nz.scuttlebutt.android_go.lib.AuthorRelationship
 
 
 @Serializable
 data class Post(val text: String){
     val type = "post"
+}
+
+@Serializable
+data class Contact(val contact: String, val following: Boolean, val blocking: Boolean) {
+    val type = "contact"
 }
 
 
@@ -42,6 +48,13 @@ class PublishLikeMessage(
 class PublishPostMessage(val msgText: String, val response: CompletableDeferred<Long>) :
     SsbServerMsg() // a request with reply
 
+class PublishContactMessage(
+    val relationship: AuthorRelationship,
+    val authorId: String,
+    val response: CompletableDeferred<Long>
+) :
+    SsbServerMsg()
+
 class GetBlob(val ref: String, val response: CompletableDeferred<ByteArray>) : SsbServerMsg()
 // This function launches a new counter actor
 
@@ -51,6 +64,7 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
     val json = Json(JsonConfiguration.Stable)
     val postSerializer = Post.serializer()
     val likeSerializer = Like.serializer()
+    val contactSerializer = Contact.serializer()
     var isServerRunning = false
 
     outer_loop@ for (msg in channel) { // iterate over incoming messages
@@ -106,6 +120,37 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                     recps.marshalJSON()
                 )
 
+                msg.response.complete(0)
+            }
+            is PublishContactMessage -> {
+
+                val recps = Gobotexample.newRecipientsCollection()
+                val relationship = msg.relationship
+                val authorId = msg.authorId
+                val contactMsg: Contact = when (relationship) {
+                    AuthorRelationship.BLOCK -> Contact(
+                        contact = authorId,
+                        blocking = true,
+                        following = false
+                    )
+                    AuthorRelationship.FOLLOW -> Contact(
+                        contact = authorId,
+                        blocking = false,
+                        following = true
+                    )
+                    AuthorRelationship.UNBLOCK -> Contact(
+                        contact = authorId,
+                        blocking = false,
+                        following = false
+                    )
+                    AuthorRelationship.UNFOLLOW -> Contact(
+                        contact = authorId,
+                        blocking = false,
+                        following = false
+                    )
+                }
+                val contactJson = json.stringify(contactSerializer, contactMsg)
+                Gobotexample.publish(contactJson, recps.marshalJSON())
                 msg.response.complete(0)
             }
         }
