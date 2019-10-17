@@ -1,6 +1,7 @@
 package nz.scuttlebutt.android_go.fragments
 
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,6 +50,14 @@ class ProfileFragment : Fragment() {
                     binding.followButton.text = getText(R.string.follow_button)
                     binding.followButton.setOnClickListener { viewModel.followAuthor(authorId) }
                 }
+            }
+
+
+            if (it.imageLink != null) {
+                viewModel.getBlob(it.imageLink).observe(this.viewLifecycleOwner, Observer {
+                    val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
+                    binding.avataarImageView.setImageBitmap(bitmap)
+                })
             }
 
         })

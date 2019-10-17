@@ -33,7 +33,8 @@ data class Author(
     val blockingCount: Int,
     val blockerCount: Int,
     val relationshipToMe: ContactState,
-    val relationshipToThem: ContactState
+    val relationshipToThem: ContactState,
+    val imageLink: String?
 
 ) {
     companion object {
@@ -49,7 +50,8 @@ data class Author(
                 blockerCount = author.blockedBy().size,
                 blockingCount = author.blocks().size,
                 relationshipToMe = author.contactStatusTo().public_(),
-                relationshipToThem = author.contactStatusFrom().public_()
+                relationshipToThem = author.contactStatusFrom().public_(),
+                imageLink = author.imageLink()
             )
         }
     }
