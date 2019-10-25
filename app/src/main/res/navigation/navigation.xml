@@ -6,7 +6,7 @@
     app:startDestination="@id/threads_fragment">
     <fragment
         android:id="@+id/threads_fragment"
-        android:name="nz.scuttlebutt.android_go.fragments.ThreadsFragment"
+        android:name="social.sunrise.app.fragments.ThreadsFragment"
         android:label="fragment_threads"
         tools:layout="@layout/fragment_threads">
         <action
@@ -18,12 +18,12 @@
     </fragment>
     <fragment
         android:id="@+id/publish_fragment"
-        android:name="nz.scuttlebutt.android_go.fragments.PublishFragment"
+        android:name="social.sunrise.app.fragments.PublishFragment"
         android:label="fragment_publish"
         tools:layout="@layout/fragment_publish" />
     <fragment
         android:id="@+id/thread_fragment"
-        android:name="nz.scuttlebutt.android_go.fragments.ThreadFragment"
+        android:name="social.sunrise.app.fragments.ThreadFragment"
         android:label="fragment_thread"
         tools:layout="@layout/fragment_thread" >
         <argument
@@ -37,12 +37,12 @@
     </fragment>
     <fragment
         android:id="@+id/search_fragment"
-        android:name="nz.scuttlebutt.android_go.fragments.SearchFragment"
+        android:name="social.sunrise.app.fragments.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/messages_fragment"
-        android:name="nz.scuttlebutt.android_go.fragments.PrivateThreadsFragment"
+        android:name="social.sunrise.app.fragments.PrivateThreadsFragment"
         android:label="fragment_private_messages"
         tools:layout="@layout/fragment_private_threads">
         <action
@@ -54,12 +54,12 @@
     </fragment>
     <fragment
         android:id="@+id/notifications_fragment"
-        android:name="nz.scuttlebutt.android_go.fragments.NotificationsFragment"
+        android:name="social.sunrise.app.fragments.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/profile_fragment"
-        android:name="nz.scuttlebutt.android_go.fragments.ProfileFragment"
+        android:name="social.sunrise.app.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
         <argument

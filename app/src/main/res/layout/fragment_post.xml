@@ -7,7 +7,7 @@
     <data>
         <variable
             name="post"
-            type="nz.scuttlebutt.android_go.models.Post" />
+            type="social.sunrise.app.models.Post" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

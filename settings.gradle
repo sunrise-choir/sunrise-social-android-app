@@ -1,3 +1,3 @@
 include ':app', ':android-patchql'
 project(':android-patchql').projectDir = new File('../ssb-patchql-android/android')
-rootProject.name='AndroidGo'
+rootProject.name='SunriseSocial'

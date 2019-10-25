@@ -7,7 +7,7 @@
     <data>
         <variable
             name="author"
-            type="nz.scuttlebutt.android_go.models.Author" />
+            type="social.sunrise.app.models.Author" />
     </data>
 
 
