@@ -1,16 +1,12 @@
 package social.sunrise.app
 
 
-import android.Manifest
-import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.sunrisechoir.patchql.Params
 import com.sunrisechoir.patchql.PatchqlApollo
+import gobotexample.Gobotexample
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.LinkResolverDef
 import io.noties.markwon.Markwon
@@ -37,19 +33,24 @@ data class Secret(val id: String, val private: String, val curve: String, val pu
 class ScuttlebuttApp : Application(), KodeinAware {
 
     override val kodein: Kodein by Kodein.lazy {
-        checkPermissions()
-        //val externalDir = "/sdcard"
+
         val externalDir = getDir("scuttlebutt", Context.MODE_PRIVATE).absolutePath
         val repoPath = externalDir + getString(R.string.ssb_go_folder_name)
         val dbPath =
             getDatabasePath(getString(R.string.patchql_sqlite_db_name))?.absolutePath!!
         val offsetlogPath = repoPath + "/log"
 
-        // Remove me!
-        //Gobotexample.start(repoPath)
-
         //We won't have these on first startup
         val secretFile = File(repoPath + "/secret")
+
+        //This is an ugly fix so that if the secrets file is empty we start and stop the server.
+        //This creates the secret file.
+        try {
+            Json.parse(Secret.serializer(), secretFile.readText())
+        } catch (e: Throwable) {
+            Gobotexample.start(repoPath)
+            Gobotexample.stop()
+        }
 
         val secrets = Json.parse(Secret.serializer(), secretFile.readText())
         val pubKey = secrets.id
@@ -148,28 +149,6 @@ class ScuttlebuttApp : Application(), KodeinAware {
     }
 
 
-    private fun checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
 
-            val permissions: Array<String> = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            ActivityCompat.requestPermissions(applicationContext as Activity, permissions, 0)
-            //requestPermissions(permissions, 0)
-            // Permission is not granted
-            //throw Error("no permissions for external storage")
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            val permissions: Array<String> = arrayOf(Manifest.permission.INTERNET)
-            ActivityCompat.requestPermissions(applicationContext as Activity, permissions, 0)
-            //requestPermissions(permissions, 0)
-            // Permission is not granted
-            //throw Error("no permissions for external storage")
-        }
-    }
 
 }

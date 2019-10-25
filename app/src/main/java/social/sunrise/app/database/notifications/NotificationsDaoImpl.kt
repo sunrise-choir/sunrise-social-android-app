@@ -18,8 +18,8 @@ class NotificationsDaoImpl(private val patchqlApollo: PatchqlApollo) : Notificat
         val liveNotifications: MutableLiveData<Int> = MutableLiveData(0)
         var disposable: Disposable? = null
 
-        //val reset = {}
-        val reset: () -> Unit = {
+        val reset = {}
+        val reset_: () -> Unit = {
 
             println("reset called")
             liveNotifications.postValue(0)
