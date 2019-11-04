@@ -9,8 +9,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.serialization.list
 import social.sunrise.app.lib.AuthorRelationship
 
+
+@Serializable
+data class Peer(val Addr: String, val Since: String, val IP: String, val Id: String)
 
 @Serializable
 data class Post(val text: String) {
@@ -55,6 +59,7 @@ class PublishContactMessage(
 ) :
     SsbServerMsg()
 
+class GetPeers(val response: CompletableDeferred<List<Peer>>) : SsbServerMsg()
 class GetBlob(val ref: String, val response: CompletableDeferred<ByteArray>) : SsbServerMsg()
 // This function launches a new counter actor
 
@@ -94,6 +99,15 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                 try {
                     val blob = Gobotexample.blobsGet(msg.ref)
                     msg.response.complete(blob)
+                } catch (e: Exception) {
+                    msg.response.completeExceptionally(e)
+                }
+            }
+            is GetPeers -> {
+                try {
+                    val peersString: ByteArray = Gobotexample.peers()
+                    val peers: List<Peer> = json.parse(Peer.serializer().list, String(peersString))
+                    msg.response.complete(peers)
                 } catch (e: Exception) {
                     msg.response.completeExceptionally(e)
                 }
