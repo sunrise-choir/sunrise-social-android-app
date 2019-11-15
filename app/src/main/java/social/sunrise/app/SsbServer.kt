@@ -14,7 +14,7 @@ import social.sunrise.app.lib.AuthorRelationship
 
 
 @Serializable
-data class Peer(val Addr: String, val Since: String, val IP: String, val Id: String)
+data class Peer(val IP: String, val Id: String)
 
 @Serializable
 data class Post(val text: String) {
@@ -106,7 +106,8 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
             is GetPeers -> {
                 try {
                     val peersString: ByteArray = Gobotexample.peers()
-                    val peers: List<Peer> = json.parse(Peer.serializer().list, String(peersString))
+                    val peers: List<Peer> =
+                        Json.nonstrict.parse(Peer.serializer().list, String(peersString))
                     msg.response.complete(peers)
                 } catch (e: Exception) {
                     msg.response.completeExceptionally(e)

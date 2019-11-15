@@ -26,6 +26,40 @@ class AuthorProfileDaoImpl(
     override fun get(query: () -> AuthorProfileQuery.Builder): LiveAuthor {
         this.query = query
 
+//        @UseExperimental(kotlin.time.ExperimentalTime::class)
+//        val time3 = measureTime {
+//            val result = patchqlApollo.validate("/sdcard/piet.offset")
+//            println(result)
+//        }
+//
+//        println("validated in $time3")
+//
+//        @UseExperimental(kotlin.time.ExperimentalTime::class)
+//        val time4 = measureTime {
+//            val result = patchqlApollo.validateBatch("/sdcard/piet.offset")
+//            println(result)
+//        }
+//
+//        println("validated batch in $time4")
+//
+//        @UseExperimental(kotlin.time.ExperimentalTime::class)
+//        val time = measureTime {
+//            val result = patchqlApollo.verify()
+//            println(result)
+//        }
+//
+//        println("verify in $time")
+//
+//        @UseExperimental(kotlin.time.ExperimentalTime::class)
+//        val time2 = measureTime {
+//            val result = patchqlApollo.verifyBatch()
+//            println(result)
+//        }
+//
+//        println("verify batch in $time2")
+
+
+
         load()
 
         return author

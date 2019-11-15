@@ -4,4 +4,7 @@
     <item
         android:id="@+id/profile_fragment"
         android:title="@string/profile_menu_item" />
+    <item
+        android:id="@+id/peers_fragment"
+        android:title="@string/peer_connections" />
 </menu>

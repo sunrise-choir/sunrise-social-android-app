@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //checkPermissions()
-
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.lifecycleOwner = this

@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Sunrise Social</string>
+    <string name="app_name">Sunrise Social</string>
     <string name="post_button">Post</string>
     <string name="edit_post_hint">Add your post text here…</string>
 
@@ -19,12 +19,13 @@
     <string name="example_search_string">possum AND stew NOT loomi*</string>
     <string name="search_button">Search</string>
     <string name="follow_button">Follow</string>
-  <string name="unfollow_button">Unfollow</string>
+    <string name="unfollow_button">Unfollow</string>
     <string name="block_button">Block</string>
     <string name="following">Following</string>
     <string name="followers">Followers</string>
     <string name="blocking">Blocking</string>
     <string name="blockers">Blockers</string>
+    <string name="peer_connections">Peers</string>
 
     <string name="mdToEmoji">{
   "100": "💯",
@@ -1508,7 +1509,10 @@
   "zambia": "🇿🇲",
   "zimbabwe": "🇿🇼"
 }</string>
-  <string name="profile">Profile</string>
-  <string name="posts">Posts</string>
-  <string name="mentions">Mentions</string>
+    <string name="profile">Profile</string>
+    <string name="posts">Posts</string>
+    <string name="mentions">Mentions</string>
+    <string name="PublicKey">Public Key</string>
+    <string name="IpAddress">IP Address</string>
+    <string name="searching_for_peers">Searching for peers on the local network...</string>
 </resources>

@@ -4,9 +4,11 @@ import com.sunrisechoir.patchql.PatchqlApollo
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.SendChannel
 import social.sunrise.app.SsbServerMsg
+import social.sunrise.app.dao.PeersDao
 import social.sunrise.app.database.authorProfile.AuthorProfileDaoImpl
 import social.sunrise.app.database.blob.BlobDaoImpl
 import social.sunrise.app.database.notifications.NotificationsDaoImpl
+import social.sunrise.app.database.peers.PeersDaoImpl
 import social.sunrise.app.database.post.PostDaoImpl
 import social.sunrise.app.database.threads.ThreadDaoImpl
 import social.sunrise.app.database.threads.ThreadsDaoImpl
@@ -31,6 +33,7 @@ class Database(
     private val authorProfileDao = AuthorProfileDaoImpl(patchqlApollo, ssbServer, process)
     private val notificationsDao = NotificationsDaoImpl(patchqlApollo)
     private val blobsDao = BlobDaoImpl(patchqlApollo, ssbServer)
+    private val peersDao = PeersDaoImpl(ssbServer)
 
     fun postDao(): PostDao {
         return postDao
@@ -54,6 +57,10 @@ class Database(
 
     fun blobsDao(): BlobDao {
         return blobsDao
+    }
+
+    fun peersDao(): PeersDao {
+        return peersDao
     }
 
 }

@@ -39,20 +39,24 @@ data class Author(
 ) {
     companion object {
         fun fromAuthorProfile(profile: AuthorProfileQuery.Data): Author {
-            val author = profile.author()!!
+            val author = profile.author()
 
-            return Author(
-                id = author.id(),
-                name = author.name(),
-                description = author.description(),
-                followerCount = author.follows().size,
-                followingCount = author.followedBy().size,
-                blockerCount = author.blockedBy().size,
-                blockingCount = author.blocks().size,
-                relationshipToMe = author.contactStatusTo().public_(),
-                relationshipToThem = author.contactStatusFrom().public_(),
-                imageLink = author.imageLink()
-            )
+            return if (author != null) {
+                Author(
+                    id = author.id(),
+                    name = author.name(),
+                    description = author.description(),
+                    followerCount = author.follows().size,
+                    followingCount = author.followedBy().size,
+                    blockerCount = author.blockedBy().size,
+                    blockingCount = author.blocks().size,
+                    relationshipToMe = author.contactStatusTo().public_(),
+                    relationshipToThem = author.contactStatusFrom().public_(),
+                    imageLink = author.imageLink()
+                )
+            } else {
+                Author("", "", "", 0, 0, 0, 0, ContactState.NEUTRAL, ContactState.NEUTRAL, null)
+            }
         }
     }
 }

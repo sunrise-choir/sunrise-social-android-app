@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.sunrisechoir.graphql.ThreadsSummaryQuery
+import com.sunrisechoir.graphql.type.OrderBy
 import io.noties.markwon.Markwon
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -22,7 +23,7 @@ class ThreadsViewModel(
     private val database: Database by instance()
     val markwon: Markwon by instance()
 
-    val query = { ThreadsSummaryQuery.builder() }
+    val query = { ThreadsSummaryQuery.builder().orderBy(OrderBy.ASSERTED) }
 
     val threadsDataSourceFactory = database.threadsDao().getAllPaged(query)
 

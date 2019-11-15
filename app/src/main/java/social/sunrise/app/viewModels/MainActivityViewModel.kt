@@ -12,10 +12,13 @@ import kotlinx.coroutines.channels.SendChannel
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
-import social.sunrise.app.*
+import social.sunrise.app.SsbServerMsg
+import social.sunrise.app.StartServer
+import social.sunrise.app.StopServer
 import social.sunrise.app.database.Database
 import social.sunrise.app.models.PatchqlBackgroundMessage
 import social.sunrise.app.models.patchqlBackgroundActor
+import social.sunrise.app.ssbServerActor
 
 
 class MainActivityViewModel(app: Application) : AndroidViewModel(app), KodeinAware {
@@ -72,17 +75,7 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app), KodeinAwa
             }
         }
 
-        GlobalScope.launch {
-            withContext(Dispatchers.Default) {
-                while (true) {
-                    delay(10000)
-                    val response = CompletableDeferred<List<Peer>>()
-                    serverActor.await().send(GetPeers(response))
-                    println(response.await())
-                }
 
-            }
-        }
 
     }
 
