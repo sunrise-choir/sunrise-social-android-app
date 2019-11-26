@@ -22,6 +22,7 @@ class PeersDaoImpl(val serverActor: CompletableDeferred<SendChannel<SsbServerMsg
                     val response = CompletableDeferred<List<Peer>>()
                     serverActor.await().send(GetPeers(response))
 
+
                     val newPeers = response.await()
                     val oldPeers = peers.value.orEmpty()
 

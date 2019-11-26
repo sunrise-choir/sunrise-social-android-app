@@ -166,7 +166,12 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                 }
                 val contactJson = json.stringify(contactSerializer, contactMsg)
                 Gobotexample.publish(contactJson, recps.marshalJSON())
+
+
                 msg.response.complete(0)
+
+                Gobotexample.stop()
+                Gobotexample.start(repoPath)
             }
         }
     }

@@ -35,6 +35,7 @@ class PeersFragment : Fragment() {
         viewAdapter = PeersAdapter(viewModel.peers.value.orEmpty())
 
         viewModel.peers.observe(this, Observer {
+            println("$it")
             viewAdapter.peers = it
             viewAdapter.notifyDataSetChanged()
         })
