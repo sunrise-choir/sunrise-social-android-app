@@ -10,11 +10,15 @@
 
 Requirements:
 
-[Rust](https://rustup.rs/) using rustup
-[Android SDK + Android Studio](http://www.androiddocs.com/sdk/installing/index.html)
-[Android NDK](https://developer.android.com/studio/projects/install-ndk)
-[Go](https://golang.org/doc/install) (Optional, only needed if you want to develop the go stack)
-An android phone to develop on. I have tested that images for the emulator do run, but I haven't worked out how to get networking going.
+- [Rust](https://rustup.rs/) using rustup
+
+- [Android SDK + Android Studio](http://www.androiddocs.com/sdk/installing/index.html)
+
+- [Android NDK](https://developer.android.com/studio/projects/install-ndk)
+
+- [Go](https://golang.org/doc/install) (Optional, only needed if you want to develop the go stack)
+
+- An android phone to develop on. I have tested that images for the emulator do run, but I haven't worked out how to get networking going.
 
 Install the rust cross compilers for android:
 
@@ -33,7 +37,7 @@ Open android studio -> close any open projects -> "Open existing Android Studio 
 
 ## Doing the first onboarding after an install.
 
-** The order of this is important, follow it exactly. It matters that patchwork follows the phone first. **
+**The order of this is important, follow it exactly. It matters that patchwork follows the phone first.**
 
 - with your phone and you computer on the same local network
 - open the app
