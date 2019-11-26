@@ -8,24 +8,21 @@
 
 ## Dev Setup
 
-Requirements:
+### Requirements:
 
 - [Rust](https://rustup.rs/) using rustup
-
 - [Android SDK + Android Studio](http://www.androiddocs.com/sdk/installing/index.html)
-
 - [Android NDK](https://developer.android.com/studio/projects/install-ndk)
-
 - [Go](https://golang.org/doc/install) (Optional, only needed if you want to develop the go stack)
-
 - An android phone to develop on. I have tested that images for the emulator do run, but I haven't worked out how to get networking going.
 
-Install the rust cross compilers for android:
+### Install the rust cross compilers for android:
 
 ```sh
 rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 ```
-Get the repos:
+
+### Get the repos:
 
 ```sh
 mkdir sunrise_social; cd sunrise_social
@@ -33,7 +30,13 @@ git clone git@github.com:sunrise-choir/ssb-patchql-android.git
 git clone git@github.com:sunrise-choir/sunrise-social-android-app.git 
 ```
 
+### Open the project in Android Studio:
+
 Open android studio -> close any open projects -> "Open existing Android Studio Project" -> browse to "sunrise_social" folder and select the "sunrise-social-android-app" folder (it should have a special icon in the file explorer.)
+
+### Build and install
+
+The first build will take a while because it needs to build all the rust code. Builds after that are much faster.
 
 ## Doing the first onboarding after an install.
 
@@ -50,3 +53,10 @@ Open android studio -> close any open projects -> "Open existing Android Studio 
 - this should trigger the phone to start replicating. 
 - Wait for a minute while the sbot reconnects to patchwork. Then try pushing the home button on the bottom menu every so often, it will refresh with new content as it is downloaded and indexed. The ui will never block while indexing / replicating is happening.
 
+## Todos
+
+See the [project]()
+
+## Hints, tips and known issues
+
+- 
