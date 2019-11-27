@@ -1515,4 +1515,6 @@
     <string name="PublicKey">Public Key</string>
     <string name="IpAddress">IP Address</string>
     <string name="searching_for_peers">Searching for peers on the local network...</string>
+    <string name="edit_description_hint">Describe yourself. (You can use markdown)</string>
+    <string name="save_button_text">Save</string>
 </resources>

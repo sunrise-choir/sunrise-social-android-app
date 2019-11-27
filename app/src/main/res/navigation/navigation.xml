@@ -64,7 +64,11 @@
         tools:layout="@layout/fragment_profile">
         <argument
             android:name="feedId"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_profile_fragment_to_edit_profile_fragment"
+            app:destination="@id/edit_profile_fragment" />
     </fragment>
     <action
         android:id="@+id/action_global_thread_fragment"
@@ -92,5 +96,14 @@
     <action
         android:id="@+id/action_global_peersFragment"
         app:destination="@id/peers_fragment" />
+    <fragment
+        android:id="@+id/edit_profile_fragment"
+        android:name="social.sunrise.app.fragments.EditProfileFragment"
+        android:label="edit_profile_fragment"
+        tools:layout="@layout/fragment_edit_profile">
+        <argument
+            android:name="feedId"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

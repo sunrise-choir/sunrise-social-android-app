@@ -5,6 +5,7 @@ import com.sunrisechoir.graphql.AuthorProfileQuery
 import com.sunrisechoir.patchql.PatchqlApollo
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
+import social.sunrise.app.PublishAboutMessage
 import social.sunrise.app.PublishContactMessage
 import social.sunrise.app.SsbServerMsg
 import social.sunrise.app.lib.AuthorRelationship
@@ -26,43 +27,33 @@ class AuthorProfileDaoImpl(
     override fun get(query: () -> AuthorProfileQuery.Builder): LiveAuthor {
         this.query = query
 
-//        @UseExperimental(kotlin.time.ExperimentalTime::class)
-//        val time3 = measureTime {
-//            val result = patchqlApollo.validate("/sdcard/piet.offset")
-//            println(result)
-//        }
-//
-//        println("validated in $time3")
-//
-//        @UseExperimental(kotlin.time.ExperimentalTime::class)
-//        val time4 = measureTime {
-//            val result = patchqlApollo.validateBatch("/sdcard/piet.offset")
-//            println(result)
-//        }
-//
-//        println("validated batch in $time4")
-//
-//        @UseExperimental(kotlin.time.ExperimentalTime::class)
-//        val time = measureTime {
-//            val result = patchqlApollo.verify()
-//            println(result)
-//        }
-//
-//        println("verify in $time")
-//
-//        @UseExperimental(kotlin.time.ExperimentalTime::class)
-//        val time2 = measureTime {
-//            val result = patchqlApollo.verifyBatch()
-//            println(result)
-//        }
-//
-//        println("verify batch in $time2")
-
-
-
         load()
 
         return author
+    }
+
+    override fun updateProfile(name: String, description: String, authorId: String) {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val publishResponse = CompletableDeferred<Long>()
+                ssbServer.await().send(
+                    PublishAboutMessage(
+                        authorId = authorId,
+                        name = name,
+                        description = description,
+                        response = publishResponse
+                    )
+                )
+                publishResponse.await()
+                val processResponse = CompletableDeferred<Unit>()
+
+                process.await().send(ProcessNextChunk(processResponse))
+                processResponse.await()
+
+                load()
+            }
+        }
+
     }
 
     fun load() {

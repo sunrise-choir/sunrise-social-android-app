@@ -7,4 +7,5 @@ import social.sunrise.app.models.LiveAuthor
 interface Author {
     fun get(query: () -> AuthorProfileQuery.Builder): LiveAuthor
     fun changeRelationship(relationship: AuthorRelationship, authorId: String)
+    fun updateProfile(name: String, description: String, authorId: String)
 }

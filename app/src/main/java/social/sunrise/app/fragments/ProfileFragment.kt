@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.sunrisechoir.graphql.type.ContactState
 import social.sunrise.app.R
 import social.sunrise.app.databinding.FragmentProfileBinding
@@ -26,12 +27,11 @@ class ProfileFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
 
-        var authorId: String;
-        try{
+        val authorId = try {
             val args = ProfileFragmentArgs.fromBundle(arguments!!)
-            authorId = args.feedId
+            args.feedId!!
         }catch(e: Exception){
-            authorId = viewModel.me
+            viewModel.me
         }
 
         // Inflate the layout for this fragment
@@ -48,14 +48,25 @@ class ProfileFragment : Fragment() {
             binding.author = it
             viewModel.markwon.setMarkdown(binding.descriptionTextView, it.description.orEmpty())
 
-            when (it.relationshipToThem) {
-                ContactState.FOLLOW -> {
+            when (Pair(authorId == viewModel.me, it.relationshipToThem)) {
+                Pair(false, ContactState.FOLLOW) -> {
                     binding.followButton.text = getText(R.string.unfollow_button)
                     binding.followButton.setOnClickListener { viewModel.unfollowAuthor(authorId) }
                 }
-                ContactState.NEUTRAL -> {
+                Pair(false, ContactState.NEUTRAL) -> {
                     binding.followButton.text = getText(R.string.follow_button)
                     binding.followButton.setOnClickListener { viewModel.followAuthor(authorId) }
+                }
+                else -> {
+                    binding.followButton.text = "Edit"
+                    binding.followButton.setOnClickListener {
+                        println("author id is $authorId")
+                        findNavController().navigate(
+                            ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment(
+                                authorId
+                            )
+                        )
+                    }
                 }
             }
 

@@ -36,6 +36,12 @@ data class Like(@Transient val link: String = "", @Transient val value: Int = 0)
     data class Vote(val link: String, val value: Int)
 }
 
+
+@Serializable
+data class About(val about: String = "", val name: String, val description: String) {
+    val type = "about"
+}
+
 // Message types for counterActor
 sealed class SsbServerMsg
 
@@ -59,6 +65,14 @@ class PublishContactMessage(
 ) :
     SsbServerMsg()
 
+class PublishAboutMessage(
+    val name: String,
+    val description: String,
+    val authorId: String,
+    val response: CompletableDeferred<Long>
+) :
+    SsbServerMsg()
+
 class GetPeers(val response: CompletableDeferred<List<Peer>>) : SsbServerMsg()
 class GetBlob(val ref: String, val response: CompletableDeferred<ByteArray>) : SsbServerMsg()
 // This function launches a new counter actor
@@ -68,6 +82,7 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
     val tag = "SSB_SERVER"
     val json = Json(JsonConfiguration.Stable)
     val postSerializer = Post.serializer()
+    val aboutSerializer = About.serializer()
     val likeSerializer = Like.serializer()
     val contactSerializer = Contact.serializer()
     var isServerRunning = false
@@ -132,6 +147,20 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
 
                 Gobotexample.publish(
                     postJson,
+                    recps.marshalJSON()
+                )
+
+                msg.response.complete(0)
+            }
+            is PublishAboutMessage -> {
+
+                val recps = Gobotexample.newRecipientsCollection()
+                val aboutMsg =
+                    About(about = msg.authorId, name = msg.name, description = msg.description)
+                val aboutJson = json.stringify(aboutSerializer, aboutMsg)
+
+                Gobotexample.publish(
+                    aboutJson,
                     recps.marshalJSON()
                 )
 

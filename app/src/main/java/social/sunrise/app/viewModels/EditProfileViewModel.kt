@@ -1,6 +1,5 @@
 package social.sunrise.app.viewModels
 
-
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.sunrisechoir.graphql.AuthorProfileQuery
@@ -9,11 +8,9 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 import social.sunrise.app.database.Database
-import social.sunrise.app.lib.AuthorRelationship
 import social.sunrise.app.models.LiveAuthor
 
-
-class ProfileViewModel(
+class EditProfileViewModel(
     app: Application
 ) : AndroidViewModel(app), KodeinAware {
 
@@ -28,18 +25,9 @@ class ProfileViewModel(
         return database.authorProfileDao().get(query)
     }
 
-    fun followAuthor(authorId: String) {
-        return database.authorProfileDao().changeRelationship(AuthorRelationship.FOLLOW, authorId)
-    }
-
-    fun unfollowAuthor(authorId: String) {
-        return database.authorProfileDao().changeRelationship(AuthorRelationship.UNFOLLOW, authorId)
-    }
-
     fun updateProfile(name: String, description: String) {
-
+        database.authorProfileDao()
+            .updateProfile(name = name, description = description, authorId = me)
     }
-
-    fun getBlob(blobId: String) = database.blobsDao().get(blobId = blobId)
 
 }

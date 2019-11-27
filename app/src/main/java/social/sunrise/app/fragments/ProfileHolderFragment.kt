@@ -1,4 +1,4 @@
-package social.sunrise.app
+package social.sunrise.app.fragments
 
 
 import android.os.Bundle
@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import social.sunrise.app.R
 
 /**
  * A simple [Fragment] subclass.
  */
-class ProfileHolder : Fragment() {
+class ProfileHolderFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
