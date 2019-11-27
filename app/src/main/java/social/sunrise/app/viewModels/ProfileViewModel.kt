@@ -21,7 +21,7 @@ class ProfileViewModel(
 
     private val database: Database by instance()
     val markwon: Markwon by instance()
-    private val me: String by instance("mySsbIdentity")
+    val me: String by instance("mySsbIdentity")
 
     fun getAuthor(authorId: String): LiveAuthor {
         val query = { AuthorProfileQuery.builder().id(authorId).me(me) }

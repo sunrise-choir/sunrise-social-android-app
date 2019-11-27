@@ -23,8 +23,16 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val args = ProfileFragmentArgs.fromBundle(arguments!!)
-        val authorId = args.feedId //TODO change feedId to be author id
+
+        viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
+
+        var authorId: String;
+        try{
+            val args = ProfileFragmentArgs.fromBundle(arguments!!)
+            authorId = args.feedId
+        }catch(e: Exception){
+            authorId = viewModel.me
+        }
 
         // Inflate the layout for this fragment
         val binding: FragmentProfileBinding =
@@ -33,7 +41,6 @@ class ProfileFragment : Fragment() {
                 R.layout.fragment_profile, container, false
             )
 
-        viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
 
         val author = viewModel.getAuthor(authorId)
 
