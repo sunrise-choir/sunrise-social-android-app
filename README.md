@@ -13,6 +13,7 @@
 - [Contributing](#contributing)
 - [Thanks](#thanks)
 
+
 ## Overview
 
 Sunrise social is a native android app written in [kotlin](https://kotlinlang.org/). It has three main parts:
@@ -26,15 +27,15 @@ Patchql knows how to parse the server's append only log, and uses it to build in
 
 The app makes [graphql](https://graphql.org/) requests to patchql via the android [apollo](https://github.com/apollographql/apollo-android) library to build views.
 
+
 ## Cool features
 
 - _A lot_ of effort has gone into designing a system that has a responsive ui _even when downloading and indexing lots of feeds_. This is an ongoing pain with the [js flume](https://github.com/flumedb/flumedb) that [manyverse](https://www.manyver.se/) is still suffering with.
   - patchql has a database connection pool internally that has a single writer and multiple readers. This means multiple threads can be making graphql queries while a different thread can be processing the offset log into the database.
 - Type safety is a good thing. The type safety enforced by rust + diesel goes so well with graphql. We generate a graphql schema from patchql and then copy it into the [ssb-patchql-android](https://github.com/sunrise-choir/ssb-patchql-android) module. Then the [apollo](https://github.com/apollographql/apollo-android) plugin uses the schema to generate classes for us to use in the app. 
 
-## Project status 
 
-Not production ready yet, more of a tool for hacking
+## Project status 
 
 This app is not ready for the play store yet. 
 
@@ -43,6 +44,7 @@ In some ways it's proof that sunrise choir is making a stack that _will_ be usef
 ### Todos
 
 See the [project]()
+
 
 ## Dev Setup
 
@@ -76,12 +78,12 @@ Open android studio -> close any open projects -> "Open existing Android Studio 
 
 The first build will take a while because it needs to build all the rust code. Builds after that are much faster.
 
-
 ### Go development
 
 If you need to extend the go code, follow the [instructions]() in the readme to build bindings with [go-mobile](https://github.com/golang/go/wiki/Mobile).
 
 You need to manually copy the generated bindings into this project. 
+
 
 ## Doing the first onboarding after an install.
 
@@ -108,11 +110,13 @@ Note: This behaviour comes from the go sbot, it will change in the future but it
 - graphql schema
 - blob loading 
 
+
 ## Contributing
 
 - Check out the sunrise choir [contribution](https://github.com/sunrise-choir/meta/blob/master/CONTRIBUTING.md) guidelines.
 - We have a [code of conduct](https://github.com/sunrise-choir/meta/blob/master/CODE_OF_CONDUCT.md)
 - **Important** your must accept [the contributor licence agreement](https://github.com/sunrise-choir/meta/blob/master/processes/cla.md) if you're going to submit code.
+
 
 ## Thanks
 
