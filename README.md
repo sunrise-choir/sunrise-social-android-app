@@ -9,7 +9,7 @@
 - [Dev Setup](#dev-setup)
   - [Requirements](#requirements)
 - [Project Status](#project-status)
-- [Hints, tips and known issues](#hints,-tips-and-known-issues)
+- [Hints, tips and known issues](#hints-tips-and-known-issues)
 - [Contributing](#contributing)
 - [Thanks](#thanks)
 
