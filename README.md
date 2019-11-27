@@ -4,15 +4,14 @@
 
 ## Contents
 
-- [Overview](#Overview)
-- [Cool features](#Cool features)
-- [Dev Setup](#Dev Setup)
-  - [Requirements](#Requirements)
-- [Project Status](#Project status)
-- [Project Status](#Project status)
-- [Hints, tips and known issues](#Hints, tips and known issues)
-- [Contributing](#Contributing)
-- [Thanks](#Thanks)
+- [Overview](#overview)
+- [Cool features](#cool-features)
+- [Dev Setup](#dev-setup)
+  - [Requirements](#requirements)
+- [Project Status](#project-status)
+- [Hints, tips and known issues](#hints,-tips-and-known-issues)
+- [Contributing](#contributing)
+- [Thanks](#thanks)
 
 ## Overview
 
