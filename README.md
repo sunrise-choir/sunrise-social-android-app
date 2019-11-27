@@ -2,6 +2,18 @@
 
 > A native android app for [scuttlebutt](https://scuttlebutt.nz/), written by the [sunrise choir](https://github.com/sunrise-choir/).
 
+## Contents
+
+- [Overview](#Overview)
+- [Cool features](#Cool features)
+- [Dev Setup](#Dev Setup)
+  - [Requirements](#Requirements)
+- [Project Status](#Project status)
+- [Project Status](#Project status)
+- [Hints, tips and known issues](#Hints, tips and known issues)
+- [Contributing](#Contributing)
+- [Thanks](#Thanks)
+
 ## Overview
 
 Sunrise social is a native android app written in [kotlin](https://kotlinlang.org/). It has three main parts:
@@ -21,11 +33,17 @@ The app makes [graphql](https://graphql.org/) requests to patchql via the androi
   - patchql has a database connection pool internally that has a single writer and multiple readers. This means multiple threads can be making graphql queries while a different thread can be processing the offset log into the database.
 - Type safety is a good thing. The type safety enforced by rust + diesel goes so well with graphql. We generate a graphql schema from patchql and then copy it into the [ssb-patchql-android](https://github.com/sunrise-choir/ssb-patchql-android) module. Then the [apollo](https://github.com/apollographql/apollo-android) plugin uses the schema to generate classes for us to use in the app. 
 
-## Not production ready yet, more of a tool for hacking
+## Project status 
+
+Not production ready yet, more of a tool for hacking
 
 This app is not ready for the play store yet. 
 
-In some ways it's proof that sunrise choir is making a stack that _will_ be useful and production ready. But it needs more work!  Can **you** help us out? Please chip in. We're actively seeking contributors. 
+In some ways it's proof that sunrise choir is making a stack that _will_ be useful and production ready. But it needs more work!  Can **you** help us out? Please chip in. We're actively seeking [contributors](#Contributing). 
+
+### Todos
+
+See the [project]()
 
 ## Dev Setup
 
@@ -83,9 +101,6 @@ You need to manually copy the generated bindings into this project.
 
 Note: This behaviour comes from the go sbot, it will change in the future but it's workable for development.
 
-## Todos
-
-See the [project]()
 
 ## Hints, tips and known issues
 
@@ -98,7 +113,7 @@ See the [project]()
 
 - Check out the sunrise choir [contribution](https://github.com/sunrise-choir/meta/blob/master/CONTRIBUTING.md) guidelines.
 - We have a [code of conduct](https://github.com/sunrise-choir/meta/blob/master/CODE_OF_CONDUCT.md)
-- **Important** your must accept [the contributor licence agreement](https://github.com/sunrise-choir/meta/blob/master/processes/cla.md)if you're going to submit code.
+- **Important** your must accept [the contributor licence agreement](https://github.com/sunrise-choir/meta/blob/master/processes/cla.md) if you're going to submit code.
 
 ## Thanks
 
