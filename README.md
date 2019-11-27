@@ -15,11 +15,17 @@ Patchql knows how to parse the server's append only log, and uses it to build in
 
 The app makes [graphql](https://graphql.org/) requests to patchql via the android [apollo](https://github.com/apollographql/apollo-android) library to build views.
 
-## Not production ready
+## Cool features
 
-This app is not ready for the play store yet.
+- _A lot_ of effort has gone into designing a system that has a responsive ui _even when downloading and indexing lots of feeds_. This is an ongoing pain with the [js flume](https://github.com/flumedb/flumedb) that [manyverse](https://www.manyver.se/) is still suffering with.
+  - patchql has a database connection pool internally that has a single writer and multiple readers. This means multiple threads can be making graphql queries while a different thread can be processing the offset log into the database.
+- Type safety is a good thing. The type safety enforced by rust + diesel goes so well with graphql. We generate a graphql schema from patchql and then copy it into the [ssb-patchql-android](https://github.com/sunrise-choir/ssb-patchql-android) module. Then the [apollo](https://github.com/apollographql/apollo-android) plugin uses the schema to generate classes for us to use in the app. 
 
-Can **you** help get it there? Please chip in. This project needs experienced android developers to help improve the codebase.
+## Not production ready yet, more of a tool for hacking
+
+This app is not ready for the play store yet. 
+
+In some ways it's proof that sunrise choir is making a stack that _will_ be useful and production ready. But it needs more work!  Can **you** help us out? Please chip in. We're actively seeking contributors. 
 
 ## Dev Setup
 
@@ -83,9 +89,16 @@ See the [project]()
 
 ## Hints, tips and known issues
 
-- go dev
+- replication in go is unexpectedly slow. Cryptix gets replication speeds ~100 times faster on an iphone with comparable specs to my andoid phone. We're not sure if it's about fs access or what.
 - app files location on the phone
+- graphql schema
 - blob loading 
+
+## Contributing
+
+- Check out the sunrise choir [contribution](https://github.com/sunrise-choir/meta/blob/master/CONTRIBUTING.md) guidelines.
+- We have a [code of conduct](https://github.com/sunrise-choir/meta/blob/master/CODE_OF_CONDUCT.md)
+- **Important** your must accept [the contributor licence agreement](https://github.com/sunrise-choir/meta/blob/master/processes/cla.md)if you're going to submit code.
 
 ## Thanks
 
