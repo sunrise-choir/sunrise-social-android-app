@@ -6,14 +6,20 @@
 
 Sunrise social is a native android app written in [kotlin](https://kotlinlang.org/). It has three main parts:
 - The android app (this repo)
-- [patchql](https://github.com/sunrise-choir/ssb-patchql) (and the [android bindings to patchql](https://github.com/sunrise-choir/ssb-patchql-android))
-- The [scuttlebutt server](), written in go.
+- [patchql](https://github.com/sunrise-choir/ssb-patchql) (and the [android bindings to patchql](https://github.com/sunrise-choir/ssb-patchql-android)), written in Rust.
+- The [scuttlebutt server](https://github.com/cryptoscope/ssb/) (and the [bindings]()), written in go by [@cryptix](https://github.com/cryptix), [@keks](https://github.com/keks) and [@PragmaticCypher](https://github.com/PragmaticCypher).
 
 The scuttlebutt server discovers peers on the local network, replicates feeds of friends and publishes new messages. It stores all the feed data in a binary append only log.
 
 Patchql knows how to parse the server's append only log, and uses it to build indexes in a [sqlite3](https://www.sqlite.org/index.html) database using the [diesel-rs](http://diesel.rs/) ORM.
 
-The app makes [graphql](https://graphql.org/) requests to patchql via the android [apollo](https://github.com/apollographql/apollo-android) library.
+The app makes [graphql](https://graphql.org/) requests to patchql via the android [apollo](https://github.com/apollographql/apollo-android) library to build views.
+
+## Not production ready
+
+This app is not ready for the play store yet.
+
+Can **you** help get it there? Please chip in. This project needs experienced android developers to help improve the codebase.
 
 ## Dev Setup
 
@@ -22,7 +28,7 @@ The app makes [graphql](https://graphql.org/) requests to patchql via the androi
 - [Rust](https://rustup.rs/) using rustup
 - [Android SDK + Android Studio](http://www.androiddocs.com/sdk/installing/index.html)
 - [Android NDK](https://developer.android.com/studio/projects/install-ndk)
-- [Go](https://golang.org/doc/install) (Optional, only needed if you want to develop the go stack)
+- [Go](https://golang.org/doc/install) and [go-mobile](https://github.com/golang/go/wiki/Mobile) (Optional, only needed if you want to develop the go stack)
 - An android phone to develop on. I have tested that images for the emulator do run, but I haven't worked out how to get networking going.
 
 ### Install the rust cross-compilers for android:
@@ -47,6 +53,13 @@ Open android studio -> close any open projects -> "Open existing Android Studio 
 
 The first build will take a while because it needs to build all the rust code. Builds after that are much faster.
 
+
+### Go development
+
+If you need to extend the go code, follow the [instructions]() in the readme to build bindings with [go-mobile](https://github.com/golang/go/wiki/Mobile).
+
+You need to manually copy the generated bindings into this project. 
+
 ## Doing the first onboarding after an install.
 
 **The order of this is important, follow it exactly. It matters that patchwork follows the phone first.**
@@ -62,7 +75,7 @@ The first build will take a while because it needs to build all the rust code. B
 - this should trigger the phone to start replicating. 
 - Wait for a minute while the sbot reconnects to patchwork. Then try pushing the home button on the bottom menu every so often, it will refresh with new content as it is downloaded and indexed. The ui will never block while indexing / replicating is happening.
 
-Note: This behaviour comes from the go sbot, it will change in the future but it's workable for dev.
+Note: This behaviour comes from the go sbot, it will change in the future but it's workable for development.
 
 ## Todos
 
@@ -73,3 +86,8 @@ See the [project]()
 - go dev
 - app files location on the phone
 - blob loading 
+
+## Thanks
+
+- Many many many thanks to [@cryptix](https://github.com/cryptix). I truly couldn't have done it without his kind and generous help. I'm sure at times supporting this has been a cause of extra stress on top of lots of other stuff, so I'm very grateful.
+- Of course, none of this would exist without the generosity and vision of [@ahdinosaur](https://github.com/ahdinosaur/). Please support [sunrise choir on open collective](https://opencollective.com/sunrise-choir)
