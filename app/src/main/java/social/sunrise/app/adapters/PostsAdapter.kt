@@ -73,21 +73,21 @@ class PostsAdapter(
                     val node = markwon.parse(post.text)
                     val spanned = markwon.render(node)
 
-                    val post = binding.fragmentPost.rootPostText
-                    post.post {
-                        markwon.setParsedMarkdown(post, spanned)
+                    val postView = binding.fragmentPost.rootPostText
+                    postView.post {
+                        markwon.setParsedMarkdown(postView, spanned)
                     }
                 }
             }
             likesIconImage.setOnClickListener {
                 // Get the latest post from the observable
-                val post = livePost.value!!
-                likePost(post.id, !post.likedByMe)
+                val postValue = livePost.value!!
+                likePost(postValue.id, !postValue.likedByMe)
             }
 
             authorImage.setOnClickListener {
-                val post = livePost.value!!
-                navigateToAuthor(post.authorId)
+                val postValue = livePost.value!!
+                navigateToAuthor(postValue.authorId)
 
             }
         }
