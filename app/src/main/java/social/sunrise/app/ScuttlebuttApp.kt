@@ -124,7 +124,7 @@ class ScuttlebuttApp : Application(), KodeinAware {
                                 )
                             } else if (uri.isFeed()) {
                                 navController.navigate(
-                                    NavigationDirections.actionGlobalProfileFragment(
+                                    NavigationDirections.actionGlobalProfileHolderFragment(
                                         link
                                     )
                                 )

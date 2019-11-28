@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.sunrisechoir.graphql.ThreadsSummaryQuery
+import com.sunrisechoir.graphql.type.OrderBy
 import com.sunrisechoir.graphql.type.Privacy
 import io.noties.markwon.Markwon
 import org.kodein.di.KodeinAware
@@ -23,14 +24,14 @@ class PrivateThreadsViewModel(
     private val database: Database by instance()
     val markwon: Markwon by instance()
 
-    val query = { ThreadsSummaryQuery.builder().privacy(Privacy.PRIVATE) }
+    val query = { ThreadsSummaryQuery.builder().privacy(Privacy.PRIVATE).orderBy(OrderBy.ASSERTED) }
 
     val threadsDataSourceFactory = database.threadsDao().getAllPaged(query)
 
     val pagedListConfig = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
-        .setInitialLoadSizeHint(10)
-        .setPageSize(20).build()
+        .setInitialLoadSizeHint(1)
+        .setPageSize(1).build()
 
     val threadsLiveData = LivePagedListBuilder(threadsDataSourceFactory, pagedListConfig).build()
 

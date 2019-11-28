@@ -1,7 +1,6 @@
 package social.sunrise.app.models
 
 
-import android.util.Log
 import com.sunrisechoir.graphql.ProcessMutation
 import com.sunrisechoir.patchql.PatchqlApollo
 import kotlinx.coroutines.CompletableDeferred
@@ -43,7 +42,7 @@ fun CoroutineScope.patchqlBackgroundActor(patchql: PatchqlApollo, delayTime: Lon
                     }
                 }
                 latestSequence = newSequence
-                Log.v(tag, "Processed a chunk")
+                //Log.v(tag, "Processed a chunk")
             }
 
             when (msg) {

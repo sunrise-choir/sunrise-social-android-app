@@ -1,7 +1,6 @@
 package social.sunrise.app.fragments
 
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +40,6 @@ class ProfileFragment : Fragment() {
                 R.layout.fragment_profile, container, false
             )
 
-
         val author = viewModel.getAuthor(authorId)
 
         author.observe(this, Observer {
@@ -73,8 +71,8 @@ class ProfileFragment : Fragment() {
 
             if (it.imageLink != null) {
                 viewModel.getBlob(it.imageLink).observe(this.viewLifecycleOwner, Observer {
-                    val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
-                    binding.avataarImageView.setImageBitmap(bitmap)
+
+                    binding.avataarImageView.setImageBitmap(it)
                 })
             }
 

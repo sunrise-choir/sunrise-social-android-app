@@ -36,10 +36,6 @@ class ProfileViewModel(
         return database.authorProfileDao().changeRelationship(AuthorRelationship.UNFOLLOW, authorId)
     }
 
-    fun updateProfile(name: String, description: String) {
-
-    }
-
     fun getBlob(blobId: String) = database.blobsDao().get(blobId = blobId)
 
 }

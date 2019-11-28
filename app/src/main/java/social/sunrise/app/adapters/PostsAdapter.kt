@@ -1,6 +1,6 @@
 package social.sunrise.app.adapters
 
-import android.graphics.BitmapFactory
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -23,7 +23,7 @@ class PostsAdapter(
     val likePost: (String, Boolean) -> Unit,
     val lifecycleOwner: LifecycleOwner,
     val markwon: Markwon,
-    val getBlob: (String) -> LiveData<ByteArray>
+    val getBlob: (String) -> LiveData<Bitmap>
 ) :
     PagedListAdapter<LiveData<Post>, RecyclerView.ViewHolder>(LIVE_DIFF_CALLBACK) {
 
@@ -56,8 +56,7 @@ class PostsAdapter(
             binding.fragmentPost.authorImage.setImageResource(R.drawable.ic_person_black_24dp)
             if (post.authorImageLink != null) {
                 getBlob(post.authorImageLink).observe(lifecycleOwner, Observer {
-                    val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
-                    binding.fragmentPost.authorImage.setImageBitmap(bitmap)
+                    binding.fragmentPost.authorImage.setImageBitmap(it)
                 })
             }
 
@@ -82,7 +81,7 @@ class PostsAdapter(
             if (navController.currentDestination?.id != R.id.thread_fragment)
                 return
             navController.navigate(
-                NavigationDirections.actionGlobalProfileFragment(authorId)
+                NavigationDirections.actionGlobalProfileHolderFragment(authorId)
             )
         }
     }

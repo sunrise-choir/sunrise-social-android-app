@@ -22,6 +22,11 @@ data class Post(val text: String) {
 }
 
 @Serializable
+data class ReplyPost(val text: String, val root: String) {
+    val type = "post"
+}
+
+@Serializable
 data class Contact(val contact: String, val following: Boolean, val blocking: Boolean) {
     val type = "contact"
 }
@@ -55,7 +60,11 @@ class PublishLikeMessage(
 ) :
     SsbServerMsg() // a request with reply
 
-class PublishPostMessage(val msgText: String, val response: CompletableDeferred<Long>) :
+class PublishPostMessage(
+    val msgText: String,
+    val rootId: String?,
+    val response: CompletableDeferred<Long>
+) :
     SsbServerMsg() // a request with reply
 
 class PublishContactMessage(
@@ -199,8 +208,8 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
 
                 msg.response.complete(0)
 
-                Gobotexample.stop()
-                Gobotexample.start(repoPath)
+//                Gobotexample.stop()
+//                Gobotexample.start(repoPath)
             }
         }
     }

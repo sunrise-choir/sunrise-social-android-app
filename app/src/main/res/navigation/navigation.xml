@@ -56,7 +56,12 @@
         android:id="@+id/notifications_fragment"
         android:name="social.sunrise.app.fragments.NotificationsFragment"
         android:label="fragment_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_notifications">
+        <argument
+            android:name="feedId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/profile_fragment"
         android:name="social.sunrise.app.fragments.ProfileFragment"
@@ -77,21 +82,14 @@
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    <action
-        android:id="@+id/action_global_profile_fragment"
-        app:destination="@id/profile_fragment"
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <fragment
         android:id="@+id/peers_fragment"
         android:name="social.sunrise.app.fragments.PeersFragment"
         android:label="fragment_peers"
         tools:layout="@layout/fragment_peers">
         <action
-            android:id="@+id/action_peers_fragment_to_profile_fragment"
-            app:destination="@id/profile_fragment" />
+            android:id="@+id/action_peers_fragment_to_profile_holder_fragment"
+            app:destination="@id/profile_holder_fragment" />
     </fragment>
     <action
         android:id="@+id/action_global_peersFragment"
@@ -104,6 +102,27 @@
         <argument
             android:name="feedId"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/profile_holder_fragment"
+        android:name="social.sunrise.app.fragments.ProfileHolderFragment"
+        android:label="fragment_profile_holder">
+        <argument
+            android:name="feedId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_profile_holder_fragment"
+        app:destination="@id/profile_holder_fragment" />
+    <fragment
+        android:id="@+id/postsFragment"
+        android:name="social.sunrise.app.fragments.PostsFragment"
+        android:label="PostsFragment">
+        <argument
+            android:name="feedId"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
 </navigation>

@@ -1,5 +1,6 @@
 package social.sunrise.app.fragments
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.sunrise.app.R
 import social.sunrise.app.adapters.PostsAdapter
 import social.sunrise.app.databinding.FragmentNotificationsBinding
-import social.sunrise.app.viewModels.NotificationsViewModel
+import social.sunrise.app.viewModels.PostsViewModel
 
+/**
+ * A simple [Fragment] subclass.
+ */
+class PostsFragment : Fragment() {
 
-class NotificationsFragment : Fragment() {
-
-
-    private lateinit var viewModel: NotificationsViewModel
+    private lateinit var viewModel: PostsViewModel
     private lateinit var viewAdapter: PostsAdapter
 
     override fun onCreateView(
@@ -32,7 +34,7 @@ class NotificationsFragment : Fragment() {
             false
         )
 
-        viewModel = ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(PostsViewModel::class.java)
 
         try {
             val args = ProfileFragmentArgs.fromBundle(arguments!!)
@@ -55,5 +57,6 @@ class NotificationsFragment : Fragment() {
 
         return binding.root
     }
+
 
 }

@@ -46,7 +46,7 @@ class PeersFragment : Fragment() {
             AdapterView.OnItemClickListener { parent, view, position, _ ->
                 val peer: Peer = parent.getItemAtPosition(position) as Peer
                 findNavController().navigate(
-                    PeersFragmentDirections.actionPeersFragmentToProfileFragment(
+                    PeersFragmentDirections.actionPeersFragmentToProfileHolderFragment(
                         peer.Id
                     )
                 )

@@ -14,7 +14,7 @@ import org.kodein.di.generic.instance
 import social.sunrise.app.database.Database
 import social.sunrise.app.models.Post
 
-class NotificationsViewModel(
+class PostsViewModel(
     app: Application
 ) : AndroidViewModel(app), KodeinAware {
 
@@ -43,7 +43,7 @@ class NotificationsViewModel(
     fun getBlob(blobId: String) = database.blobsDao().get(blobId = blobId)
 
     fun setNotificationsAuthor(author: String) {
-        query = { PostsQuery.builder().mentionsAuthors(listOf(author)) }
+        query = { PostsQuery.builder().authors(listOf(author)) }
 
         postsDataSourceFactory = database.postDao().getAllPaged(query)
 

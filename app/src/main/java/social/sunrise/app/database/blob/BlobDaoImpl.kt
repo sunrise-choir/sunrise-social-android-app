@@ -1,5 +1,7 @@
 package social.sunrise.app.database.blob
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.collection.LruCache
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,15 +17,15 @@ class BlobDaoImpl(
     private val ssbServer: CompletableDeferred<SendChannel<SsbServerMsg>>
 ) : BlobDao {
 
-    private val cache: LruCache<String, ByteArray> = LruCache(50)
+    private val cache: LruCache<String, Bitmap> = LruCache(50)
 
 
     override fun create(blob: ByteArray): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun get(blobId: String): LiveData<ByteArray> {
-        val liveBlob = MutableLiveData<ByteArray>()
+    override fun get(blobId: String): LiveData<Bitmap> {
+        val liveBlob = MutableLiveData<Bitmap>()
 
         val blob = cache.get(blobId)
         if (blob != null) {
@@ -37,8 +39,9 @@ class BlobDaoImpl(
                     try {
                         val blob = response.await()
                         println("got blob!")
-                        cache.put(blobId, blob)
-                        liveBlob.postValue(blob)
+                        val bitmap = BitmapFactory.decodeByteArray(blob, 0, blob.size)
+                        cache.put(blobId, bitmap)
+                        liveBlob.postValue(bitmap)
                     } catch (e: Exception) {
                         println("failed to get blob")
                     }
