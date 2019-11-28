@@ -29,7 +29,7 @@ class ThreadsViewModel(
 
     val pagedListConfig = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
-        .setInitialLoadSizeHint(10)
+        .setInitialLoadSizeHint(2)
         .setPageSize(2).build()
 
     val threadsLiveData = LivePagedListBuilder(threadsDataSourceFactory, pagedListConfig).build()

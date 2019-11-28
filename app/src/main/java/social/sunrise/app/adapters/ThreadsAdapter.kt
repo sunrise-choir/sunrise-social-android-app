@@ -12,6 +12,10 @@ import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import social.sunrise.app.NavigationDirections
 import social.sunrise.app.R
 import social.sunrise.app.databinding.FragmentThreadSummaryBinding
@@ -58,14 +62,23 @@ class ThreadsAdapter(
                 })
             }
 
+            binding.fragmentPost.post = thread.root
+
             val assertedTime = thread.root.assertedTime
             if (assertedTime != null) {
                 binding.fragmentPost.postTimeTextView.setReferenceTime(Date(assertedTime).time)
             }
 
-            binding.fragmentPost.post = thread.root
-
-            markwon.setMarkdown(binding.fragmentPost.rootPostText, thread.root.text)
+            GlobalScope.launch {
+                withContext(Dispatchers.Default) {
+                    val post = binding.fragmentPost.rootPostText
+                    val node = markwon.parse(thread.root.text)
+                    val spanned = markwon.render(node)
+                    post.post {
+                        markwon.setParsedMarkdown(post, spanned)
+                    }
+                }
+            }
 
 
             likesIconImage.setOnClickListener {
