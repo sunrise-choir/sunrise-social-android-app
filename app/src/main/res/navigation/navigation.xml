@@ -71,9 +71,6 @@
             android:name="feedId"
             app:argType="string"
             app:nullable="true" />
-        <action
-            android:id="@+id/action_profile_fragment_to_edit_profile_fragment"
-            app:destination="@id/edit_profile_fragment" />
     </fragment>
     <action
         android:id="@+id/action_global_thread_fragment"
@@ -111,6 +108,9 @@
             android:name="feedId"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_profile_holder_fragment_to_edit_profile_fragment"
+            app:destination="@id/edit_profile_fragment" />
     </fragment>
     <action
         android:id="@+id/action_global_profile_holder_fragment"

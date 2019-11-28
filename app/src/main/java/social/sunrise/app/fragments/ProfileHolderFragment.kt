@@ -19,7 +19,7 @@ import social.sunrise.app.databinding.FragmentProfileHolderBinding
 class ProfileHolderFragment : Fragment() {
     private lateinit var fragmentsAdapter: FragmentsAdapter
     private lateinit var viewPager: ViewPager2
-    lateinit var authorId: String
+    var authorId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +37,7 @@ class ProfileHolderFragment : Fragment() {
             val args = ProfileFragmentArgs.fromBundle(arguments!!)
             args.feedId!!
         } catch (e: Exception) {
-            ""
+            null
         }
 
         fragmentsAdapter = FragmentsAdapter(this)

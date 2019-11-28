@@ -60,7 +60,7 @@ class ProfileFragment : Fragment() {
                     binding.followButton.setOnClickListener {
                         println("author id is $authorId")
                         findNavController().navigate(
-                            ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment(
+                            ProfileHolderFragmentDirections.actionProfileHolderFragmentToEditProfileFragment(
                                 authorId
                             )
                         )
