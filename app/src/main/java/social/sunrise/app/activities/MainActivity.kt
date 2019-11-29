@@ -93,7 +93,9 @@ class MainActivity : AppCompatActivity(), KodeinAware {
             if (it > 0) {
                 val notificationsBadge =
                     binding.bottomNavigation.getOrCreateBadge(badgeId)
+                notificationsBadge.maxCharacterCount = 2
                 notificationsBadge.number = it
+
             } else {
                 binding.bottomNavigation.removeBadge(badgeId)
             }

@@ -138,46 +138,38 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                 }
             }
             is PublishLikeMessage -> {
-                val recps = Gobotexample.newRecipientsCollection()
                 Log.i(tag, "Published like for ${msg.msgId}, doesLike ${msg.doesLike}")
                 val likeMessage = Like(msg.msgId, if (msg.doesLike) 1 else 0)
                 val likeJson = json.stringify(likeSerializer, likeMessage)
                 Gobotexample.publish(
-                    likeJson,
-                    recps.marshalJSON()
+                    likeJson
                 )
                 msg.response.complete(0)
             }
             is PublishPostMessage -> {
-
-                val recps = Gobotexample.newRecipientsCollection()
                 val postMsg = Post(msg.msgText)
                 val postJson = json.stringify(postSerializer, postMsg)
 
                 Gobotexample.publish(
-                    postJson,
-                    recps.marshalJSON()
+                    postJson
                 )
 
                 msg.response.complete(0)
             }
             is PublishAboutMessage -> {
-
-                val recps = Gobotexample.newRecipientsCollection()
                 val aboutMsg =
                     About(about = msg.authorId, name = msg.name, description = msg.description)
                 val aboutJson = json.stringify(aboutSerializer, aboutMsg)
 
                 Gobotexample.publish(
-                    aboutJson,
-                    recps.marshalJSON()
+                    aboutJson
+
                 )
 
                 msg.response.complete(0)
             }
             is PublishContactMessage -> {
 
-                val recps = Gobotexample.newRecipientsCollection()
                 val relationship = msg.relationship
                 val authorId = msg.authorId
                 val contactMsg: Contact = when (relationship) {
@@ -203,7 +195,7 @@ fun CoroutineScope.ssbServerActor(repoPath: String) = actor<SsbServerMsg> {
                     )
                 }
                 val contactJson = json.stringify(contactSerializer, contactMsg)
-                Gobotexample.publish(contactJson, recps.marshalJSON())
+                Gobotexample.publish(contactJson)
 
 
                 msg.response.complete(0)
