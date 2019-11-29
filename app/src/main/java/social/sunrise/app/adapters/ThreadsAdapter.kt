@@ -12,10 +12,6 @@ import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import social.sunrise.app.NavigationDirections
 import social.sunrise.app.R
 import social.sunrise.app.databinding.FragmentThreadSummaryBinding
@@ -62,24 +58,13 @@ class ThreadsAdapter(
                 })
             }
 
-            binding.fragmentPost.post = thread.root
-
             val assertedTime = thread.root.assertedTime
             if (assertedTime != null) {
                 binding.fragmentPost.postTimeTextView.setReferenceTime(Date(assertedTime).time)
             }
 
-            GlobalScope.launch {
-                withContext(Dispatchers.Default) {
-                    val post = binding.fragmentPost.rootPostText
-                    val node = markwon.parse(thread.root.text)
-                    val spanned = markwon.render(node)
-                    post.post {
-                        markwon.setParsedMarkdown(post, spanned)
-                    }
-                }
-            }
-
+            markwon.setMarkdown(binding.fragmentPost.rootPostText, thread.root.text)
+            binding.fragmentPost.post = thread.root
 
             likesIconImage.setOnClickListener {
                 val post = liveThread.value!!.root
@@ -97,8 +82,6 @@ class ThreadsAdapter(
         }
 
         private fun navigateToThread(thread: Thread) {
-//            if (navController.currentDestination?.id != R.id.threads_fragment)
-//                return
             navController.navigate(
                 ThreadFragmentDirections.actionGlobalThreadFragment(
                     thread.root.id,
@@ -121,8 +104,6 @@ class ThreadsAdapter(
         parent: ViewGroup,
         viewType: Int
     ): ThreadsViewHolder {
-
-
         val inflater = LayoutInflater.from(parent.context)
         val binding = FragmentThreadSummaryBinding.inflate(inflater)
         val navController = parent.findNavController()

@@ -56,7 +56,7 @@ class ScuttlebuttApp : Application(), KodeinAware {
         val pubKey = secrets.id
         val privateKey = secrets.private
 
-
+        println("loaded pubkey: $pubKey from file.")
 
         bind<CompletableDeferred<SendChannel<SsbServerMsg>>>("ssbServerActor") with singleton { CompletableDeferred<SendChannel<SsbServerMsg>>() }
         bind<CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>>("patchqlProcessActor") with singleton { CompletableDeferred<SendChannel<PatchqlBackgroundMessage>>() }

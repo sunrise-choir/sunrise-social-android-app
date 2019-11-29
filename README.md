@@ -82,8 +82,7 @@ The first build will take a while because it needs to build all the rust code. B
 
 If you need to extend the go code, follow the [instructions]() in the readme to build bindings with [go-mobile](https://github.com/golang/go/wiki/Mobile).
 
-You need to manually copy the generated bindings into this project. 
-
+You need to manually copy the generated bindings into this project. Copy the `.aar` and `.jar` files in the `app` folder of the go project into the app folder of this project eg: In the go project directory: `cp app/* <path-to-this-repo>/app`
 
 ## Doing the first onboarding after an install.
 
@@ -106,6 +105,7 @@ Note: This behaviour comes from the go sbot, it will change in the future but it
 ## Hints, tips and known issues
 
 - replication in go is unexpectedly slow. Cryptix gets replication speeds ~100 times faster on an iphone with comparable specs to my andoid phone. We're not sure if it's about fs access or what.
+- If you update the graphql schema or queries, or you change the gobot .aar file, you should do a `File->Invalidate Caches / Restart` in android studio. In fact, do this any time you think android studio is being _spooky_.
 - app files location on the phone
 - graphql schema
 - blob loading 

@@ -11,10 +11,6 @@ import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import social.sunrise.app.NavigationDirections
 import social.sunrise.app.R
 import social.sunrise.app.databinding.FragmentThreadSummaryBinding
@@ -49,7 +45,6 @@ class PostsAdapter(
                 likesIconImage.setImageResource(image)
             })
 
-
             val post = livePost.value!!
 
             val assertedTime = post.assertedTime
@@ -68,17 +63,6 @@ class PostsAdapter(
 
             markwon.setMarkdown(binding.fragmentPost.rootPostText, post.text)
 
-            GlobalScope.launch {
-                withContext(Dispatchers.Default) {
-                    val node = markwon.parse(post.text)
-                    val spanned = markwon.render(node)
-
-                    val postView = binding.fragmentPost.rootPostText
-                    postView.post {
-                        markwon.setParsedMarkdown(postView, spanned)
-                    }
-                }
-            }
             likesIconImage.setOnClickListener {
                 // Get the latest post from the observable
                 val postValue = livePost.value!!
