@@ -43,7 +43,7 @@ In some ways it's proof that sunrise choir is making a stack that _will_ be usef
 
 ### Todos
 
-See the [project]()
+See the [project](https://github.com/sunrise-choir/sunrise-social-android-app/projects)
 
 
 ## Dev Setup
