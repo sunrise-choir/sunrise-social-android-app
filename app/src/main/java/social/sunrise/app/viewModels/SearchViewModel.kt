@@ -30,8 +30,8 @@ class SearchViewModel(
     fun search(queryString: String){
         val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(10)
-            .setPageSize(20).build()
+            .setInitialLoadSizeHint(3)
+            .setPageSize(2).build()
 
 
         val searchQuery = { PostsQuery.builder().query(queryString) }

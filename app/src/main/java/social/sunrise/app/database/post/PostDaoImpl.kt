@@ -44,7 +44,6 @@ class PostDaoImpl(
                             likedByMe = newPost.likedByMe()
                         )
                     )
-
                 }
                 .onFailure {
                     throw Error("patchql query failed. ${it}")
