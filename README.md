@@ -2,12 +2,17 @@
 
 > A native android app for [scuttlebutt](https://scuttlebutt.nz/), written by the [sunrise choir](https://github.com/sunrise-choir/).
 
+## APK first install
+
+If you've just installed the apk and wondering how to get going [please read the instructions here](#doing-the-first-onboarding-after-an-install)
+
 ## Contents
 
 - [Overview](#overview)
 - [Cool features](#cool-features)
 - [Dev Setup](#dev-setup)
   - [Requirements](#requirements)
+  - [First install](#doing-the-first-onboarding-after-an-install)
 - [Project Status](#project-status)
 - [Hints, tips and known issues](#hints-tips-and-known-issues)
 - [Contributing](#contributing)
