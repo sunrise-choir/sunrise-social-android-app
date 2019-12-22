@@ -93,7 +93,8 @@ class PostsDataSource(
                 referencesLength = root.references().size,
                 repliesCount = null,
                 cursor = cursor,
-                assertedTime = root.assertedTimestamp()?.toLong()
+                assertedTime = root.assertedTimestamp()?.toLong(),
+                rootId = root.rootKey()
             )
         }.map {
             val livePost = posts[it.id]

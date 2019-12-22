@@ -104,7 +104,8 @@ class ThreadDataSource(
             referencesLength = fragment.references().size,
             repliesCount = null,
             cursor = null,
-            assertedTime = fragment.assertedTimestamp()?.toLong()
+            assertedTime = fragment.assertedTimestamp()?.toLong(),
+            rootId = null
         )
     }
 }
