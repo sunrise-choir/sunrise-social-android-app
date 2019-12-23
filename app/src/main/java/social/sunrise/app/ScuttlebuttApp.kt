@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.sunrisechoir.patchql.Params
 import com.sunrisechoir.patchql.PatchqlApollo
@@ -148,6 +149,7 @@ class ScuttlebuttApp : Application(), KodeinAware {
 
                 }
             }
+            val glideOptions = RequestOptions().timeout(25000)
 
             val glideStore = object : GlideImagesPlugin.GlideStore {
                 override fun load(drawable: AsyncDrawable): RequestBuilder<Drawable> {
@@ -163,7 +165,10 @@ class ScuttlebuttApp : Application(), KodeinAware {
             Markwon.builder(applicationContext)
                 .usePlugin(plugin)
                 .usePlugin(GlideImagesPlugin.create(applicationContext))
-                .usePlugin(GlideImagesPlugin.create(Glide.with(applicationContext)))
+                .usePlugin(GlideImagesPlugin.create(Glide
+                    .with(applicationContext)
+                    .applyDefaultRequestOptions(glideOptions)
+                    ))
                 .usePlugin(GlideImagesPlugin.create(glideStore))
                 .build()
         }
