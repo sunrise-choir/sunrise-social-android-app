@@ -56,7 +56,7 @@ See the [project](https://github.com/sunrise-choir/sunrise-social-android-app/pr
 ### Requirements:
 
 - [Rust](https://rustup.rs/) using rustup
-- [Android SDK + Android Studio](http://www.androiddocs.com/sdk/installing/index.html)
+- [Android SDK + Android Studio](https://developer.android.com/studio/install)
 - [Android NDK](https://developer.android.com/studio/projects/install-ndk)
 - [Go](https://golang.org/doc/install) and [go-mobile](https://github.com/golang/go/wiki/Mobile) (Optional, only needed if you want to develop the go stack)
 - An android phone to develop on. I have tested that images for the emulator do run, but I haven't worked out how to get networking going.
