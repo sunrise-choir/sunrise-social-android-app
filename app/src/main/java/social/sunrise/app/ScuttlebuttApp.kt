@@ -149,7 +149,9 @@ class ScuttlebuttApp : Application(), KodeinAware {
 
                 }
             }
+
             val glideOptions = RequestOptions().timeout(25000)
+
 
             val glideStore = object : GlideImagesPlugin.GlideStore {
                 override fun load(drawable: AsyncDrawable): RequestBuilder<Drawable> {
@@ -176,8 +178,5 @@ class ScuttlebuttApp : Application(), KodeinAware {
         constant("repoPath") with repoPath
         constant("mySsbIdentity") with pubKey
     }
-
-
-
 
 }

@@ -41,6 +41,7 @@ class ThreadsAdapter(
 
             val likesIconImage = binding.fragmentPost.likesIconImage
             val authorImage = binding.fragmentPost.authorImage
+            val authorName = binding.fragmentPost.authorNameText
 
             liveThread.observe(lifecycleOwner, Observer {
                 binding.fragmentPost.post = it.root
@@ -73,6 +74,11 @@ class ThreadsAdapter(
             authorImage.setOnClickListener {
                 val post = liveThread.value!!
                 navigateToAuthor(post.root.authorId)
+            }
+
+            authorName.setOnClickListener{
+                val postValue = liveThread.value!!
+                navigateToAuthor(postValue.root.authorId)
             }
 
             //It's odd that we need to set a click listener on the text as well as the root, but so be it. It works.
