@@ -14,6 +14,7 @@ import io.noties.markwon.Markwon
 import social.sunrise.app.NavigationDirections
 import social.sunrise.app.R
 import social.sunrise.app.databinding.FragmentThreadSummaryBinding
+import social.sunrise.app.fragments.ThreadFragmentDirections
 import social.sunrise.app.models.LIVE_DIFF_CALLBACK
 import social.sunrise.app.models.Post
 import java.util.*
@@ -74,6 +75,10 @@ class PostsAdapter(
                 navigateToAuthor(postValue.authorId)
 
             }
+
+            //It's odd that we need to set a click listener on the text as well as the root, but so be it. It works.
+            binding.fragmentPost.root.setOnClickListener { navigateToThread(post) }
+            binding.fragmentPost.rootPostText.setOnClickListener { navigateToThread(post) }
         }
 
         private fun navigateToAuthor(authorId: String) {
@@ -82,6 +87,18 @@ class PostsAdapter(
             navController.navigate(
                 NavigationDirections.actionGlobalProfileHolderFragment(authorId)
             )
+        }
+
+        private fun navigateToThread(post: Post) {
+
+            if (post.rootId != null) {
+                navController.navigate(
+                    ThreadFragmentDirections.actionGlobalThreadFragment(
+                        post.rootId,
+                        null
+                    )
+                )
+            }
         }
     }
 

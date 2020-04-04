@@ -59,7 +59,6 @@ class PostDaoImpl(
             var mutableLiveData: MutableLiveData<PostsDataSource> = MutableLiveData()
             private lateinit var postsDataSource: PostsDataSource
 
-
             override fun create(): DataSource<String, LiveData<Post>> {
 
                 postsDataSource = PostsDataSource(

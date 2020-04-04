@@ -48,10 +48,10 @@ class PostsDataSource(
             .build()
 
         patchqlApollo.query(PostsQuery) {
-            it.map(::responseIntoPosts)
+            it.mapCatching(::responseIntoPosts)
                 .onSuccess(callback::onResult)
                 .onFailure {
-                    throw Error("patchql query failed. ${it}")
+
                 }
         }
     }
@@ -67,15 +67,19 @@ class PostsDataSource(
             .build()
 
         patchqlApollo.query(PostsQuery) {
-            it.map(::responseIntoPosts)
+            it.mapCatching(::responseIntoPosts)
                 .onSuccess(callback::onResult)
                 .onFailure {
-                    throw Error("patchql query failed. ${it}")
+
                 }
         }
     }
 
     private fun responseIntoPosts(it: Response<*>): List<LiveData<Post>> {
+
+        if (it.data() == null) {
+            throw Exception("Couldn't get a response from posts")
+        }
         val data = it.data() as PostsQuery.Data
 
         return data.posts().edges().map { edge ->
@@ -93,7 +97,8 @@ class PostsDataSource(
                 referencesLength = root.references().size,
                 repliesCount = null,
                 cursor = cursor,
-                assertedTime = root.assertedTimestamp()?.toLong()
+                assertedTime = root.assertedTimestamp()?.toLong(),
+                rootId = root.rootKey()
             )
         }.map {
             val livePost = posts[it.id]
