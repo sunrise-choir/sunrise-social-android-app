@@ -97,7 +97,8 @@ class ThreadsDataSource(
                 referencesLength = root.references().size,
                 repliesCount = repliesLength,
                 cursor = null,
-                assertedTime = root.assertedTimestamp()?.toLong()
+                assertedTime = root.assertedTimestamp()?.toLong(),
+                rootId = null
             )
 
             Thread(rootPost, cursor.orEmpty())

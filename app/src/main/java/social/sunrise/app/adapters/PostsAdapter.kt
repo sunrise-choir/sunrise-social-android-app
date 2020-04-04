@@ -17,7 +17,6 @@ import social.sunrise.app.databinding.FragmentThreadSummaryBinding
 import social.sunrise.app.fragments.ThreadFragmentDirections
 import social.sunrise.app.models.LIVE_DIFF_CALLBACK
 import social.sunrise.app.models.Post
-import social.sunrise.app.models.Thread
 import java.util.*
 
 

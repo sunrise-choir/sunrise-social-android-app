@@ -3,14 +3,22 @@ package social.sunrise.app
 
 import android.app.Application
 import android.content.Context
+import android.graphics.drawable.Drawable
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.sunrisechoir.patchql.Params
 import com.sunrisechoir.patchql.PatchqlApollo
 import gobotexample.Gobotexample
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.LinkResolverDef
 import io.noties.markwon.Markwon
+
 import io.noties.markwon.MarkwonConfiguration
+import io.noties.markwon.image.AsyncDrawable
+import io.noties.markwon.image.glide.GlideImagesPlugin
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.serialization.Serializable
@@ -24,6 +32,7 @@ import social.sunrise.app.database.Database
 import social.sunrise.app.models.PatchqlBackgroundMessage
 import social.sunrise.app.utils.SsbUri
 import java.io.File
+import java.net.URLEncoder
 
 
 @Serializable
@@ -33,6 +42,8 @@ data class Secret(val id: String, val private: String, val curve: String, val pu
 class ScuttlebuttApp : Application(), KodeinAware {
 
     override val kodein: Kodein by Kodein.lazy {
+
+        val blobServerUrl = "http://127.0.0.1:8091/blobs/"
 
         val externalDir = getDir("scuttlebutt", Context.MODE_PRIVATE).absolutePath
         val repoPath = externalDir + getString(R.string.ssb_go_folder_name)
@@ -138,17 +149,34 @@ class ScuttlebuttApp : Application(), KodeinAware {
 
                 }
             }
+
+            val glideOptions = RequestOptions().timeout(25000)
+
+
+            val glideStore = object : GlideImagesPlugin.GlideStore {
+                override fun load(drawable: AsyncDrawable): RequestBuilder<Drawable> {
+                    val urlEncodedBlob = URLEncoder.encode(drawable.destination, "US-ASCII")
+                    val destination = blobServerUrl + urlEncodedBlob
+                    return Glide.with(applicationContext).load(destination)
+                }
+
+                override fun cancel(target: Target<*>) {
+                    Glide.with(applicationContext).clear(target)
+                }
+            }
             Markwon.builder(applicationContext)
                 .usePlugin(plugin)
+                .usePlugin(GlideImagesPlugin.create(applicationContext))
+                .usePlugin(GlideImagesPlugin.create(Glide
+                    .with(applicationContext)
+                    .applyDefaultRequestOptions(glideOptions)
+                    ))
+                .usePlugin(GlideImagesPlugin.create(glideStore))
                 .build()
         }
 
         constant("repoPath") with repoPath
         constant("mySsbIdentity") with pubKey
-
     }
-
-
-
 
 }
